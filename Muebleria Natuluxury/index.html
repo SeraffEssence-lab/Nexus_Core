@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NatuLuxury | Arquitectura Imposible</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Variables ajustadas para el tono Cristal/Hielo */
+            --bg-glass: #f0f4f8;
+            --text-primary: #1a1a1a; /* Texto oscuro para que se lea en fondo claro */
+            --accent-gold: #c5a059;
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            /* Gradiente de Hielo Fino */
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            background-attachment: fixed;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+        }
+
+        /* LA CAPA DE CRISTAL ÁRTICO */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            z-index: -1;
+        }
+
+        section {
+            height: 100vh;
+            width: 90%; /* Un poco más angosto para que se vea que flota */
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 40px;
+            text-align: center;
+            scroll-snap-align: start;
+            
+            /* Efecto de Placa de Vidrio Flotando */
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            margin-top: 5vh;
+            margin-bottom: 5vh;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+        }
+
+        .producto-img {
+            max-width: 400px;
+            height: auto;
+            /* IMPORTANTE: Multiply para fondos claros */
+            mix-blend-mode: multiply; 
+            filter: contrast(110%);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 8vw, 4rem);
+            letter-spacing: 15px;
+            font-weight: 400;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .highlight-text {
+            color: var(--accent-gold);
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+
+        .manifesto-box {
+            max-width: 650px;
+            padding: 40px;
+            border-left: 2px solid var(--accent-gold);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .manifesto-box p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            line-height: 2.2;
+            letter-spacing: 1px;
+            color: #444;
+        }
+
+        .exclusive-tag {
+            font-family: 'Cinzel';
+            font-size: 0.65rem;
+            border: 1px solid var(--accent-gold);
+            padding: 6px 20px;
+            margin-bottom: 30px;
+            display: inline-block;
+            letter-spacing: 3px;
+        }
+
+        .buy-button {
+            margin-top: 40px;
+            padding: 15px 45px;
+            background: transparent;
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            text-decoration: none;
+            transition: all 0.5s ease;
+            border-radius: 50px;
+        }
+
+        .buy-button:hover {
+            background: var(--text-primary);
+            color: #fff;
+            letter-spacing: 6px;
+        }
+
+        .specs-container {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 30px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .spec-label { opacity: 0.5; }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.55rem;
+            letter-spacing: 4px;
+            opacity: 0.4;
+            animation: bounce 2.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-8px);}
+            60% {transform: translateY(-4px);}
+        }
+
+    </style>
+</head>
+<body>
+
+    <section>
+        <span class="exclusive-tag">Mueblería Naturista</span>
+        <h1>NATULUXURY</h1>
+        <p class="highlight-text">Arquitectura Imposible</p>
+        <div class="scroll-indicator">DESCUBRE LA ANOMALÍA</div>
+    </section>
+
+    <section>
+        <div class="manifesto-box">
+            <p>"Cada organismo es una **anomalía física**. Un error perfecto que no admite réplicas. Si posees una, posees la única versión existente en el tiempo."</p>
+        </div>
+        <a href="#" class="buy-button">Poseer lo Único</a>
+    </section>
+
+    <section>
+        <img src="perchero Edicion1.png" class="producto-img" alt="img-feed">
+        <p class="highlight-text">Origin Series: Anomalía 01</p>
+        <a href="#" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
+    </section>
+
+    <section>
+        <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 10px; margin-bottom: 40px;">DETALLES TÉCNICOS</h2>
+        
+        <div class="specs-container">
+            <div class="spec-row">
+                <span class="spec-label">Especie</span>
+                <span>Madera Recuperada - Alta Montaña</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Tratamiento</span>
+                <span>Curación Orgánica 14 Meses</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Arquitectura</span>
+                <span>Autoportante / Abstracta</span>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Dimensión</span>
+                <span>Única e Irrepetible</span>
+            </div>
+        </div>
+        
+        <p style="margin-top: 40px; font-size: 0.6rem; opacity: 0.4; font-style: italic; max-width: 400px;">
+            *La pieza que ves es la pieza que recibes. No existen planos, solo instinto natural.
+        </p>
+    </section>
+
+    <section>
+        <h1>NATULUXURY</h1>
+        <div style="width: 30px; height: 1px; background: var(--accent-gold); margin: 20px 0;"></div>
+        <p style="font-size: 0.65rem; letter-spacing: 4px; opacity: 0.5;">CHICOLOAPAN | LONDRES | MILÁN</p>
+        <footer style="margin-top: 50px; font-size: 0.5rem; opacity: 0.4;">NATULUXURY © 2026 - TODOS LOS DERECHOS RESERVADOS</footer>
+    </section>
+
+</body>
+</html>
