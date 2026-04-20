@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCENCE NUTRICIONAL | Bio-Alquimia</title>
+    <style>
+        :root {
+            --earth-black: #1a1a15;
+            --cream: #f4f1ea;
+            --botanical-green: #3d4a3e;
+            --accent-gold: #c5a059;
+            --soft-gray: #d1cdc4;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--earth-black);
+            font-family: 'Playfair Display', serif; /* Necesitas cargar esta fuente de Google Fonts */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--soft-gray);
+        }
+
+        .brand-name {
+            font-size: 3rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin: 0;
+            color: var(--botanical-green);
+        }
+
+        .tagline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: white;
+            padding: 0;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            border: 1px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-gold);
+        }
+
+        .product-info {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: var(--botanical-green);
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .ingredient-tag {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 15px;
+            border: 1px solid var(--soft-gray);
+            font-size: 0.8rem;
+            border-radius: 50px;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            background: var(--botanical-green);
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: var(--earth-black);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.8rem;
+            color: var(--soft-gray);
+            letter-spacing: 1px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1 class="brand-name">Scence</h1>
+        <div class="tagline">NUTRICIÓN DERMAL ARQUIMISTA</div>
+    </header>
+
+    <div class="container">
+        <div class="product-grid">
+            
+            <div class="product-card">
+                <div class="product-info">
+                    <div class="product-category">Cuidado Capilar</div>
+                    <h2 class="product-title">Serum S-01: Pixtle</h2>
+                    <p class="product-description">Extracción pura de hueso de mamey en aceite de girasol. Estimulación folicular profunda.</p>
+                    <div class="ingredient-tag">Macerado 40 días</div>
+                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-info">
+                    <div class="product-category">Exfoliación</div>
+                    <h2 class="product-title">Corteza de Palo Dulce</h2>
+                    <p class="product-description">Exfoliante antiinflamatorio artesanal. Limpieza de impurezas y regeneración dérmica.</p>
+                    <div class="ingredient-tag">Antiséptico Natural</div>
+                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-info">
+                    <div class="product-category">Hidratación</div>
+                    <h2 class="product-title">Óleo de Girasol Viriditas</h2>
+                    <p class="product-description">Aceite de semillas seleccionado por su alto contenido en Vitamina E. Protección antioxidante.</p>
+                    <div class="ingredient-tag">Prensado en Frío</div>
+                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 SCENCE NUTRICIONAL | UNA DIVISIÓN DE NEXUS CORE
+    </footer>
+
+</body>
+</html>
