@@ -3,222 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicoloapan.Sport - Inicio</title>
+    <title>Chicoloapan Sport - Elite UI</title>
     <style>
-        /* RESET & BASE */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #0c0e11; color: #fff; }
-        
-        /* FONDO ARENOSO REACTIVO v3 (Metal-Pastel) */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #05070a; font-family: 'Inter', sans-serif; }
         #canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         
-        .grain-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');
-            opacity: 0.12; pointer-events: none; mix-blend-mode: overlay; z-index: 2;
+        /* Capa de Interfaz */
+        .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px 0; box-sizing: border-box; pointer-events: none; }
+
+        .title { font-size: 2.8rem; font-weight: 800; color: #E0E6ED; text-transform: uppercase; letter-spacing: 6px; text-align: center; filter: drop-shadow(0 0 10px rgba(158, 208, 216, 0.3)); }
+
+        .btn-group { display: flex; flex-direction: column; gap: 25px; pointer-events: auto; }
+
+        /* Botones con Relieve Cristalino */
+        .glass-btn {
+            width: 150px; height: 150px; border-radius: 50%;
+            background: rgba(224, 230, 237, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #9ED0D8; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px;
+            text-decoration: none; transition: 0.4s;
+            box-shadow: inset 0 4px 15px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5);
         }
+        .glass-btn:hover { transform: scale(1.1); border-color: #9ED0D8; box-shadow: 0 0 25px rgba(158, 208, 216, 0.4); }
 
-        /* INTERFAZ UI - CONTENEDOR PRINCIPAL */
-        .ui-container { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; box-sizing: border-box; z-index: 3; }
-
-        /* HEADER - Chicoloa. sport */
-        .header { text-align: center; margin-top: 20px; }
-       /* DISEÑO PREMIUM DE LETRAS (HEADER) */
-.header h1 {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: #E0E6ED; /* Gris blanquizo metálico */
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    background: linear-gradient(to bottom, #E0E6ED 0%, #9ED0D8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.8));
-    margin: 0;
-}
-
-/* BURBUJAS DE CRISTAL TÁCTILES */
-.burbuja {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    text-decoration: none;
-    
-    /* Efecto Cristalino Superior */
-    background: rgba(224, 230, 237, 0.2); 
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    
-    /* Sombreado y Brillo Interno para Volumen */
-    box-shadow: 
-        inset 0 4px 10px rgba(255, 255, 255, 0.4), /* Brillo superior */
-        inset 0 -4px 10px rgba(0, 0, 0, 0.3),    /* Sombra inferior */
-        0 10px 20px rgba(0, 0, 0, 0.5);          /* Sombra proyectada */
-    
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.burbuja:active {
-    transform: scale(0.92);
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-}
-
-.burbuja span {
-    color: #9ED0D8; /* Cian Pastel Metálico */
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    margin-top: 5px;
-}
-
-/* CONTENEDOR DEL PORTAL QR */
-.qr-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.qr-frame {
-    width: 160px;
-    height: 160px;
-    border-radius: 24px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    /* Fondo con efecto de profundidad */
-    background: rgba(158, 208, 216, 0.05);
-    backdrop-filter: blur(5px);
-    
-    /* Borde de Neón Metálico */
-    border: 2px solid rgba(158, 208, 216, 0.3);
-    box-shadow: 0 0 20px rgba(158, 208, 216, 0.1);
-}
-
-/* Las esquinas de enfoque (Focus Corners) */
-.qr-frame::before, .qr-frame::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #9ED0D8;
-}
-
-.qr-frame::before {
-    top: -5px; left: -5px;
-    border-right: none; border-bottom: none;
-    border-radius: 8px 0 0 0;
-}
-
-.qr-frame::after {
-    bottom: -5px; right: -5px;
-    border-left: none; border-top: none;
-    border-radius: 0 0 8px 0;
-}
-
-.qr-placeholder {
-    width: 130px;
-    height: 130px;
-    background: rgba(224, 230, 237, 0.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(158, 208, 216, 0.4);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-align: center;
-}
-
-.qr-label {
-    margin-top: 15px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #E0E6ED;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.8;
-}
-
+        /* Portal QR de Alta Precisión */
+        .qr-portal {
+            width: 180px; height: 180px; border-radius: 30px;
+            background: rgba(15, 20, 25, 0.4);
+            border: 2px solid rgba(158, 208, 216, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        }
+        .qr-portal::before { content: ''; position: absolute; inset: -5px; border: 2px solid #9ED0D8; border-radius: 35px; clip-path: polygon(0 0, 30% 0, 30% 10%, 0 10%, 0 30%, 10% 30%, 10% 0, 0 0); } /* Esquina UI */
     </style>
 </head>
 <body>
-    
     <canvas id="canvas"></canvas>
-    <div class="grain-overlay"></div>
-
-    <div class="ui-container">
+    
+    <div class="ui-layer">
+        <div class="title">CHICOLOAPAN<br>SPORT</div>
         
-        <div class="header">
-    <h1>Chicoloapan<br>Sport</h1>
-</div>
+        <div class="btn-group">
+            <a href="#" class="glass-btn"><span>ENTRENAR</span></a>
+            <a href="#" class="glass-btn"><span>ADMIN</span></a>
+            <a href="#" class="glass-btn"><span>Notifisios</span></a>
+      
+        </div>
 
-<div class="burbujas-container">
-    <a href="#" class="burbuja">
-        <div class="icon">🏃‍♂️</div>
-        <span>ENTRENAR</span>
-    </a>
-    <a href="#" class="burbuja">
-        <div class="icon">🔒</div>
-        <span>ADMIN</span>
-    </a>
-</div>
-        <div class="qr-section">
-    <div class="qr-frame">
-        <div class="qr-placeholder">
-            QR PORTAL<br>READY
+        <div class="qr-portal">
+            <div style="color: #9ED0D8; font-size: 0.7rem; opacity: 0.5;">[ QR SENSOR ACTIVE ]</div>
         </div>
     </div>
-    <div class="qr-label">Escanea tu acceso</div>
-</div>
 
-    </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        // Shader de Textura de Relieve en Tiempo Real (Anomalía Texture)
+        const fragmentShader = `
+            uniform float u_time;
+            uniform vec2 u_mouse;
+            uniform vec2 u_res;
+            varying vec2 vUv;
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
-
-        function draw() {
-            const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, width * 1);
-            gradient.addColorStop(0, '#9ED0D8'); // Cian Pastel Metálico
-            gradient.addColorStop(0.3, '#1a2229'); // Fricción
-            gradient.addColorStop(1, '#0c0e11'); // Negro Obsidiana
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.fillStyle = 'rgba(158, 208, 216, 0.05)';
-            for(let i = 0; i < 40; i++) {
-                let x = Math.random() * width;
-                let y = Math.random() * height;
-                ctx.beginPath();
-                ctx.arc(x, y, Math.random() * 1.5, 0, Math.PI * 2);
-                ctx.fill();
+            void main() {
+                vec2 st = gl_FragCoord.xy / u_res.xy;
+                vec2 m = u_mouse / u_res.xy;
+                
+                // Generar distorsión de flujo magnético
+                float d = distance(st, m);
+                float strength = 0.15 / (d + 0.3);
+                
+                vec2 uv = st;
+                for(float i = 1.0; i < 4.0; i++){
+                    uv.x += 0.2 / i * sin(i * 3.0 * uv.y + u_time * 0.5 + st.x * 5.0);
+                    uv.y += 0.2 / i * cos(i * 3.0 * uv.x + u_time * 0.5 + st.y * 5.0);
+                }
+                
+                // Cálculo de luz y relieve (Normal Mapping sim)
+                float noise = sin(uv.x * 20.0) * cos(uv.y * 20.0);
+                vec3 normal = normalize(vec3(dFdx(noise), dFdy(noise), 0.1));
+                vec3 lightDir = normalize(vec3(m - st, 0.5));
+                float diff = max(dot(normal, lightDir), 0.0);
+                
+                // Colores Metal-Pastel
+                vec3 color = mix(vec3(0.02, 0.03, 0.04), vec3(0.62, 0.82, 0.85), diff * strength);
+                gl_FragColor = vec4(color + (noise * 0.03), 1.0);
             }
+        `;
 
-            requestAnimationFrame(draw);
+        const vertexShader = `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`;
+
+        let scene, camera, renderer, material;
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas') });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            material = new THREE.ShaderMaterial({
+                uniforms: { u_time: { value: 0 }, u_mouse: { value: new THREE.Vector2() }, u_res: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) } },
+                vertexShader, fragmentShader
+            });
+
+            scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
         }
 
-        resize();
-        draw();
+        window.addEventListener('mousemove', e => { material.uniforms.u_mouse.value.set(e.clientX, window.innerHeight - e.clientY); });
+        window.addEventListener('resize', () => { renderer.setSize(window.innerWidth, window.innerHeight); material.uniforms.u_res.value.set(window.innerWidth, window.innerHeight); });
+
+        function animate(t) {
+            material.uniforms.u_time.value = t * 0.001;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
     </script>
 </body>
 </html>
