@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicoloapan.Sport - Inicio</title>
+    <style>
+        /* RESET & BASE */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #0c0e11; color: #fff; }
+        
+        /* FONDO ARENOSO REACTIVO v3 (Metal-Pastel) */
+        #canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        
+        .grain-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E');
+            opacity: 0.12; pointer-events: none; mix-blend-mode: overlay; z-index: 2;
+        }
+
+        /* INTERFAZ UI - CONTENEDOR PRINCIPAL */
+        .ui-container { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 20px; box-sizing: border-box; z-index: 3; }
+
+        /* HEADER - Chicoloa. sport */
+        .header { text-align: center; margin-top: 20px; }
+       /* DISEÑO PREMIUM DE LETRAS (HEADER) */
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #E0E6ED; /* Gris blanquizo metálico */
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    background: linear-gradient(to bottom, #E0E6ED 0%, #9ED0D8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.8));
+    margin: 0;
+}
+
+/* BURBUJAS DE CRISTAL TÁCTILES */
+.burbuja {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-decoration: none;
+    
+    /* Efecto Cristalino Superior */
+    background: rgba(224, 230, 237, 0.2); 
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    
+    /* Sombreado y Brillo Interno para Volumen */
+    box-shadow: 
+        inset 0 4px 10px rgba(255, 255, 255, 0.4), /* Brillo superior */
+        inset 0 -4px 10px rgba(0, 0, 0, 0.3),    /* Sombra inferior */
+        0 10px 20px rgba(0, 0, 0, 0.5);          /* Sombra proyectada */
+    
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.burbuja:active {
+    transform: scale(0.92);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.burbuja span {
+    color: #9ED0D8; /* Cian Pastel Metálico */
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* CONTENEDOR DEL PORTAL QR */
+.qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.qr-frame {
+    width: 160px;
+    height: 160px;
+    border-radius: 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Fondo con efecto de profundidad */
+    background: rgba(158, 208, 216, 0.05);
+    backdrop-filter: blur(5px);
+    
+    /* Borde de Neón Metálico */
+    border: 2px solid rgba(158, 208, 216, 0.3);
+    box-shadow: 0 0 20px rgba(158, 208, 216, 0.1);
+}
+
+/* Las esquinas de enfoque (Focus Corners) */
+.qr-frame::before, .qr-frame::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #9ED0D8;
+}
+
+.qr-frame::before {
+    top: -5px; left: -5px;
+    border-right: none; border-bottom: none;
+    border-radius: 8px 0 0 0;
+}
+
+.qr-frame::after {
+    bottom: -5px; right: -5px;
+    border-left: none; border-top: none;
+    border-radius: 0 0 8px 0;
+}
+
+.qr-placeholder {
+    width: 130px;
+    height: 130px;
+    background: rgba(224, 230, 237, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(158, 208, 216, 0.4);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.qr-label {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #E0E6ED;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+    </style>
+</head>
+<body>
+    
+    <canvas id="canvas"></canvas>
+    <div class="grain-overlay"></div>
+
+    <div class="ui-container">
+        
+        <div class="header">
+    <h1>Chicoloapan<br>Sport</h1>
+</div>
+
+<div class="burbujas-container">
+    <a href="#" class="burbuja">
+        <div class="icon">🏃‍♂️</div>
+        <span>ENTRENAR</span>
+    </a>
+    <a href="#" class="burbuja">
+        <div class="icon">🔒</div>
+        <span>ADMIN</span>
+    </a>
+</div>
+        <div class="qr-section">
+    <div class="qr-frame">
+        <div class="qr-placeholder">
+            QR PORTAL<br>READY
+        </div>
+    </div>
+    <div class="qr-label">Escanea tu acceso</div>
+</div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+
+        function draw() {
+            const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, width * 1);
+            gradient.addColorStop(0, '#9ED0D8'); // Cian Pastel Metálico
+            gradient.addColorStop(0.3, '#1a2229'); // Fricción
+            gradient.addColorStop(1, '#0c0e11'); // Negro Obsidiana
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = 'rgba(158, 208, 216, 0.05)';
+            for(let i = 0; i < 40; i++) {
+                let x = Math.random() * width;
+                let y = Math.random() * height;
+                ctx.beginPath();
+                ctx.arc(x, y, Math.random() * 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        draw();
+    </script>
+</body>
+</html>
