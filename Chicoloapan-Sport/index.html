@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicoloapan Sport - Elite UI</title>
+    <title>NEXUS Sport - Elite UI</title>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #05070a; font-family: 'Inter', sans-serif; }
         #canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
@@ -11,24 +11,118 @@
         /* Capa de Interfaz */
         .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px 0; box-sizing: border-box; pointer-events: none; }
 
-        .title { font-size: 2.8rem; font-weight: 800; color: #E0E6ED; text-transform: uppercase; letter-spacing: 6px; text-align: center; filter: drop-shadow(0 0 10px rgba(158, 208, 216, 0.3)); }
+        /* SECCIÓN DEL LOGO (ARRIBA IZQUIERDA) */
+        .brand-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            pointer-events: auto;
+        }
+
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(158, 208, 216, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(158, 208, 216, 0.3);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .logo-box img {
+            width: 120%;
+            height: auto;
+            filter: drop-shadow(0 0 5px rgba(163, 220, 229, 0.5));
+        }
+
+        /* SECCIÓN DE EXPEDICIONES (DERECHA) */
+        .expeditions-panel {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 250px;
+            background: rgba(15, 20, 25, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(158, 208, 216, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 20;
+            pointer-events: auto;
+            color: #a3dce5;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .expeditions-title {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            border-bottom: 1px solid rgba(163, 220, 229, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .expedition-item {
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(255,255,255,0.03);
+            border-left: 3px solid #b8895d;
+            transition: 0.3s;
+        }
+        .expedition-item:hover { background: rgba(163, 220, 229, 0.1); transform: translateX(-5px); }
+
+        /* INDICADOR DE NIVEL (ESQUINA INFERIOR DERECHA) */
+        .level-indicator {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            z-index: 20;
+            text-align: right;
+        }
+
+        .level-rank { font-size: 0.7rem; color: #b8895d; letter-spacing: 4px; font-weight: 700; }
+        .level-number { 
+            font-size: 3.5rem; 
+            font-weight: 900; 
+            color: #a3dce5; 
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(163, 220, 229, 0.5);
+        }
+
+        .brand-text {
+            color: #a3dce5;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-shadow: 0 0 10px rgba(163, 220, 229, 0.3);
+        }
+
+        .title { font-size: 2.8rem; font-weight: 800; color: #a3dce5; text-transform: uppercase; letter-spacing: 6px; text-align: center; filter: drop-shadow(0 0 10px rgba(158, 208, 216, 0.3)); }
 
         .btn-group { display: flex; flex-direction: column; gap: 25px; pointer-events: auto; }
 
-        /* Botones con Relieve Cristalino */
         .glass-btn {
             width: 150px; height: 150px; border-radius: 50%;
             background: rgba(224, 230, 237, 0.05);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #9ED0D8; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px;
+            color: #b8895d; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px;
             text-decoration: none; transition: 0.4s;
             box-shadow: inset 0 4px 15px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5);
         }
-        .glass-btn:hover { transform: scale(1.1); border-color: #9ED0D8; box-shadow: 0 0 25px rgba(158, 208, 216, 0.4); }
+        .glass-btn:hover { transform: scale(1.1); border-color: #dcbe8b; box-shadow: 0 0 25px rgba(158, 208, 216, 0.4); }
 
-        /* Portal QR de Alta Precisión */
         .qr-portal {
             width: 180px; height: 180px; border-radius: 30px;
             background: rgba(15, 20, 25, 0.4);
@@ -36,30 +130,51 @@
             display: flex; align-items: center; justify-content: center;
             position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
-        .qr-portal::before { content: ''; position: absolute; inset: -5px; border: 2px solid #9ED0D8; border-radius: 35px; clip-path: polygon(0 0, 30% 0, 30% 10%, 0 10%, 0 30%, 10% 30%, 10% 0, 0 0); } /* Esquina UI */
+        .qr-portal::before { content: ''; position: absolute; inset: -5px; border: 2px solid #9ED0D8; border-radius: 35px; clip-path: polygon(0 0, 30% 0, 30% 10%, 0 10%, 0 30%, 10% 30%, 10% 0, 0 0); }
     </style>
 </head>
 <body>
+    <div class="brand-container">
+        <div class="logo-box">
+            <img src="panteranexusport.png" alt="Logo">
+        </div>
+        <div class="brand-text">Seraff_Angel1001</div>
+    </div>
+
+    <div class="expeditions-panel">
+        <div class="expeditions-title">[ EXPEDICIONES ACTIVAS ]</div>
+        <div class="expedition-item">>> AREA: CHICOLOAPAN [S]</div>
+        <div class="expedition-item">>> Nivelacion - RANGO</div>
+        <div class="expedition-item">>> SERAFF ESSENCE EXTRACTION</div>
+        
+        <div style="width: 100%; height: 100px; background: #000; margin-top: 10px; border-radius: 10px; overflow: hidden; position: relative;">
+            <div style="position: absolute; color: white; font-size: 10px; padding: 5px;">LIVE_FEED.SYS</div>
+            </div>
+    </div>
+
+    <div class="level-indicator">
+        <div class="level-rank">PLAYER STATUS: ANOMALÍA</div>
+        <div class="level-number">LVL 102</div>
+    </div>
+
     <canvas id="canvas"></canvas>
     
     <div class="ui-layer">
-        <div class="title">CHICOLOAPAN<br>SPORT</div>
+        <div class="title">NEXUS<br>SPORT</div>
         
         <div class="btn-group">
             <a href="#" class="glass-btn"><span>ENTRENAR</span></a>
             <a href="#" class="glass-btn"><span>ADMIN</span></a>
-            <a href="#" class="glass-btn"><span>Notifisios</span></a>
-      
+            <a href="#" class="glass-btn"><span>NOTIFICACIONES</span></a>
         </div>
 
         <div class="qr-portal">
-            <div style="color: #9ED0D8; font-size: 0.7rem; opacity: 0.5;">[ QR SENSOR ACTIVE ]</div>
+            <div style="color: #9ED0D8; font-size: 0.9rem; opacity: 0.5;">[ QR SENSOR ACTIVE ]</div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Shader de Textura de Relieve en Tiempo Real (Anomalía Texture)
         const fragmentShader = `
             uniform float u_time;
             uniform vec2 u_mouse;
@@ -69,24 +184,17 @@
             void main() {
                 vec2 st = gl_FragCoord.xy / u_res.xy;
                 vec2 m = u_mouse / u_res.xy;
-                
-                // Generar distorsión de flujo magnético
                 float d = distance(st, m);
                 float strength = 0.15 / (d + 0.3);
-                
                 vec2 uv = st;
                 for(float i = 1.0; i < 4.0; i++){
                     uv.x += 0.2 / i * sin(i * 3.0 * uv.y + u_time * 0.5 + st.x * 5.0);
                     uv.y += 0.2 / i * cos(i * 3.0 * uv.x + u_time * 0.5 + st.y * 5.0);
                 }
-                
-                // Cálculo de luz y relieve (Normal Mapping sim)
                 float noise = sin(uv.x * 20.0) * cos(uv.y * 20.0);
                 vec3 normal = normalize(vec3(dFdx(noise), dFdy(noise), 0.1));
                 vec3 lightDir = normalize(vec3(m - st, 0.5));
                 float diff = max(dot(normal, lightDir), 0.0);
-                
-                // Colores Metal-Pastel
                 vec3 color = mix(vec3(0.02, 0.03, 0.04), vec3(0.62, 0.82, 0.85), diff * strength);
                 gl_FragColor = vec4(color + (noise * 0.03), 1.0);
             }
