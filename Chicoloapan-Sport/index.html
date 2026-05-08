@@ -1,233 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS Sport - Elite UI</title>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #05070a; font-family: 'Inter', sans-serif; }
-        #canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-        
-        /* Capa de Interfaz */
-        .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 60px 0; box-sizing: border-box; pointer-events: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NEXUS Sport - Elite OS</title>
+<style>
+:root{--aura:#a3dce5;--accent:#b8895d;--glass:rgba(158,208,216,0.04);--blur:blur(25px);}
+body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#020406;font-family:'Inter',sans-serif;color:var(--aura);}
+#canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;filter: brightness(0.8);}
 
-        /* SECCIÓN DEL LOGO (ARRIBA IZQUIERDA) */
-        .brand-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 20;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            pointer-events: auto;
-        }
+/* INTERFAZ BASE */
+.ui-layer{position:relative;z-index:10;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+.glass-panel{background:var(--glass);backdrop-filter:var(--blur);border:1px solid rgba(163,220,229,0.1);border-radius:20px;pointer-events:auto;transition:0.4s;}
 
-        .logo-box {
-            width: 80px;
-            height: 80px;
-            background: rgba(158, 208, 216, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(158, 208, 216, 0.3);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
+/* BRANDING */
+.brand-container{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:12px;padding:8px 15px;cursor:pointer;}
+.logo-box img{width:35px;height:auto;filter: drop-shadow(0 0 5px var(--aura));}
 
-        .logo-box img {
-            width: 120%;
-            height: auto;
-            filter: drop-shadow(0 0 5px rgba(163, 220, 229, 0.5));
-        }
+/* NIVELAJE */
+.level-indicator{position:absolute;bottom:30px;left:30px;pointer-events:auto;text-align:left;}
+.level-number{font-size:3.8rem;font-weight:900;color:#fff;text-shadow:0 0 25px rgba(163,220,229,0.4);letter-spacing:-2px;}
 
-        /* SECCIÓN DE EXPEDICIONES (DERECHA) */
-        .expeditions-panel {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 250px;
-            background: rgba(15, 20, 25, 0.6);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(158, 208, 216, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            z-index: 20;
-            pointer-events: auto;
-            color: #a3dce5;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-        }
+/* BOTONES CENTRALES */
+.btn-group{display:flex;flex-direction:column;gap:25px;pointer-events:auto;}
+.glass-btn{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.01);backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:0.7rem;cursor:pointer;transition:0.5s cubic-bezier(0.2, 1, 0.3, 1);text-align:center;}
+.glass-btn:hover{transform:scale(1.1);border-color:var(--aura);box-shadow:0 0 40px rgba(163,220,229,0.15);color:#fff;}
 
-        .expeditions-title {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            border-bottom: 1px solid rgba(163, 220, 229, 0.3);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
+/* PANEL DE EXPEDICIONES */
+.expeditions-panel{position:absolute;right:30px;top:50%;transform:translateY(-50%);width:320px;padding:25px;}
+.expedition-item{font-size:0.65rem;margin-bottom:12px;padding:15px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid transparent;cursor:pointer;transition:0.3s;}
+.expedition-item:hover{border-left-color:var(--accent);background:rgba(163,220,229,0.05);transform:translateX(10px);}
 
-        .expedition-item {
-            font-size: 0.75rem;
-            margin-bottom: 12px;
-            padding: 8px;
-            background: rgba(255,255,255,0.03);
-            border-left: 3px solid #b8895d;
-            transition: 0.3s;
-        }
-        .expedition-item:hover { background: rgba(163, 220, 229, 0.1); transform: translateX(-5px); }
+.live-video-container{width:100%;height:200px;background:#000;border-radius:12px;margin-top:20px;border:1px solid rgba(163,220,229,0.15);overflow:hidden;position:relative;}
 
-        /* INDICADOR DE NIVEL (ESQUINA INFERIOR DERECHA) */
-        .level-indicator {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            z-index: 20;
-            text-align: right;
-        }
+/* MODALES */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:rgba(2,4,6,0.96);backdrop-filter:blur(40px);pointer-events:auto;}
+.modal-content{width:85%;max-width:900px;height:80%;margin:5% auto;padding:50px;overflow-y:auto;position:relative;}
+.close-modal{position:absolute;top:25px;right:35px;font-size:2.5rem;cursor:pointer;color:var(--accent);}
 
-        .level-rank { font-size: 0.7rem; color: #b8895d; letter-spacing: 4px; font-weight: 700; }
-        .level-number { 
-            font-size: 3.5rem; 
-            font-weight: 900; 
-            color: #a3dce5; 
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(163, 220, 229, 0.5);
-        }
-
-        .brand-text {
-            color: #a3dce5;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            text-shadow: 0 0 10px rgba(163, 220, 229, 0.3);
-        }
-
-        .title { font-size: 2.8rem; font-weight: 800; color: #a3dce5; text-transform: uppercase; letter-spacing: 6px; text-align: center; filter: drop-shadow(0 0 10px rgba(158, 208, 216, 0.3)); }
-
-        .btn-group { display: flex; flex-direction: column; gap: 25px; pointer-events: auto; }
-
-        .glass-btn {
-            width: 150px; height: 150px; border-radius: 50%;
-            background: rgba(224, 230, 237, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #b8895d; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px;
-            text-decoration: none; transition: 0.4s;
-            box-shadow: inset 0 4px 15px rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .glass-btn:hover { transform: scale(1.1); border-color: #dcbe8b; box-shadow: 0 0 25px rgba(158, 208, 216, 0.4); }
-
-        .qr-portal {
-            width: 180px; height: 180px; border-radius: 30px;
-            background: rgba(15, 20, 25, 0.4);
-            border: 2px solid rgba(158, 208, 216, 0.2);
-            display: flex; align-items: center; justify-content: center;
-            position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.8);
-        }
-        .qr-portal::before { content: ''; position: absolute; inset: -5px; border: 2px solid #9ED0D8; border-radius: 35px; clip-path: polygon(0 0, 30% 0, 30% 10%, 0 10%, 0 30%, 10% 30%, 10% 0, 0 0); }
-    </style>
+/* RESPONSIVE CELULAR */
+@media(max-width:768px){
+    .ui-layer{justify-content:flex-start;padding-top:100px;}
+    .expeditions-panel{position:fixed!important;bottom:0!important;top:auto!important;right:0!important;left:0!important;transform:none!important;width:100%!important;border-radius:30px 30px 0 0!important;padding-bottom:60px!important;background:rgba(2,4,6,0.98)!important;box-shadow:0 -10px 50px rgba(0,0,0,0.8)!important;}
+    .level-indicator{bottom:350px;left:0;width:100%;text-align:center;}
+}
+</style>
 </head>
 <body>
-    <div class="brand-container">
-        <div class="logo-box">
-            <img src="panteranexusport.png" alt="Logo">
-        </div>
-        <div class="brand-text">Seraff_Angel1001</div>
+<canvas id="canvas"></canvas>
+
+<div id="modalNexus" class="modal-overlay" onclick="if(event.target==this) closeModal()">
+    <div class="modal-content glass-panel">
+        <span class="close-modal" onclick="closeModal()">×</span>
+        <div id="modalData"></div>
+    </div>
+</div>
+
+<div class="ui-layer">
+    <div class="brand-container glass-panel" onclick="openModal('admin')">
+        <div class="logo-box"><img src="panteranexusport.png" alt="Logo"></div>
+        <div class="brand-text" style="font-size:0.6rem; letter-spacing:2px;">SERAFF_ANGEL1001</div>
     </div>
 
-    <div class="expeditions-panel">
-        <div class="expeditions-title">[ EXPEDICIONES ACTIVAS ]</div>
-        <div class="expedition-item">>> AREA: CHICOLOAPAN [S]</div>
-        <div class="expedition-item">>> Nivelacion - RANGO</div>
-        <div class="expedition-item">>> SERAFF ESSENCE EXTRACTION</div>
+    <h1 style="font-size:2.8rem; letter-spacing:15px; margin-bottom:30px; font-weight:900; text-align:center;">NEXUS<br>SPORT</h1>
+
+    <div class="btn-group">
+        <div class="glass-btn" onclick="openModal('entrenar')"><span>ENTRENAR</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">SISTEMA</span></div>
+        <div class="glass-btn" onclick="openModal('admin')"><span>ADMIN</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">CORE</span></div>
+    </div>
+
+    <div class="expeditions-panel glass-panel">
+        <div style="font-size:0.55rem; letter-spacing:4px; margin-bottom:20px; opacity:0.5;">[ CONTROL DE CAMPO ]</div>
+        <div class="expedition-item" onclick="openModal('objetivo')">>> OBJETIVO: SUBIR DE NIVEL</div>
+        <div class="expedition-item" onclick="openModal('mapa')">>> AREA: CHICOLOAPAN [S]</div>
         
-        <div style="width: 100%; height: 100px; background: #000; margin-top: 10px; border-radius: 10px; overflow: hidden; position: relative;">
-            <div style="position: absolute; color: white; font-size: 10px; padding: 5px;">LIVE_FEED.SYS</div>
-            </div>
+        <div class="live-video-container">
+            <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="transicion.MOV" type="video/mp4">
+                Tu navegador no soporta el video.
+            </video>
+        </div>
     </div>
 
     <div class="level-indicator">
-        <div class="level-rank">PLAYER STATUS: ANOMALÍA</div>
+        <div style="font-size:0.65rem; color:var(--accent); letter-spacing:5px; margin-bottom:5px; font-weight:700;">STATUS: ANOMALÍA</div>
         <div class="level-number">LVL 102</div>
     </div>
+</div>
 
-    <canvas id="canvas"></canvas>
-    
-    <div class="ui-layer">
-        <div class="title">NEXUS<br>SPORT</div>
-        
-        <div class="btn-group">
-            <a href="#" class="glass-btn"><span>ENTRENAR</span></a>
-            <a href="#" class="glass-btn"><span>ADMIN</span></a>
-            <a href="#" class="glass-btn"><span>NOTIFICACIONES</span></a>
-        </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// SHADER: Aura profunda y lenta
+const fragmentShader=`
+precision highp float;
+uniform float u_time;
+uniform vec2 u_res;
+void main(){
+    vec2 uv=gl_FragCoord.xy/u_res.xy;
+    float t=u_time*0.02;
+    vec3 color=vec3(0.01, 0.02, 0.04);
+    for(float i=1.0;i<4.0;i++){
+        uv.x+=0.15/i*sin(i*uv.y+t);
+        uv.y+=0.15/i*cos(i*uv.x+t);
+    }
+    color+=vec3(0.04, 0.1, 0.15)*0.2/abs(sin(t-uv.y-uv.x));
+    gl_FragColor=vec4(color,1.0);
+}`;
+const vertexShader=`void main(){gl_Position=vec4(position,1.0);}`;
+let scene,camera,renderer,material;
 
-        <div class="qr-portal">
-            <div style="color: #9ED0D8; font-size: 0.9rem; opacity: 0.5;">[ QR SENSOR ACTIVE ]</div>
-        </div>
-    </div>
+function init(){
+    scene=new THREE.Scene();camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas')});
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    material=new THREE.ShaderMaterial({uniforms:{u_time:{value:0},u_res:{value:new THREE.Vector2(window.innerWidth,window.innerHeight)}},vertexShader,fragmentShader});
+    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),material));
+}
+function animate(t){material.uniforms.u_time.value=t*0.005;renderer.render(scene,camera);requestAnimationFrame(animate);}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script>
-        const fragmentShader = `
-            uniform float u_time;
-            uniform vec2 u_mouse;
-            uniform vec2 u_res;
-            varying vec2 vUv;
+// LÓGICA DE MODALES
+const modal = document.getElementById('modalNexus');
+const content = document.getElementById('modalData');
 
-            void main() {
-                vec2 st = gl_FragCoord.xy / u_res.xy;
-                vec2 m = u_mouse / u_res.xy;
-                float d = distance(st, m);
-                float strength = 0.15 / (d + 0.3);
-                vec2 uv = st;
-                for(float i = 1.0; i < 4.0; i++){
-                    uv.x += 0.2 / i * sin(i * 3.0 * uv.y + u_time * 0.5 + st.x * 5.0);
-                    uv.y += 0.2 / i * cos(i * 3.0 * uv.x + u_time * 0.5 + st.y * 5.0);
-                }
-                float noise = sin(uv.x * 20.0) * cos(uv.y * 20.0);
-                vec3 normal = normalize(vec3(dFdx(noise), dFdy(noise), 0.1));
-                vec3 lightDir = normalize(vec3(m - st, 0.5));
-                float diff = max(dot(normal, lightDir), 0.0);
-                vec3 color = mix(vec3(0.02, 0.03, 0.04), vec3(0.62, 0.82, 0.85), diff * strength);
-                gl_FragColor = vec4(color + (noise * 0.03), 1.0);
-            }
-        `;
+function openModal(type) {
+    modal.style.display = "block";
+    if(type==='objetivo') content.innerHTML = `<h2>OBJETIVOS DE EXTRACCIÓN</h2><p>Misión: SUBIR DE NIVEL.</p><div style="width:100%; height:200px; background:rgba(184,137,93,0.1); border:1px solid var(--accent); border-radius:15px; padding:20px;">[ CARGANDO LISTA DE LOGROS ]</div>`;
+    if(type==='mapa') content.innerHTML = `<h2>COORDENADAS GLOBALES</h2><p>Localidad: Chicoloapan de Juárez.</p><div style="width:100%; height:300px; border:1px dashed var(--aura); border-radius:15px; display:flex; align-items:center; justify-content:center;">BUSCANDO PUNTOS DE INTERÉS EN EL MAPA...</div>`;
+    if(type==='admin') content.innerHTML = `<h2 style="color:#ff4444;">ACCESO RESTRINGIDO</h2><p>Se requiere Nivel 50 para gestionar el Core de Seraff Essence.</p><p style="opacity:0.6; font-size:0.8rem;">Tu nivel actual es insuficiente para esta terminal.</p>`;
+    if(type==='entrenar') content.innerHTML = `<h2>RUTINAS DE ANOMALÍA</h2><p>Selecciona tu nivel de entrenamiento actual.</p>`;
+}
 
-        const vertexShader = `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position, 1.0); }`;
+function closeModal() { modal.style.display = "none"; }
 
-        let scene, camera, renderer, material;
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas') });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-
-            material = new THREE.ShaderMaterial({
-                uniforms: { u_time: { value: 0 }, u_mouse: { value: new THREE.Vector2() }, u_res: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) } },
-                vertexShader, fragmentShader
-            });
-
-            scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
-        }
-
-        window.addEventListener('mousemove', e => { material.uniforms.u_mouse.value.set(e.clientX, window.innerHeight - e.clientY); });
-        window.addEventListener('resize', () => { renderer.setSize(window.innerWidth, window.innerHeight); material.uniforms.u_res.value.set(window.innerWidth, window.innerHeight); });
-
-        function animate(t) {
-            material.uniforms.u_time.value = t * 0.001;
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-
-        init();
-        animate();
-    </script>
+window.onresize=()=>{renderer.setSize(window.innerWidth,window.innerHeight);material.uniforms.u_res.value.set(window.innerWidth,window.innerHeight);};
+init();animate();
+</script>
 </body>
 </html>
