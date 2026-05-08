@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.O.S PET | Playful Edition</title>
+    <style>
+        :root {
+            --grass-bright: #4fb932;
+            --grass-dark: #3a8e25;
+            --btn-orange: #ff9d42;
+            --btn-blue: #42d1ff;
+            --btn-yellow: #ffdf42;
+            --btn-pink: #ff6b81;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rounded Mplus 1c', 'Segoe UI', sans-serif; }
+
+        body {
+            background: var(--grass-dark);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* FONDO ANIMADO DE PASTO CARTOON */
+        #bg-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .app-shell {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* HEADER */
+        .header { margin-top: 20px; text-align: center; }
+        .logo-box {
+            background: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 8px 0 #ddd;
+            display: inline-block;
+            transform: rotate(-2deg);
+        }
+        .logo-img { width: 100px; display: block; }
+
+        /* GRID DE BOTONES "CARAMELO" */
+        .button-stack {
+            margin-top: 40px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .candy-btn {
+            position: relative;
+            padding: 18px 25px;
+            border-radius: 25px;
+            color: white;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .candy-btn:active { transform: translateY(4px); box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+
+        /* COLORES DE BOTONES */
+        .btn-luna { background: var(--btn-orange); border-bottom: 6px solid #d47a2a; }
+        .btn-vacunas { background: var(--btn-blue); border-bottom: 6px solid #2a96b9; }
+        .btn-vida { background: var(--btn-yellow); border-bottom: 6px solid #c9ae2a; color: #5c4d00; }
+        .btn-salud { background: var(--btn-pink); border-bottom: 6px solid #c93a4e; }
+
+        .btn-icon {
+            width: 45px; height: 45px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: inset 0 -4px 0 #ddd;
+        }
+
+        /* GALERIA FLOTANTE (DERECHA) */
+        .floating-photos {
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff9e6;
+            padding: 15px 10px;
+            border-radius: 30px 0 0 30px;
+            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 3px solid #ffdf42;
+        }
+
+        .avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            object-fit: cover;
+            background: #eee;
+        }
+
+        /* BRILLITOS */
+        .sparkle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="app-shell">
+        <div class="header">
+            <div class="logo-box">
+                <img src="hueso S.O.S PET logo.png" class="logo-img">
+            </div>
+        </div>
+
+        <div class="button-stack">
+            <button class="candy-btn btn-luna">
+                <div class="btn-icon">🐶</div> LUNA
+            </button>
+            <button class="candy-btn btn-vacunas">
+                <div class="btn-icon">💉</div> VACUNAS
+            </button>
+            <button class="candy-btn btn-vida">
+                <div class="btn-icon">🥗</div> ESTILO DE VIDA
+            </button>
+            <button class="candy-btn btn-salud">
+                <div class="btn-icon">🏥</div> SALUD DIGITAL
+            </button>
+        </div>
+
+        <div class="floating-photos">
+            <p style="font-size: 0.6rem; font-weight: 900; text-align: center; color: #ff9d42; margin-bottom: 5px;">FOTOS</p>
+            <img src="https://images.dog.ceo/breeds/shiba/shiba-8.jpg" class="avatar">
+            <img src="https://images.dog.ceo/breeds/beagle/n02088364_11303.jpg" class="avatar">
+            <div class="avatar" style="display:flex; align-items:center; justify-content:center; background:white; font-size:1.5rem; color:#ff9d42;">+</div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        // SHADER DE PASTO ANIMADO TIPO CARICATURA
+        const fragmentShader = `
+            precision highp float;
+            uniform float u_time;
+            uniform vec2 u_res;
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / u_res.xy;
+                float t = u_time * 0.5;
+                
+                // Color base verde vibrante
+                vec3 darkGreen = vec3(0.23, 0.56, 0.15);
+                vec3 lightGreen = vec3(0.31, 0.73, 0.2);
+                
+                // Movimiento de ondas de "viento"
+                float wave = sin(uv.x * 6.0 + t) * cos(uv.y * 4.0 + t * 0.5);
+                float shapes = smoothstep(0.4, 0.5, sin(uv.x * 20.0 + wave) * sin(uv.y * 20.0));
+                
+                vec3 finalColor = mix(darkGreen, lightGreen, wave * 0.5 + 0.5);
+                finalColor += shapes * 0.05; // Añade textura de "pasto"
+
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        const material = new THREE.ShaderMaterial({
+            uniforms: { u_time: { value: 0 }, u_res: { value: new THREE.Vector2() } },
+            vertexShader: `void main(){gl_Position=vec4(position,1.0);}`,
+            fragmentShader
+        });
+
+        scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+
+        function resize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            material.uniforms.u_res.value.set(window.innerWidth, window.innerHeight);
+        }
+
+        function animate(t) {
+            material.uniforms.u_time.value = t * 0.001;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        animate(0);
+
+        // Efecto de interacción simple
+        document.querySelectorAll('.candy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.style.transform = "scale(0.95)";
+                setTimeout(() => btn.style.transform = "scale(1)", 100);
+            });
+        });
+    </script>
+</body>
+</html>
