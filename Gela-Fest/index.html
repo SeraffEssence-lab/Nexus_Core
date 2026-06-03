@@ -13,7 +13,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0e1e38, #1a365d, #2b6cb0);
+            /* Un tono más moradito premium, pero oscuro e imponente */
+            background: linear-gradient(135deg, #0b1120, #161233, #231b4d);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,35 +24,33 @@
         }
 
         .container {
-            background: rgba(20, 38, 70, 0.55);
+            background: rgba(20, 24, 45, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.15);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
-            border-right: 1px solid rgba(0, 0, 0, 0.2);
-            border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+            border-right: 2px solid rgba(0, 0, 0, 0.3);
+            border-bottom: 4px solid rgba(0, 0, 0, 0.5);
             border-radius: 20px;
             width: 100%;
-            max-width: 950px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
-                        inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            max-width: 1100px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         header h1 {
             font-size: 3rem;
             font-weight: 800;
             letter-spacing: 2px;
-            background: linear-gradient(45deg, #e2e8f0, #63b3ed);
+            background: linear-gradient(45deg, #f7fafc, #9f7aea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         header p {
@@ -66,7 +65,7 @@
             gap: 30px;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .grid-layout {
                 grid-template-columns: 1fr;
             }
@@ -74,159 +73,205 @@
 
         /* Efecto 3D Realzado en Tarjetas */
         .card {
-            background: rgba(12, 25, 48, 0.65);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            border-right: 2px solid rgba(0, 0, 0, 0.3);
-            border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+            background: rgba(13, 14, 28, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 1px solid rgba(255, 255, 255, 0.04);
+            border-right: 2px solid rgba(0, 0, 0, 0.4);
+            border-bottom: 4px solid rgba(0, 0, 0, 0.6);
             border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4),
-                        inset 0 1px 0px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
         }
 
         h2 {
             font-size: 1.3rem;
-            color: #63b3ed;
+            color: #b7791f;
+            color: #a3b8cc;
             margin-bottom: 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
         }
 
-        /* Sección Sabores */
-        .flavors-list {
+        /* --- SELECTOR DE SABORES INTERACTIVO --- */
+        .flavors-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .flavor-item {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
-        }
-
-        .flavor-item:hover {
-            background: rgba(99, 179, 237, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(99, 179, 237, 0.2);
-        }
-
-        /* Sección Paquetes */
-        .package-option {
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 15px;
+        .flavor-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            padding: 14px 18px;
+            background-color: #141526;
+            border: 1px solid #242747;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none; 
+            -webkit-user-select: none;
         }
 
-        .package-info h3 {
+        .flavor-card:hover {
+            border-color: #44337a;
+            background-color: #1c1d36;
+        }
+
+        /* La palomita oculta por defecto */
+        .check-icon {
+            font-style: normal;
+            font-weight: bold;
+            color: #4caf50;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s ease;
+        }
+
+        /* Estado seleccionado */
+        .flavor-card.selected {
+            background-color: #232144;
+            border-color: #9f7aea; 
+            box-shadow: 0 0 12px rgba(159, 122, 234, 0.3);
+        }
+
+        /* Muestra palomita al seleccionar */
+        .flavor-card.selected .check-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .caramel-section {
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 20px;
+        }
+
+        .flavor-heading {
             font-size: 1.1rem;
-            margin-bottom: 3px;
+            color: #ffcc00;
+            margin-bottom: 15px;
+        }
+
+        /* --- PANEL DE FOTOS (COLUMNA IZQUIERDA) --- */
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #242747;
+            height: 150px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-tag {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Opciones de Paquetes */
+        .package-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #141526;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #242747;
         }
 
         .price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #63b3ed;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+            color: #9f7aea;
+            font-size: 1.2rem;
         }
 
         .event-select {
             width: 100%;
-            background: #0a1424;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-            color: #fff;
             padding: 12px;
+            background: #141526;
+            border: 1px solid #242747;
+            color: #fff;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             outline: none;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
         }
 
-        /* Contenedor de Foto Corregido */
+        /* Vista del Producto */
         .photo-container {
             width: 100%;
-            height: 240px;
-            background: #091220;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.5);
             border-radius: 12px;
             overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.6), 0 4px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid #242747;
         }
 
         .photo-container img {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
             display: block;
         }
 
-        /* Métodos de Pago */
+        /* Métodos de Pago e Info */
         .payment-methods {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .badge {
-            background: rgba(0, 0, 0, 0.25);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-            padding: 8px 14px;
+            background: #242747;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .badge-special {
-            background: rgba(99, 179, 237, 0.1);
-            border: 1px solid rgba(99, 179, 237, 0.25);
+            background: #44337a;
+            border: 1px solid #9f7aea;
         }
 
-        /* Botón de Contacto Estilizado */
         .contact-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 360px;
-            margin: 10px auto 0 auto;
-            background: linear-gradient(180deg, #3182ce, #2b6cb0);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            border-bottom: 4px solid #1a365d;
-            color: #fff;
+            display: block;
             text-align: center;
+            background: linear-gradient(45deg, #6b46c1, #9f7aea);
+            color: #fff;
+            text-decoration: none;
             padding: 14px;
             border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-            transition: all 0.15s ease;
+            margin-top: 25px;
+            font-weight: bold;
+            transition: opacity 0.2s;
         }
 
         .contact-btn:hover {
-            transform: translateY(1px);
-            border-bottom: 2px solid #1a365d;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -239,14 +284,27 @@
         </header>
 
         <div class="grid-layout">
+            <!-- COLUMNA IZQUIERDA: Fotos e Info de Paquetes -->
             <div class="left-column">
-                <div class="card" style="margin-bottom: 30px;">
-                    <h2>Sabores Disponibles</h2>
-                    <div class="flavors-list">
-                        <div class="flavor-item">🍫 Chocolate</div>
-                        <div class="flavor-item">🌱 Anís</div>
-                        <div class="flavor-item">☕ Café</div>
-                        <div class="flavor-item">🥭 Mango</div>
+                <div class="card">
+                    <h2>Pedidos & Avances Recientes</h2>
+                    <p style="font-size: 0.85rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
+                        Echa un vistazo a nuestras últimas producciones artesanales:
+                    </p>
+                    
+                    <div class="gallery-container">
+                        <div class="gallery-item">
+                            <img src="4970061319881034803_119.jpg" alt="Avance de Gelatines Gela-Fest">
+                            <div class="gallery-tag">Laboratorio 🧪</div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="4970061319881034805_119.jpg" alt="Pedido Entregado">
+                            <div class="gallery-tag">¡Entregado! 📦</div>
+                        </div>
+                        <div class="gallery-item">4970061319881034803_119.jpg
+                            <img src="gela textura.png" alt="Consistencia Perfecta">
+                            <div class="gallery-tag">Textura 400% ⚡</div>
+                        </div>
                     </div>
                 </div>
 
@@ -269,7 +327,7 @@
                         <div class="price">$606 MXN</div>
                     </div>
 
-                    <label for="event" style="font-size: 0.9rem; color: #a0aec0;">Tipo de Evento:</label>
+                    <label for="event" style="font-size: 0.9rem; color: #a0aec0; margin-top: 10px; display: block;">Tipo de Evento:</label>
                     <select id="event" class="event-select">
                         <option value="privado">Evento Privado</option>
                         <option value="publico">Evento Público / Masivo</option>
@@ -277,25 +335,76 @@
                 </div>
             </div>
 
-            <div class="right-column" style="display: flex; flex-direction: column; gap: 30px;">
+            <!-- COLUMNA DERECHA: Sabores y Vista del Producto -->
+            <div class="right-column">
                 <div class="card">
-                    <h2>Vista del Producto</h2>
-                    <div class="photo-container">
-                        <img src="Gela-Fest primer vistazo.jpg" alt="Gelatinas exclusivas Gela Fest">
+                    <h2>Sabores Disponibles</h2>
+                    <p style="font-size: 0.85rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
+                        Selecciona las opciones para armar tu combinación:
+                    </p>
+                    
+                    <div class="flavors-grid">
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🍇 Uva</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🫐 Moras</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🌱 Anís</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🍓🥛 Fresa Leche</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🍓💧 Fresa de Agua</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                        <div class="flavor-card" onclick="toggleSelect(this)">
+                            <span>🍫 Chocolate</span>
+                            <i class="check-icon">✓</i>
+                        </div>
+                    </div>
+
+                    <div class="caramel-section">
+                        <h3 class="flavor-heading">🍬 Dulce de Caramelo sabor:</h3>
+                        <div class="flavors-grid">
+                            <div class="flavor-card" onclick="toggleSelect(this)">
+                                <span>🍓 Fresa</span>
+                                <i class="check-icon">✓</i>
+                            </div>
+                            <div class="flavor-card" onclick="toggleSelect(this)">
+                                <span>🥭 Mango</span>
+                                <i class="check-icon">✓</i>
+                            </div>
+                            <div class="flavor-card" onclick="toggleSelect(this)">
+                                <span>🍈 Guayaba</span>
+                                <i class="check-icon">✓</i>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <h2>Información de Pedidos</h2>
-                        <p style="font-size: 0.95rem; color: #e2e8f0; margin-bottom: 15px;">
-                            Procesamos lotes personalizados bajo pedido técnico. Métodos aceptados:
-                        </p>
-                        <div class="payment-methods">
-                            <span class="badge">🏦 Transferencia</span>
-                            <span class="badge">💵 Efectivo</span>
-                            <span class="badge badge-special">🚗 Pedidos grandes: Tu carro a cuenta</span>
-                        </div>
+                <div class="card">
+                    <h2>Vista del Producto</h2>
+                    <div class="photo-container">
+                        <img src="GelaHappy.jpg" alt="Gelatinas exclusivas Gela Fest">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Información de Pedidos</h2>
+                    <p style="font-size: 0.95rem; color: #e2e8f0; margin-bottom: 15px;">
+                        Procesamos lotes personalizados bajo pedido técnico. Métodos aceptados:
+                    </p>
+                    <div class="payment-methods">
+                        <span class="badge">🏦 Transferencia</span>
+                        <span class="badge">💵 Efectivo</span>
+                        <span class="badge badge-special">🚗 Pedidos grandes: Tu carro a cuenta</span>
                     </div>
                     
                     <a href="mailto:marketingesmpresarial@gmail.com" class="contact-btn">
@@ -303,8 +412,14 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> <!-- Fin grid-layout -->
+    </div> <!-- Fin container -->
+
+    <script>
+    function toggleSelect(elemento) {
+        elemento.classList.toggle('selected');
+    }
+    </script>
 
 </body>
 </html>
