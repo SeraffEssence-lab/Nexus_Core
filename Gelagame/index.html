@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Core // GelaGrama Matrix</title>
+    <title>Nexus Core // Terminal Interactive de Locales</title>
     <style>
         :root {
             --matrix-black: #050508;
@@ -20,374 +20,741 @@
             color: #fff;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* CONTENEDOR EN FORMATO CELULAR */
-        .phone-viewport {
-            width: 100vw;
-            max-width: 450px;
-            height: 100vh;
-            background: #000;
-            position: relative;
-            overflow-y: auto;
-            border-left: 2px solid #11111a;
-            border-right: 2px solid #11111a;
+            padding: 20px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
             box-sizing: border-box;
         }
 
-        .terminal-header {
-            background: var(--panel-bg);
-            padding: 15px;
-            text-align: center;
-            border-bottom: 2px solid #11111a;
-        }
-        .terminal-header h1 {
-            margin: 0;
-            font-size: 14px;
-            letter-spacing: 2px;
+        .terminal-title {
             color: var(--neon-cyan);
+            text-align: center;
+            letter-spacing: 3px;
+            font-size: 22px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .main-terminal-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 25px;
+            box-sizing: border-box;
+        }
+
+        /* COLUMNA IZQUIERDA: MATRIZ / PUZZLE */
+        .left-matrix-panel {
+            flex: 1;
+            background: #090911;
+            border: 2px solid #1a1a3a;
+            border-radius: 16px;
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        .matrix-instruction {
+            font-size: 11px;
+            color: var(--text-gray);
+            margin-bottom: 15px;
             text-transform: uppercase;
         }
 
-        /* ======================================================= */
-        /* CAPA AMARILLA: JID DE GELAGRAMAS (TU ESTRUCTURA ACTUAL) */
-        /* ======================================================= */
         .layer-yellow-grid {
-            padding: 20px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            flex-grow: 1;
-            box-sizing: border-box;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
         }
 
         .gela-box {
-            background: #11111f;
-            border: 2px solid #1a1a2e;
-            border-radius: 12px;
+            background: #111126;
+            border: 1px solid #222244;
+            border-radius: 10px;
             aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            position: relative;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            transition: border-color 0.2s, transform 0.1s;
+            transition: all 0.2s ease;
         }
-        .gela-box:active {
-            transform: scale(0.95);
+
+        .gela-box:hover, .gela-box.active {
             border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            background: #161635;
         }
+
         .gela-box span {
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-size: 24px;
+            margin-bottom: 4px;
         }
+
         .gela-box label {
-            font-size: 8px;
+            font-size: 9px;
             font-weight: bold;
-            color: var(--text-gray);
+            color: #666688;
             cursor: pointer;
         }
 
-        /* ======================================================= */
-        /* CAPA VERDE: DETALLE COMIC + ARCADE ATARI COMPLETO        */
-        /* ======================================================= */
-        .layer-green-overlay {
-            position: absolute;
-            top: 48px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 48px);
-            background: #020204;
-            z-index: 10;
-            display: none;
+        /* COLUMNA DERECHA */
+        .right-interactive-panel {
+            width: 450px;
+            background: #020205;
+            border: 2px solid var(--neon-gold);
+            border-radius: 16px;
+            display: flex;
             flex-direction: column;
+            padding: 20px;
             box-sizing: border-box;
         }
 
-        /* TIRA VERTICAL DE CÓMIC WEBTOON */
-        .webtoon-scroll-zone {
-            background: #07070a;
-            padding: 10px;
-            height: 35%;
-            overflow-y: auto;
-            border-bottom: 3px double #1a1a2e;
+        /* MENU TABS SUPERIORES */
+        .tab-menu {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
         }
-        .webtoon-panel {
-            width: 95%;
-            margin: 0 auto 12px auto;
-            border: 3px solid #fff;
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 4px;
+            font-size: 10px;
+            font-weight: bold;
+            font-family: inherit;
+            border: 1px solid #333;
             background: #111;
-            padding: 10px;
-            box-shadow: 4px 4px 0 #222;
-            box-sizing: border-box;
-        }
-        .manga-bubble {
-            background: #fff; color: #000;
-            padding: 8px; font-size: 11px;
-            font-family: sans-serif; font-weight: bold;
-            border-radius: 8px; position: relative;
-            margin-top: 5px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 6px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
         }
 
-        /* ENTORNO GRÁFICO RETO ATARI */
+        .tab-btn.active {
+            background: var(--neon-gold);
+            color: #000;
+            border-color: var(--neon-gold);
+        }
+
+        /* VISTAS INDEPENDIENTES */
+        .tab-content-panel {
+            display: none;
+        }
+        
+        .tab-content-panel.active {
+            display: block;
+        }
+
+        /* CONTENEDORES DE CONTENIDO */
+        .webtoon-scroll-zone, .benefits-zone {
+            background: #07070a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #1a1a2e;
+        }
+
+        /* TARJETAS DE PROMOS TEMPORALES */
+        .promo-card {
+            background: #0a0a0a;
+            border: 1px solid var(--purple-yuji, #8a2be2);
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(138, 43, 226, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .promo-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .promo-timer {
+            font-size: 9px;
+            color: var(--neon-gold, #ffd700);
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 2px;
+            align-self: flex-start;
+        }
+
+        .webtoon-panel {
+            background: #111;
+            border: 2px solid #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 4px 4px 0 #222;
+        }
+
+        .manga-bubble {
+            background: #fff;
+            color: #000;
+            padding: 8px;
+            font-size: 11px;
+            font-family: sans-serif;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* ENTORNO ARCADE ATARI */
         .arcade-atari-container {
-            flex-grow: 1;
-            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            box-sizing: border-box;
         }
 
-        /* Canvas del Juego de Naves */
         #atariCanvas {
             background: #000;
             border: 3px solid var(--gel-pink);
-            border-radius: 6px;
+            border-radius: 8px;
             box-shadow: 0 0 15px rgba(255, 20, 147, 0.2);
             width: 100%;
-            height: 160px;
         }
 
-        /* CONTROLES TOUCH GIGANTES ESTILO MAQUINITAS */
-        .arcade-controls {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 10px;
-            margin: 5px 0;
-        }
-        .btn-ctrl {
-            flex: 1;
-            background: #151522;
-            border: 2px solid #333;
-            color: #fff;
-            padding: 12px 0;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .btn-ctrl:active { background: var(--neon-cyan); color:#000; }
-        .btn-shoot { background: #aa0000; border-color: #ff0000; }
-        .btn-shoot:active { background: #ff0000; }
-
-        .btn-back {
-            width: 100%;
-            background: #111;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 8px;
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: bold;
-            border-radius: 4px;
-            margin-top: 5px;
+        /* RESPONSIVO PARA MÓVILES */
+        @media (max-width: 900px) {
+            .main-terminal-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .right-interactive-panel {
+                width: 100%;
+                max-width: 450px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-viewport">
+    <div class="terminal-title">NEXUS CORE // TERMINAL INTERACTIVA DE LOCALES</div>
+
+    <div class="main-terminal-container">
         
-        <div class="terminal-header">
-            <h1 id="header-title">NEXUS CORE // INTERACTIVO</h1>
+        <div class="left-matrix-panel">
+            <div class="matrix-instruction">// Selecciona un módulo táctil o un puzzle completo en la terminal:</div>
+            <div class="layer-yellow-grid" id="home-grid">
+                <div class="gela-box active" onclick="selectModule(1, 'Seraff Essence', '🧪')"><span>🧪</span><label>Gelagrama_1</label></div>
+                <div class="gela-box" onclick="selectModule(2, 'Cúpula Alfa', '📖')"><span>📖</span><label>Gelagrama_2</label></div>
+                <div class="gela-box" onclick="selectModule(3, 'Frecuencia Core', '⚡')"><span>⚡</span><label>Gelagrama_3</label></div>
+                <div class="gela-box" onclick="selectModule(4, 'Barber Shop', '💈')"><span>💈</span><label>Gelagrama_4</label></div>
+                <div class="gela-box" onclick="selectModule(5, 'Anomalía Real', '🌌')"><span>🌌</span><label>Gelagrama_5</label></div>
+                <div class="gela-box" onclick="selectModule(6, 'Códice 100', '💾')"><span>💾</span><label>Gelagrama_6</label></div>
+                <div class="gela-box" onclick="selectModule(7, 'Skill Class IV', '👁️')"><span>👁️</span><label>Gelagrama_7</label></div>
+                <div class="gela-box" onclick="selectModule(8, 'Alquimia Cúbica', '⚗️')"><span>⚗️</span><label>Gelagrama_8</label></div>
+                <div class="gela-box" onclick="selectModule(9, 'Esencia Neón', '🧪')"><span>🧪</span><label>Gelagrama_9</label></div>
+                <div class="gela-box" onclick="selectModule(10, 'Cúpula Neón', '🎩')"><span>🎩</span><label>Gelagrama_10</label></div>
+                <div class="gela-box" onclick="selectModule(11, 'Matriz Gela', '📖')"><span>📖</span><label>Gelagrama_11</label></div>
+                <div class="gela-box" onclick="selectModule(12, 'Extractor', '🧪')"><span>🧪</span><label>Gelagrama_12</label></div>
+                <div class="gela-box" onclick="selectModule(13, 'Sombrero Core', '🎩')"><span>🎩</span><label>Gelagrama_13</label></div>
+                <div class="gela-box" onclick="selectModule(14, 'Archivo Alfa', '📖')"><span>📖</span><label>Gelagrama_14</label></div>
+                <div class="gela-box" onclick="selectModule(15, 'Inyector Lqd', '🧪')"><span>🧪</span><label>Gelagrama_15</label></div>
+                <div class="gela-box" onclick="selectModule(16, 'Transmutador', '🎩')"><span>🎩</span><label>Gelagrama_16</label></div>
+                <div class="gela-box" onclick="selectModule(17, 'Core Base', '💾')"><span>💾</span><label>Gelagrama_17</label></div>
+                <div class="gela-box" onclick="selectModule(18, 'Skill V', '🧪')"><span>🧪</span><label>Gelagrama_18</label></div>
+                <div class="gela-box" onclick="selectModule(19, 'Local Matrix', '🎩')"><span>🎩</span><label>Gelagrama_19</label></div>
+                <div class="gela-box" onclick="selectModule(20, 'Códice Omega', '📖')"><span>📖</span><label>Gelagrama_20</label></div>
+                <div class="gela-box" onclick="selectModule(21, 'Filtro Gela', '🧪')"><span>🧪</span><label>Gelagrama_21</label></div>
+                <div class="gela-box" onclick="selectModule(22, 'Vortex', '💾')"><span>💾</span><label>Gelagrama_22</label></div>
+                <div class="gela-box" onclick="selectModule(23, 'Lector Datos', '📖')"><span>📖</span><label>Gelagrama_23</label></div>
+                <div class="gela-box" onclick="selectModule(24, 'Bio Reactor', '🧪')"><span>🧪</span><label>Gelagrama_24</label></div>
+                <div class="gela-box" onclick="selectModule(25, 'Cierre Reset', '🎩')"><span>🎩</span><label>Gelagrama_25</label></div>
+            </div>
         </div>
 
-        <div class="layer-yellow-grid" id="home-grid">
-            
-            <div class="gela-box" onclick="launchGelaGrama(1, 'Seraff Essence', '🧪')">
-                <span>🧪</span><label>GelaGrama_1</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(2, 'Cúpula Neón', '🎩')">
-                <span>🎩</span><label>GelaGrama_2</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(3, 'Códice Alfa', '📖')">
-                <span>📖</span><label>GelaGrama_3</label>
+        <div class="right-interactive-panel">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="switchTab('tab-comic')">📖 Cómic Anómalo</button>
+                <button class="tab-btn" onclick="switchTab('tab-benefits')">🎁 Beneficios</button>
+                <button class="tab-btn" style="border-color: var(--gel-pink);" onclick="switchTab('tab-arcade')">🕹️ Retos Arcade</button>
             </div>
 
-            <div class="gela-box" onclick="launchGelaGrama(4, 'Alquimia Cúbica', '⚗️')">
-                <span>⚗️</span><label>GelaGrama_4</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(5, 'Frecuencia Core', '⚡')">
-                <span>⚡</span><label>GelaGrama_5</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(6, 'Transmutador', '💾')">
-                <span>💾</span><label>GelaGrama_6</label>
-            </div>
-
-            <div class="gela-box" onclick="launchGelaGrama(7, 'Skill Class IV', '👁️')">
-                <span>👁️</span><label>GelaGrama_7</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(8, 'Barber Shop', '💈')">
-                <span>💈</span><label>GelaGrama_8</label>
-            </div>
-            <div class="gela-box" onclick="launchGelaGrama(9, 'Anomalía Real', '🌌')">
-                <span>🌌</span><label>GelaGrama_9</label>
-            </div>
-
-        </div>
-
-        <div class="layer-green-overlay" id="detail-overlay">
-            
-            <div class="webtoon-scroll-zone">
-                <div class="webtoon-panel">
-                    <div style="display:flex; gap:10px; align-items:center;">
-                        <div style="font-size:32px; filter:drop-shadow(0 0 5px var(--purple-yuji));">⚡🏽‍♂️</div> <div style="font-size:10px; color:var(--purple-yuji); font-weight:bold;">LUIS ANGEL // ANÓMALO</div>
+            <div id="tab-comic" class="tab-content-panel active">
+                <div class="webtoon-scroll-zone">
+                    <div class="webtoon-panel">
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <div style="font-size:24px;">🧬</div> 
+                            <div style="font-size:10px; color:var(--purple-yuji); font-weight:bold;">LUIS ANGEL // ANÓMALO</div>
+                        </div>
+                        <div class="manga-bubble">"¡La IA del convertidor detectó una brecha estructural en el Códice! Activando contramedidas..."</div>
                     </div>
-                    <div class="manga-bubble">"¡La IA del convertidor detectó una brecha estructural en el Códice! Activando contramedidas..."</div>
-                </div>
-
-                <div class="webtoon-panel" style="border-color: var(--neon-cyan);">
-                    <div style="font-size:9px; color:#555; text-align:right;">PANEL 2 // CÓDICE 100</div>
-                    <div class="manga-bubble" style="box-shadow: 3px 3px 0 var(--neon-cyan);">[SISTEMA]: Invasores de datos aproximándose. Destrúyelos en el gabinete touch para liberar el cupón.</div>
                 </div>
             </div>
 
-            <div class="arcade-atari-container">
-                <div style="width:100%; display:flex; justify-content:space-between; font-size:10px; color:var(--neon-gold);">
-                    <span id="game-title">RETRO ATARI: SPACE INJECTOR</span>
-                    <span>SCORE: <span id="score-box">0</span></span>
+            <div id="tab-benefits" class="tab-content-panel">
+                <div class="benefits-zone">
+                    <h4 style="color:var(--neon-gold); margin:0 0 10px 0; font-size:13px; text-transform:uppercase;">
+                        // Recompensas de Distribución
+                    </h4>
+                    <p style="color:var(--text-gray); margin:0 0 15px 0; line-height:1.4; font-size:11px;">
+                        Próximamente aquí podrás escanear códigos de tus consumos locales para obtener drops exclusivos de fragancias.
+                    </p>
+                    
+                    <div style="border-top: 1px dashed #222; margin-top: 15px; padding-top: 10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <span style="color:var(--neon-cyan); font-size:11px; font-weight:bold;">// PROMOS EN VIVO:</span>
+                            <span id="promo-count" style="color:var(--neon-gold); font-size:10px; font-family:monospace;">ACTIVAS: 0</span>
+                        </div>
+                        <div id="promos-live-container">
+                            </div>
+                    </div>
                 </div>
+            </div>
 
-                <canvas id="atariCanvas" width="350" height="150"></canvas>
+            <div id="tab-arcade" class="tab-content-panel">
+                <div class="arcade-atari-container">
+                    <div style="width:100%; display:flex; justify-content:space-between; font-size:10px; color:var(--neon-gold); margin-bottom: 8px;">
+                        <span id="game-title">SERAFF ESSENCE 🧪</span>
+                        <span id="map-indicator" style="color:var(--neon-cyan);">MAPA 1: ENTRADA CORE</span>
+                        <span>SCORE: <span id="score-box">0</span></span>
+                    </div>
 
-                <div class="arcade-controls">
-                    <button class="btn-ctrl" onclick="moveShip(-20)">◀ IZQ</button>
-                    <button class="btn-ctrl btn-shoot" onclick="shootLaser()">FIRE 🔥</button>
-                    <button class="btn-ctrl" onclick="moveShip(20)">DER ▶</button>
+                    <div style="position: relative; width: 100%; max-width: 400px; margin: 0 auto;">
+                        <canvas id="atariCanvas" width="400" height="380" style="touch-action: none; max-width: 100%; display: block;"></canvas>
+                        <button id="playBtn" onclick="startGameHandle()" style="
+                            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                            padding: 12px 25px; font-family: monospace; font-size: 14px; font-weight: bold;
+                            color: #00f0ff; background: rgba(0, 0, 0, 0.9); border: 2px solid #00f0ff;
+                            border-radius: 4px; cursor: pointer; box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+                            letter-spacing: 2px; z-index: 10;
+                        ">INICIAR CÓDICE</button>
+                    </div>
                 </div>
+            </div>
 
-                <button class="btn-back" onclick="exitGelaGrama()">◀ Regresar al Menú GelaGrama</button>
+            <div style="margin-top:15px; font-size:10px; color:var(--text-gray); text-transform:uppercase;">// Archivos Visuales de Campaña:</div>
+            <div class="comic-slider-container" style="
+                width: 100%; display: flex; gap: 10px; margin-top: 5px; overflow-x: auto; 
+                padding-bottom: 8px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+            ">
+                <div style="scroll-snap-align: start; flex: 0 0 85%; background: #111; border: 1px solid #333; height: 110px; border-radius: 6px; display:flex; align-items:center; justify-content:center; color:#555; font-size:11px;">
+                    [ 📱 DESLIZA >> VIÑETA 01 ]
+                </div>
+                <div style="scroll-snap-align: start; flex: 0 0 85%; background: #111; border: 1px solid #333; height: 110px; border-radius: 6px; display:flex; align-items:center; justify-content:center; color:#555; font-size:11px;">
+                    [ VIÑETA 02 ]
+                </div>
+                <div style="scroll-snap-align: start; flex: 0 0 85%; background: #111; border: 1px solid #333; height: 110px; border-radius: 6px; display:flex; align-items:center; justify-content:center; color:#555; font-size:11px;">
+                    [ VIÑETA 03 ]
+                </div>
             </div>
 
         </div>
-
     </div>
 
     <script>
-        const homeGrid = document.getElementById('home-grid');
-        const detailOverlay = document.getElementById('detail-overlay');
-        const headerTitle = document.getElementById('header-title');
         const gameTitle = document.getElementById('game-title');
         const scoreBox = document.getElementById('score-box');
-
-        // VARIABLES DEL MOTOR ATARI
+        const mapIndicator = document.getElementById('map-indicator');
+        const playBtn = document.getElementById('playBtn');
         const canvas = document.getElementById('atariCanvas');
         const ctx = canvas.getContext('2d');
-        let playerX = 160;
+        
+        let playerX = 180;
         let laserY = -10;
         let laserX = 0;
         let laserActive = false;
         let score = 0;
         let enemies = [];
+        let particles = [];
         let gameLoopInterval;
+        let gameRunning = false; 
 
-        // ACTIVAR CAPA VERDE E INICIALIZAR EL ATARI RETRO
-        function launchGelaGrama(id, name, emoji) {
-            headerTitle.innerHTML = `GELAGRAMA 0${id}`;
-            gameTitle.innerHTML = `${name.toUpperCase()} ${emoji}`;
-            homeGrid.style.display = 'none';
-            detailOverlay.style.display = 'flex';
+        let currentMap = 1;
+        let enemyDirection = 1; 
+        let enemySpeed = 2;
+        let enemyMoveDown = false;
+        
+        let boss = { x: 170, y: 50, hp: 10, maxHp: 10, alive: false, direction: 1 };
+        let audioCtx = null;
+
+        // LOGICA DE PROMO-DROPS TEMPORALES
+        let promocionesActivas = JSON.parse(localStorage.getItem('nexus_promos')) || [];
+
+        function actualizarPanelPromos() {
+            const container = document.getElementById('promos-live-container');
+            const countBox = document.getElementById('promo-count');
+            if(!container || !countBox) return;
+
+            const ahora = new Date().getTime();
             
+            promocionesActivas = promocionesActivas.filter(promo => promo.expiraEn > ahora);
+            localStorage.setItem('nexus_promos', JSON.stringify(promocionesActivas));
+            
+            countBox.innerText = `ACTIVAS: ${promocionesActivas.length}`;
+            container.innerHTML = '';
+            
+            if (promocionesActivas.length === 0) {
+                container.innerHTML = `<div style="font-size:10px; color:#555; text-align:center; padding:10px;">// NO HAY DROPS ACTIVOS EN ESTE CICLO</div>`;
+                return;
+            }
+
+            promocionesActivas.forEach(promo => {
+                const tiempoRestante = promo.expiraEn - ahora;
+                const horas = Math.floor(tiempoRestante / (1000 * 60 * 60));
+                const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((tiempoRestante % (1000 * 60)) / 1000);
+                
+                const card = document.createElement('div');
+                card.className = 'promo-card';
+                card.innerHTML = `
+                    <div class="promo-title">${promo.titulo}</div>
+                    <div style="font-size:10px; color:#aaa;">${promo.descripcion}</div>
+                    <div class="promo-timer">EXPIRA EN: ${horas}h ${minutos}m ${segundos}s</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function agregarNuevaPromo(titulo, descripcion, horasValidez) {
+            const ahora = new Date();
+            const tiempoExpiracion = ahora.getTime() + (horasValidez * 60 * 60 * 1000);
+            
+            const nuevaPromo = {
+                id: 'promo_' + Math.random().toString(36).substr(2, 9),
+                titulo: titulo,
+                descripcion: descripcion,
+                expiraEn: tiempoExpiracion
+            };
+            
+            promocionesActivas.push(nuevaPromo);
+            localStorage.setItem('nexus_promos', JSON.stringify(promocionesActivas));
+            actualizarPanelPromos();
+            console.log(`%c[NEXUS CORE] Nueva promo inyectada: ${titulo}`, 'color: #00ff00');
+        }
+
+        setInterval(actualizarPanelPromos, 1000);
+
+        // LOGICA DE AUDIO
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'laser') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.08);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now); osc.stop(now + 0.08);
+            } 
+            else if (type === 'explosion') {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(260, now);
+                osc.frequency.linearRampToValueAtTime(40, now + 0.18);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+                osc.start(now); osc.stop(now + 0.18);
+            } 
+            else if (type === 'victory') {
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(freq, now + (i * 0.09));
+                    gain.gain.setValueAtTime(0.12, now + (i * 0.09));
+                    gain.gain.linearRampToValueAtTime(0.01, now + (i * 0.09) + 0.08);
+                    osc.start(now + (i * 0.09)); osc.stop(now + (i * 0.09) + 0.09);
+                });
+            } 
+            else if (type === 'gameover') {
+                const notes = [400, 300, 200];
+                notes.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(freq, now + (i * 0.12));
+                    gain.gain.setValueAtTime(0.15, now + (i * 0.12));
+                    if(i === 2) {
+                        osc.frequency.linearRampToValueAtTime(80, now + (i * 0.12) + 0.3);
+                        gain.gain.linearRampToValueAtTime(0.01, now + (i * 0.12) + 0.3);
+                    } else {
+                        gain.gain.linearRampToValueAtTime(0.01, now + (i * 0.12) + 0.11);
+                    }
+                    osc.start(now + (i * 0.12)); osc.stop(now + (i * 0.12) + (i === 2 ? 0.3 : 0.12));
+                });
+            }
+        }
+
+        // TABS INTERFACES
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content-panel').forEach(panel => panel.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function selectModule(id, name, emoji) {
+            document.querySelectorAll('.gela-box').forEach(box => box.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            gameTitle.innerHTML = `${name.toUpperCase()} ${emoji}`;
+            currentMap = 1; 
+            gameRunning = false;
+            clearInterval(gameLoopInterval);
+            playBtn.style.display = "block";
+            playBtn.innerText = "INICIAR CÓDICE";
+            drawScreenReady();
+        }
+
+        function drawScreenReady() {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(0, 240, 255, 0.3)";
+            ctx.font = "12px monospace";
+            ctx.fillText("[ SISTEMA EN ESPERA DE ACCIÓN ]", 90, 190);
+        }
+
+        function startGameHandle() {
+            initAudio();
+            playBtn.style.display = "none";
+            gameRunning = true;
+            if(score > 0 && (currentMap === 1 && enemies.length === 0 || boss.hp <= 0)) {
+                score = 0;
+                scoreBox.innerHTML = score;
+                currentMap = 1;
+            }
             initAtariGame();
         }
 
-        function exitGelaGrama() {
-            clearInterval(gameLoopInterval);
-            detailOverlay.style.display = 'none';
-            homeGrid.style.display = 'grid';
-            headerTitle.innerHTML = "NEXUS CORE // INTERACTIVO";
-        }
-
-        // ==========================================
-        // ENGINES DEL ATARI ARCADE (SPACE INVADERS)
-        // ==========================================
         function initAtariGame() {
-            playerX = 160;
+            playerX = 180;
             laserActive = false;
-            score = 0;
-            scoreBox.innerHTML = score;
-            
-            // Spawn de fila de aliens invasores 👾
-            enemies = [];
-            for(let i = 0; i < 6; i++) {
-                enemies.push({ x: 30 + (i * 50), y: 30, alive: true });
+            particles = [];
+            boss.alive = false;
+
+            if (currentMap === 1) {
+                mapIndicator.innerHTML = "MAPA 1: ENTRADA CORE";
+                mapIndicator.style.color = "var(--neon-cyan)";
+                enemySpeed = 2; enemies = [];
+                for(let row = 0; row < 2; row++) {
+                    for(let col = 0; col < 6; col++) {
+                        enemies.push({ x: 40 + (col * 55), y: 40 + (row * 35), alive: true });
+                    }
+                }
+            } else if (currentMap === 2) {
+                mapIndicator.innerHTML = "MAPA 2: ENCRIPTACIÓN DOBLE";
+                mapIndicator.style.color = "var(--neon-gold)";
+                enemySpeed = 3.5; enemies = [];
+                for(let row = 0; row < 3; row++) {
+                    for(let col = 0; col < 5; col++) {
+                        enemies.push({ x: 60 + (col * 60), y: 40 + (row * 35), alive: true });
+                    }
+                }
+            } else if (currentMap === 3) {
+                mapIndicator.innerHTML = "MAPA 3: MATRIZ SUPREMA (BOSS)";
+                mapIndicator.style.color = "var(--gel-pink)";
+                enemies = []; boss.hp = 12; boss.maxHp = 12; boss.x = 170; boss.y = 60; boss.alive = true; boss.direction = 1;
             }
 
-            // Bucle principal a 30 FPS para renderizar el Atari
             clearInterval(gameLoopInterval);
             gameLoopInterval = setInterval(updateAtariFrame, 1000 / 30);
         }
 
-        function moveShip(offset) {
-            playerX += offset;
-            if (playerX < 10) playerX = 10;
-            if (playerX > 320) playerX = 320;
-        }
-
-        function shootLaser() {
-            if (!laserActive) {
-                laserX = playerX + 10; // Centrado con el emoji nave
-                laserY = 120;
-                laserActive = true;
+        function createExplosion(x, y, color = "0, 240, 255") {
+            for(let i = 0; i < 10; i++) {
+                particles.push({
+                    x: x + 12, y: y,
+                    vx: (Math.random() - 0.5) * 7, vy: (Math.random() - 0.5) * 7,
+                    alpha: 1, color: color
+                });
             }
         }
 
         function updateAtariFrame() {
-            // Limpiar Pantalla Retro
+            if (!gameRunning) return;
+
             ctx.fillStyle = "#000000";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. Renderizar Nave Inmortal del Inge 🚀
-            ctx.font = "20px monospace";
-            ctx.fillText("🚀", playerX, 135);
+            particles.forEach((p, index) => {
+                ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
+                ctx.fillRect(p.x, p.y, 3, 3);
+                p.x += p.vx; p.y += p.vy; p.alpha -= 0.07;
+                if(p.alpha <= 0) particles.splice(index, 1);
+            });
 
-            // 2. Mover y Renderizar el Láser Físico
+            ctx.font = "24px monospace";
+            ctx.fillText("🚀", playerX, 360);
+
             if (laserActive) {
                 ctx.fillStyle = "#00f0ff";
-                ctx.fillRect(laserX, laserY, 4, 12);
-                laserY -= 8;
+                ctx.fillRect(laserX, laserY, 4, 14);
+                laserY -= 15; 
                 if (laserY < 0) laserActive = false;
             }
 
-            // 3. Renderizar y calcular Colisiones de Invasores 👾
-            let aliensVivos = 0;
-            enemies.forEach(enemy => {
-                if (enemy.alive) {
-                    aliensVivos++;
-                    ctx.fillText("👾", enemy.x, enemy.y);
+            if (currentMap < 3) {
+                let aliensVivos = 0;
+                let hitWall = false;
 
-                    // Check colisión del láser con el sprite del alien
-                    if (laserActive && laserX >= enemy.x && laserX <= enemy.x + 25 && laserY >= enemy.y - 15 && laserY <= enemy.y) {
-                        enemy.alive = false;
-                        laserActive = false;
-                        score += 100;
-                        scoreBox.innerHTML = score;
+                enemies.forEach(enemy => {
+                    if (enemy.alive) {
+                        aliensVivos++;
+                        ctx.font = "20px monospace";
+                        ctx.fillText("👾", enemy.x, enemy.y);
+
+                        if (enemy.x + 25 > canvas.width || enemy.x < 5) hitWall = true;
+
+                        if (laserActive && laserX >= enemy.x && laserX <= enemy.x + 25 && laserY >= enemy.y - 18 && laserY <= enemy.y) {
+                            enemy.alive = false;
+                            laserActive = false;
+                            score += 150;
+                            scoreBox.innerHTML = score;
+                            playSound('explosion');
+                            createExplosion(enemy.x, enemy.y);
+                        }
+
+                        if (enemy.y >= 330) {
+                            clearInterval(gameLoopInterval);
+                            gameRunning = false;
+                            playSound('gameover');
+                            ctx.fillStyle = "#ff0055";
+                            ctx.font = "14px monospace";
+                            ctx.fillText("MATRIX CORRUPTA // GAME OVER", 80, 190);
+                            
+                            playBtn.innerText = "REINTENTAR";
+                            playBtn.style.display = "block";
+                        }
                     }
-                }
-            });
+                });
 
-            // Condición de Victoria
-            if (aliensVivos === 0) {
-                clearInterval(gameLoopInterval);
-                ctx.fillStyle = "#ffd700";
-                ctx.font = "14px monospace";
-                ctx.fillText("¡CÓDIGO DESBLOQUEADO!", 90, 75);
-                alert("[NEXUS_SUCCESS]: ¡Destruiste la Matrix corrupta! Combo Liberado en Sucursal.");
+                if (hitWall) {
+                    enemyDirection *= -1;
+                    enemyMoveDown = true;
+                }
+
+                enemies.forEach(enemy => {
+                    if (enemy.alive) {
+                        enemy.x += enemySpeed * enemyDirection;
+                        if (enemyMoveDown) enemy.y += 15;
+                    }
+                });
+                enemyMoveDown = false;
+
+                if (aliensVivos === 0) {
+                    currentMap++;
+                    initAtariGame();
+                }
+
+            } else {
+                if (boss.alive) {
+                    ctx.font = "45px monospace";
+                    ctx.fillText("🛸", boss.x, boss.y);
+
+                    ctx.fillStyle = "#222";
+                    ctx.fillRect(100, 15, 200, 6);
+                    ctx.fillStyle = "var(--gel-pink)";
+                    ctx.fillRect(100, 15, (boss.hp / boss.maxHp) * 200, 6);
+
+                    boss.x += 4 * boss.direction;
+                    if (boss.x + 50 > canvas.width || boss.x < 10) boss.direction *= -1;
+
+                    if (laserActive && laserX >= boss.x && laserX <= boss.x + 50 && laserY >= boss.y - 35 && laserY <= boss.y) {
+                        boss.hp--;
+                        laserActive = false;
+                        score += 300;
+                        scoreBox.innerHTML = score;
+                        playSound('explosion');
+                        createExplosion(laserX - 10, laserY, "255, 20, 147");
+
+                        if (boss.hp <= 0) {
+                            boss.alive = false;
+                            createExplosion(boss.x + 15, boss.y, "255, 215, 0");
+                        }
+                    }
+                } else {
+                    clearInterval(gameLoopInterval);
+                    gameRunning = false;
+                    playSound('victory');
+                    ctx.fillStyle = "#ffd700";
+                    ctx.font = "14px monospace";
+                    ctx.fillText("¡NEXUS CORE RESTAURADO // VICTORIA!", 60, 190);
+                    
+                    playBtn.innerText = "VOLVER A JUGAR";
+                    playBtn.style.display = "block";
+                }
             }
         }
+
+        function fireLaser() {
+            if (!gameRunning) return;
+            if (!laserActive) {
+                laserX = playerX + 10; 
+                laserY = 340;
+                laserActive = true;
+                playSound('laser');
+            }
+        }
+
+        window.addEventListener('keydown', function(e) {
+            if (!gameRunning) return;
+            if (e.key === 'ArrowLeft') {
+                playerX -= 25;
+                if (playerX < 10) playerX = 10;
+            }
+            if (e.key === 'ArrowRight') {
+                playerX += 25;
+                if (playerX > 360) playerX = 360;
+            }
+            if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                fireLaser();
+            }
+        });
+
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (!gameRunning) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const touchX = e.touches[0].clientX - rect.left;
+            const canvasW = rect.width;
+
+            if (touchX < canvasW * 0.33) {
+                playerX -= 25;
+                if (playerX < 10) playerX = 10;
+            } else if (touchX > canvasW * 0.66) {
+                playerX += 25;
+                if (playerX > 360) playerX = 360;
+            } else {
+                fireLaser();
+            }
+        }, { passive: false });
+
+        // Inicializar vistas de promos al arrancar
+        actualizarPanelPromos();
+        drawScreenReady();
     </script>
 </body>
 </html>
