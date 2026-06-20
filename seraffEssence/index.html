@@ -3,96 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERAFF | SUISSE - ELITE ACCESS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>SERAFF | SUISSE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; overflow-x: hidden; background-color: #000; color: #d4af37; font-family: 'Montserrat', sans-serif; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        /* PALETA DE COLOR: GRIS GRANITO CEMENTO CLARO CON TEXTURA + NEON PURPLE */
+        :root {
+            --gris-granito: #d6d6d6; /* Gris cemento claro */
+            --gris-oscuro: #1c1d1f; /* Contraste industrial */
+            --neon-purple: #bc13fe; /* El morado neón */
+            --neon-glow: 0 0 15px rgba(188, 19, 254, 0.6);
+        }
+
+        body { 
+            margin: 0; 
+            overflow-x: hidden; 
+            background-color: var(--gris-granito); 
+            /* Textura fija de granito/cemento usando CSS sutil */
+            background-image: radial-gradient(rgba(0,0,0,0.15) 1px, transparent 0), radial-gradient(rgba(0,0,0,0.15) 1px, transparent 0);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+            background-attachment: fixed;
+            color: #111; 
+            font-family: 'Montserrat', sans-serif; 
+        }
         ::-webkit-scrollbar { width: 0px; }
 
-        .screen { position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; display: none; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; z-index: 5; }
+        /* ARQUITECTURA DE CAPAS (SCREENS) */
+        .screen { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            min-height: 100vh; 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            z-index: 5; 
+        }
         .active { display: flex; }
 
-        /* PANTALLA DE INICIO (SIN CONTRASEÑA) */
+        /* CAPA 0: SPLASH SCREEN (LOGO QUE APARECE DE LA NADA) */
+        #screenSplash {
+            position: fixed;
+            background: #0d0d0d;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+        .splash-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: 12px;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeInLogo 2.5s forwards ease-in-out;
+            text-align: center;
+        }
+        .splash-sub {
+            font-size: 0.6rem;
+            color: var(--neon-purple);
+            letter-spacing: 6px;
+            margin-top: 10px;
+            text-shadow: var(--neon-glow);
+        }
+
+        @keyframes fadeInLogo {
+            0% { opacity: 0; transform: scale(0.95); filter: blur(5px); }
+            40% { opacity: 1; filter: blur(0px); }
+            80% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; }
+        }
+
+        /* CAPA 1: LOGIN BOX EDITADO */
         .login-box { 
-            background: rgba(0, 0, 0, 0.4); 
+            background: rgba(28, 29, 31, 0.95); 
             padding: 40px; 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
+            border: 1px solid var(--neon-purple); 
+            box-shadow: var(--neon-glow);
             text-align: center; 
-            backdrop-filter: blur(15px); 
+            backdrop-filter: blur(10px); 
             width: 100%; 
             max-width: 350px; 
-            margin-top: 25vh; 
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            margin-top: 15vh; 
         }
-        .title { font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 8px; color: #fff; margin-bottom: 10px; text-shadow: 0 0 15px rgba(163, 220, 229, 0.5); }
-        .subtitle { font-size: 0.6rem; letter-spacing: 4px; color: #a3dce5; text-transform: uppercase; margin-bottom: 40px; opacity: 0.7; }
+        .title { font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 8px; color: #fff; margin-bottom: 10px; }
+        .title span { color: var(--neon-purple); text-shadow: var(--neon-glow); }
+        .subtitle { font-size: 0.6rem; letter-spacing: 4px; color: #aaa; text-transform: uppercase; margin-bottom: 40px; }
+        
+        input { 
+            background: transparent; 
+            border: none; 
+            border-bottom: 2px solid #555; 
+            width: 80%; 
+            color: #fff; 
+            text-align: center; 
+            font-size: 1.2rem; 
+            padding: 10px; 
+            outline: none; 
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: var(--neon-purple);
+        }
         
         .btn-enter { 
+            margin-top: 30px; 
             background: transparent; 
-            border: 1px solid #a3dce5; 
-            color: #a3dce5; 
-            padding: 15px 50px; 
+            border: 1px solid var(--neon-purple); 
+            color: #fff; 
+            padding: 12px 40px; 
             cursor: pointer; 
             font-family: 'Cinzel', serif; 
-            letter-spacing: 5px; 
-            transition: 0.5s;
-            font-weight: bold;
+            letter-spacing: 3px; 
+            transition: all 0.3s;
         }
-        .btn-enter:hover { background: #a3dce5; color: #000; box-shadow: 0 0 20px #a3dce5; }
+        .btn-enter:hover {
+            background: var(--neon-purple);
+            box-shadow: var(--neon-glow);
+        }
 
+        /* CAPA 2: MENU PRIVADO */
         .menu-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 450px; margin-top: 40px; }
-        .menu-item { height: 120px; background-size: cover; background-position: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: center; align-items: center; transition: 0.3s; }
-        .menu-item:hover { transform: scale(1.02); border-color: #a3dce5; }
-        .mo-title { font-family: 'Cinzel', serif; font-size: 1.2rem; color: #fff; letter-spacing: 2px; background: rgba(0,0,0,0.7); padding: 10px 20px; border: 1px solid #d4af37; }
+        .menu-item { 
+            height: 110px; 
+            background-size: cover; 
+            background-position: center; 
+            cursor: pointer; 
+            border: 1px solid rgba(0,0,0,0.2); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .menu-item:hover { transform: scale(1.02); }
         
-        .musa-item { border: 2px solid #ffb6c1 !important; box-shadow: 0 0 15px rgba(212,142,142,0.3); }
-        .musa-txt { color: #ffb6c1 !important; border-color: #ffb6c1 !important; }
+        .mo-title { 
+            font-family: 'Cinzel', serif; 
+            font-size: 1.1rem; 
+            color: #fff; 
+            letter-spacing: 2px; 
+            background: rgba(28, 29, 31, 0.9); 
+            padding: 10px 20px; 
+            border: 1px solid #444; 
+            width: 60%;
+            text-align: center;
+        }
+        
+        /* BOTÓN EXCLUSIVO DETRÁS DE CÁMARAS (TIKTOK STREAM) */
+        .btn-stream-access {
+            background: var(--gris-oscuro) !important;
+            border: 1px solid var(--neon-purple) !important;
+            box-shadow: var(--neon-glow);
+        }
+        .btn-stream-access .mo-title {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+            text-shadow: var(--neon-glow);
+            font-weight: 600;
+        }
 
+        /* CONFIGURACIÓN DE BORDES CON GLOW POR COLECCIÓN (LO DE TU BOCETO) */
+        .border-caos {
+            border: 2px solid #ff4141 !important; /* Rojo caos */
+            box-shadow: 0 0 12px rgba(255, 65, 65, 0.5);
+        }
+        .border-caos .mo-title { color: #ff4141; border-color: #ff4141; }
+
+        .border-origen {
+            border: 2px solid #00e676 !important; /* Verde origen */
+            box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+        }
+        .border-origen .mo-title { color: #00e676; border-color: #00e676; }
+
+        .border-legado {
+            border: 2px solid #ffc107 !important; /* Amarillo/Oro legado */
+            box-shadow: 0 0 12px rgba(255, 193, 7, 0.5);
+        }
+        .border-legado .mo-title { color: #ffc107; border-color: #ffc107; }
+
+        .border-dominio {
+            border: 2px solid #00e5ff !important; /* Azul/Cian dominio */
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+        }
+        .border-dominio .mo-title { color: #00e5ff; border-color: #00e5ff; }
+
+        .border-musa {
+            border: 2px solid #ff8da1 !important; /* Rosa elegante para Musa */
+            box-shadow: 0 0 12px rgba(255, 141, 161, 0.5);
+        }
+        .border-musa .mo-title { color: #ff8da1; border-color: #ff8da1; }
+
+        /* CAPA 3: CATALOGO */
         .products-grid { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 400px; padding-top: 100px; padding-bottom: 100px; }
-        .prod-card { width: 100%; padding: 20px; border: 1px solid rgba(163, 220, 229, 0.2); background: rgba(5,5,5,0.9); text-align: center; border-radius: 15px; }
-        .prod-img { width: 100%; height: auto; margin-bottom: 15px; border-bottom: 1px solid #222; border-radius: 10px; }
+        .prod-card { width: 100%; padding: 20px; border: 1px solid rgba(0, 0, 0, 0.1); background: rgba(28, 29, 31, 0.95); text-align: center; box-sizing: border-box; color: #fff; }
+        
+        /* Ajuste para que la foto maestra luzca impecable en la tarjeta */
+        .prod-img { width: 100%; max-height: 380px; object-fit: contain; margin-bottom: 15px; border-bottom: 1px solid #333; background: #fff; padding: 10px; box-sizing: border-box; }
+        
         .prod-name { font-family: 'Cinzel', serif; color: #fff; font-size: 1.4rem; margin-bottom: 8px; }
-        .prod-price { color: #a3dce5; font-size: 1.1rem; margin-bottom: 15px; font-weight: bold; }
-        .btn-buy { width: 100%; background: #fff; color: #000; padding: 15px 0; font-size: 0.8rem; letter-spacing: 2px; font-weight: bold; cursor: pointer; display: block; text-decoration: none; margin-bottom: 10px; border-radius: 5px; }
+        .prod-price { color: var(--neon-purple); font-size: 1.1rem; margin-bottom: 15px; font-weight: bold; text-shadow: var(--neon-glow); }
+        
+        .btn-buy { width: 100%; background: #fff; color: #000; padding: 15px 0; font-size: 0.8rem; letter-spacing: 2px; font-weight: bold; cursor: pointer; display: block; text-decoration: none; margin-bottom: 10px; transition: background 0.3s; }
+        .btn-buy:hover { background: var(--gris-granito); }
         .btn-whats { background: transparent; border: 1px solid #25D366; color: #25D366; }
+        .btn-whats:hover { background: rgba(37, 211, 102, 0.1); }
 
-        .back-btn { position: fixed; top: 20px; left: 20px; color: #fff; cursor: pointer; z-index: 100; background: rgba(0,0,0,0.8); padding: 10px 15px; border: 1px solid #a3dce5; font-size: 0.7rem; }
+        .back-btn { position: fixed; top: 20px; left: 20px; color: #fff; cursor: pointer; z-index: 100; background: var(--gris-oscuro); padding: 10px 15px; border: 1px solid var(--neon-purple); font-size: 0.7rem; letter-spacing: 2px; box-shadow: var(--neon-glow); }
+
+        /* CAPA 4: INTERFAZ MÓVIL ESTILO TIKTOK EN TIEMPO REAL */
+        #screenTikTok {
+            background: #000;
+            padding: 0;
+            justify-content: center;
+        }
+        .tiktok-container {
+            width: 100%;
+            max-width: 450px; 
+            height: 100vh;
+            background: #0a0a0a;
+            position: relative;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        .tiktok-video-layer {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+        }
+        .video-info {
+            color: #fff;
+            z-index: 10;
+        }
+        .video-info h3 { margin: 0 0 5px 0; font-family: 'Cinzel', serif; color: var(--neon-purple); text-shadow: var(--neon-glow); }
+        .video-info p { margin: 0; font-size: 0.85rem; color: #ccc; }
     </style>
 </head>
 <body>
 
-    <div id="screenLogin" class="screen active">
+    <div id="screenSplash" class="screen active">
+        <div class="splash-logo">
+            SERAFF
+            <div class="splash-sub">ESSENCE LOGIC</div>
+        </div>
+    </div>
+
+    <div id="screenLogin" class="screen">
         <div class="login-box">
-            <div class="title">SERAFF</div>
-            <div class="subtitle">Ecosistema Desbloqueado // Nivel 102</div>
-            <button class="btn-enter" onclick="switchScreen('screenMenu')">ACCEDER</button>
+            <div class="title">SERAFF<span>.</span></div>
+            <div class="subtitle">SUISSE ARCHITECTURE</div>
+            <input type="password" id="passInput" placeholder="CLAVE" onkeypress="if(event.key==='Enter')enterSystem()">
+            <br>
+            <button class="btn-enter" onclick="enterSystem()">ENTRAR</button>
         </div>
     </div>
 
     <div id="screenMenu" class="screen">
+        <h2 class="title" style="color:var(--gris-oscuro); margin-top:40px; font-size:1.8rem; letter-spacing:4px;">NEXUS SYSTEM</h2>
         <div class="menu-container">
-            <div class="menu-item" style="background-image: url('caos.jpg');" onclick="openCategory('caos')"><div class="mo-title">EL CAOS</div></div>
-            <div class="menu-item" style="background-image: url('origen.jpg');" onclick="openCategory('origen')"><div class="mo-title">EL ORIGEN</div></div>
-            <div class="menu-item" style="background-image: url('legado.jpg');" onclick="openCategory('legado')"><div class="mo-title">EL LEGADO</div></div>
-            <div class="menu-item" style="background-image: url('dominio.jpg');" onclick="openCategory('dominio')"><div class="mo-title">EL DOMINIO</div></div>
-            <div class="menu-item musa-item" style="background-image: url('musa.jpg');" onclick="openCategory('musa')"><div class="mo-title musa-txt">SERAFF MUSA</div></div>
+            <div class="menu-item btn-stream-access" onclick="switchScreen('screenTikTok')">
+                <div class="mo-title">// STREAM EN TIEMPO REAL</div>
+            </div>
+            
+            <div class="menu-item border-caos" style="background-image: url('caos.jpg');" onclick="openCategory('caos')">
+                <div class="mo-title">EL CAOS</div>
+            </div>
+            <div class="menu-item border-origen" style="background-image: url('origen.jpg');" onclick="openCategory('origen')">
+                <div class="mo-title">EL ORIGEN</div>
+            </div>
+            <div class="menu-item border-legado" style="background-image: url('legado.jpg');" onclick="openCategory('legado')">
+                <div class="mo-title">EL LEGADO</div>
+            </div>
+            <div class="menu-item border-dominio" style="background-image: url('dominio.jpg');" onclick="openCategory('dominio')">
+                <div class="mo-title">EL DOMINIO</div>
+            </div>
+            <div class="menu-item border-musa" style="background-image: url('musa.jpg');" onclick="openCategory('musa')">
+                <div class="mo-title">SERAFF MUSA</div>
+            </div>
         </div>
     </div>
 
     <div id="screenCatalog" class="screen">
         <div class="back-btn" onclick="switchScreen('screenMenu')">VOLVER</div>
-        <h2 id="catTitle" class="title" style="font-size: 1.8rem; margin-top: 80px;"></h2>
+        <h2 id="catTitle" class="title" style="font-size: 1.8rem; margin-top: 80px; color: var(--gris-oscuro);"></h2>
         <div class="products-grid" id="gridContainer"></div>
     </div>
 
+    <div id="screenTikTok" class="screen">
+        <div class="back-btn" onclick="switchScreen('screenMenu')">SALIR DE LA TERMINAL</div>
+        
+        <div class="tiktok-container">
+            <div class="tiktok-video-layer">
+                <div class="video-placeholder">
+                    <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
+                        <source src="pedazo de area el mapa nexus(1).mp4" type="video/mp4">
+                        Tu navegador no soporta video.
+                    </video>
+                    <div class="video-info" style="position: relative; z-index: 10;">
+                        <h3>@seraff.essence</h3>
+                        <p>Explicación de la matriz del negocio y optimización del Ecosistema Nexus.</p>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="tiktok-video-layer">
+                <div class="video-placeholder">
+                    <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">
+                        <source src="IMG_5795.mp4" type="video/mp4">
+                        Tu navegador no soporta video.
+                    </video>
+                    <div class="video-info" style="position: relative; z-index: 10;">
+                        <h3>@seraff.essence</h3>
+                        <p>Explicación de la matriz del negocio y optimización del Ecosistema Nexus.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Animación de Carga (Splash)
+        setTimeout(() => {
+            const splash = document.getElementById('screenSplash');
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                document.getElementById('screenLogin').style.display = 'flex';
+            }, 800);
+        }, 2300);
+
         const whatsappNumber = "5215539271072"; 
         const paypalUser = "marketingesmpresarial@gmail.com"; 
         const precioMXN = 85;
 
+        // BASE DE DATOS UNIFICADA
         const db = {
             'caos': [
                 {name:'Fruta King', img:'311.jpg'}, {name:'Coqueto', img:'312.jpg'}, 
@@ -111,10 +376,14 @@
                 {name:'MandarinaScy', img:'413.jpg'}, {name:'OudRosa', img:'414.jpg'}, {name:'Iris Intenso', img:'415.jpg'}
             ],
             'musa': [
-                {name:'Aura Silk', img:'511.jpg'}, {name:'Belle Legacy', img:'512.jpg'},
-                {name:'Valentinaskyline', img:'513.jpg'}, {name:'Musa Supreme', img:'514.jpg'}, {name:'Ponche Frutal', img:'515.jpg'}
+                {name:'Musa Imperial', img:'511.jpg'}, {name:'Musa Velvet', img:'512.jpg'}
             ]
         };
+
+        function enterSystem() {
+            if(document.getElementById('passInput').value === "seraffvip") switchScreen('screenMenu');
+            else alert("CONEXIÓN RECHAZADA: CLAVE INCORRECTA");
+        }
 
         function switchScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -124,76 +393,26 @@
 
         function openCategory(cat) {
             const container = document.getElementById('gridContainer');
-            document.getElementById('catTitle').innerText = cat === 'musa' ? 'SERAFF MUSA' : cat.toUpperCase();
+            document.getElementById('catTitle').innerText = cat.toUpperCase();
             container.innerHTML = '';
-            db[cat].forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'prod-card';
-                card.innerHTML = `
-                    <img src="${p.img}" class="prod-img" onerror="this.src='https://via.placeholder.com/400x400?text=SERAFF+PROD'">
-                    <div class="prod-name">${p.name}</div>
-                    <div class="prod-price">$${precioMXN} MXN</div>
-                    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${paypalUser}&amount=${precioMXN}&item_name=${p.name}" target="_blank" class="btn-buy">PAYPAL</a>
-                    <a href="https://wa.me/${whatsappNumber}?text=Deseo:${p.name}" target="_blank" class="btn-buy btn-whats">WHATSAPP</a>
-                `;
-                container.appendChild(card);
-            });
+            
+            if(db[cat]) {
+                db[cat].forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'prod-card';
+                    // HACKEO DE LA IMAGEN MAESTRA: Se fuerza 'master.jpg' para todos los productos
+                    card.innerHTML = `
+                        <img src="master.jpg" class="prod-img" onerror="this.src='https://via.placeholder.com/400x400?text=SERAFF+PROD'">
+                        <div class="prod-name">${p.name}</div>
+                        <div class="prod-price">$${precioMXN} MXN</div>
+                        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${paypalUser}&amount=${precioMXN}&item_name=${p.name}" target="_blank" class="btn-buy">PAYPAL</a>
+                        <a href="https://wa.me/${whatsappNumber}?text=Deseo:${p.name}" target="_blank" class="btn-buy btn-whats">WHATSAPP</a>
+                    `;
+                    container.appendChild(card);
+                });
+            }
             switchScreen('screenCatalog');
         }
-
-        // --- FONDO 3D NUEVA TEXTURA (NEXUS FREQUENCY) ---
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Geometría de Partículas (Efecto de "Red de Energía")
-        const geometry = new THREE.IcosahedronGeometry(2, 2);
-        const material = new THREE.MeshBasicMaterial({ 
-            color: 0xa3dce5, // Color Nexus Blue
-            wireframe: true,
-            transparent: true,
-            opacity: 0.15
-        });
-        
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        // Agregamos puntos de luz para que brille
-        const pointsGeometry = new THREE.BufferGeometry();
-        const particlesCount = 500;
-        const posArray = new Float32Array(particlesCount * 3);
-        for(let i=0; i<particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 15;
-        }
-        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const pointsMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xa3dce5 });
-        const pointsMesh = new THREE.Points(pointsGeometry, pointsMaterial);
-        scene.add(pointsMesh);
-
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            mesh.rotation.y += 0.003;
-            mesh.rotation.x += 0.002;
-            pointsMesh.rotation.y -= 0.001;
-            
-            // Efecto latido
-            const scale = 1 + Math.sin(Date.now() * 0.001) * 0.1;
-            mesh.scale.set(scale, scale, scale);
-            
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Ajuste de ventana
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
     </script>
 </body>
 </html>
