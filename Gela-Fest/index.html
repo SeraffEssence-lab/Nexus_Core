@@ -3,233 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gela Fest | Gelatinas Minimalistas</title>
+    <title>GelaBOX Fest | Sistema de Despliegue Táctico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #0e0b1f;
+            --purple-main: #bc13fe;
+            --cinnamon-blue: #7bc6ed;
+            --gela-yellow: #ffcc00;
+            --pop-red: #e53e3e;
+            --muff-purple: #805ad5;
+            --whatsapp-green: #25d366;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
         body {
-            /* Un tono más moradito premium, pero oscuro e imponente */
-            background: linear-gradient(135deg, #0b1120, #161233, #231b4d);
+            background: linear-gradient(135deg, var(--bg-dark), #1c133a, #0b1120);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 12px;
             color: #ffffff;
+            overflow-x: hidden;
         }
 
+        /* CAPA DE SPLASH SCREEN CÓMICA-TÁCTICA */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease;
+        }
+        .splash-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px var(--purple-main);
+            letter-spacing: 2px;
+            text-align: center;
+            animation: pulse 1.5s infinite alternate;
+        }
+        .splash-sub {
+            font-size: 0.9rem;
+            color: var(--gela-yellow);
+            margin-top: 15px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* CONTENEDOR PRINCIPAL */
         .container {
-            background: rgba(20, 24, 45, 0.6);
+            background: rgba(20, 24, 45, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
-            border-right: 2px solid rgba(0, 0, 0, 0.3);
-            border-bottom: 4px solid rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
+            border: 3px solid var(--cinnamon-blue);
+            border-radius: 24px;
             width: 100%;
-            max-width: 1100px;
-            padding: 35px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            display: none; /* Se activa con JS */
         }
 
         header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         header h1 {
             font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(45deg, #f7fafc, #9f7aea);
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(45deg, #fff, var(--cinnamon-blue), var(--purple-main));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         header p {
             color: #cbd5e0;
-            font-size: 1.1rem;
-            font-style: italic;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.3);
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px dashed rgba(255,255,255,0.2);
+        }
+
+        /* GLOBOS DE DIÁLOGO IMPERATIVOS (VIBRA DEL CARTEL) */
+        .tactical-bubble {
+            background: #fff;
+            color: #000;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .tactical-bubble:active {
+            transform: scale(0.95);
+        }
+        .tactical-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 20px;
+            border-width: 12px 12px 0;
+            border-style: solid;
+            border-color: #fff transparent;
+            display: block;
+            width: 0;
+        }
+        .tactical-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -17px;
+            left: 18px;
+            border-width: 14px 14px 0;
+            border-style: solid;
+            border-color: #000 transparent;
+            display: block;
+            width: 0;
+            z-index: -1;
         }
 
         .grid-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        @media (max-width: 900px) {
-            .grid-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Efecto 3D Realzado en Tarjetas */
         .card {
-            background: rgba(13, 14, 28, 0.7);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            border-left: 1px solid rgba(255, 255, 255, 0.04);
-            border-right: 2px solid rgba(0, 0, 0, 0.4);
-            border-bottom: 4px solid rgba(0, 0, 0, 0.6);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-            margin-bottom: 25px;
+            background: rgba(13, 14, 28, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+            border-radius: 18px;
+            padding: 20px;
         }
 
         h2 {
-            font-size: 1.3rem;
-            color: #b7791f;
-            color: #a3b8cc;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* --- SELECTOR DE SABORES INTERACTIVO --- */
+        /* DESPLIEGUE TÁCTICO TODO EN UNO (GELABOX) */
+        .tactical-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            padding: 10px 5px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #000;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0px #000;
+            transition: all 0.2s;
+        }
+        .tab-yellow { background: var(--gela-yellow); color: #000; }
+        .tab-red { background: var(--pop-red); color: #fff; }
+        .tab-purple { background: var(--muff-purple); color: #fff; }
+        
+        .tab-btn.active-tab {
+            transform: translateY(2px);
+            box-shadow: 0px 0px 0px #000;
+            filter: brightness(1.2);
+            border-color: #fff;
+        }
+
         .flavors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
 
         .flavor-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 18px;
+            padding: 12px;
             background-color: #141526;
-            border: 1px solid #242747;
+            border: 2px solid #242747;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
             user-select: none; 
-            -webkit-user-select: none;
+            font-size: 0.85rem;
+            font-weight: 700;
         }
 
-        .flavor-card:hover {
-            border-color: #44337a;
-            background-color: #1c1d36;
-        }
-
-        /* La palomita oculta por defecto */
-        .check-icon {
-            font-style: normal;
-            font-weight: bold;
-            color: #4caf50;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.2s ease;
-        }
-
-        /* Estado seleccionado */
         .flavor-card.selected {
             background-color: #232144;
-            border-color: #9f7aea; 
-            box-shadow: 0 0 12px rgba(159, 122, 234, 0.3);
+            border-color: var(--cinnamon-blue); 
+            box-shadow: 0 0 12px rgba(123, 198, 237, 0.4);
         }
 
-        /* Muestra palomita al seleccionar */
+        .check-icon {
+            font-style: normal;
+            color: var(--gela-yellow);
+            display: none;
+        }
         .flavor-card.selected .check-icon {
-            opacity: 1;
-            transform: scale(1.1);
+            display: inline;
         }
 
-        .caramel-section {
-            margin-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 20px;
-        }
-
-        .flavor-heading {
-            font-size: 1.1rem;
-            color: #ffcc00;
-            margin-bottom: 15px;
-        }
-
-        /* --- PANEL DE FOTOS (COLUMNA IZQUIERDA) --- */
-        .gallery-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #242747;
-            height: 150px;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .gallery-tag {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: #fff;
-            padding: 4px 10px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 6px;
-            backdrop-filter: blur(4px);
-        }
-
-        /* Opciones de Paquetes */
-        .package-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #141526;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #242747;
-        }
-
-        .price {
-            font-weight: bold;
-            color: #9f7aea;
-            font-size: 1.2rem;
-        }
-
-        .event-select {
-            width: 100%;
-            padding: 12px;
-            background: #141526;
-            border: 1px solid #242747;
-            color: #fff;
-            border-radius: 8px;
-            margin-top: 8px;
-            outline: none;
-        }
-
-        /* Vista del Producto */
         .photo-container {
             width: 100%;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            border: 1px solid #242747;
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.4);
         }
 
         .photo-container img {
@@ -237,189 +261,294 @@
             display: block;
         }
 
-        /* Métodos de Pago e Info */
+        /* PAQUETES */
+        .package-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #141526;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #242747;
+            cursor: pointer;
+        }
+        .package-option.selected-pkg {
+            border-color: var(--purple-main);
+            background: rgba(188, 19, 254, 0.1);
+        }
+
+        .price {
+            font-weight: 900;
+            color: var(--gela-yellow);
+            font-size: 1rem;
+            text-align: right;
+        }
+
+        .event-select {
+            width: 100%;
+            padding: 12px;
+            background: #141526;
+            border: 2px solid #242747;
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        /* BOTONES DE REDES Y CONTACTO ESTILO QR DEL CARTEL */
         .payment-methods {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
         }
 
         .badge {
             background: #242747;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 0.85rem;
+            text-align: center;
+            font-weight: 700;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .badge-special {
+            background: var(--purple-main);
+            border: 2px solid #fff;
+            animation: pulse 1s infinite alternate;
         }
 
-        .badge-special {
-            background: #44337a;
-            border: 1px solid #9f7aea;
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .contact-btn {
             display: block;
             text-align: center;
-            background: linear-gradient(45deg, #6b46c1, #9f7aea);
+            background: linear-gradient(45deg, var(--purple-main), var(--cinnamon-blue));
             color: #fff;
             text-decoration: none;
-            padding: 14px;
-            border-radius: 10px;
-            margin-top: 25px;
-            font-weight: bold;
-            transition: opacity 0.2s;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s;
+        }
+        .contact-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0px 0px 0px #000;
         }
 
-        .contact-btn:hover {
-            opacity: 0.9;
+        /* NUEVO BOTÓN DE WHATSAPP TÁCTICO */
+        .whatsapp-btn {
+            display: block;
+            text-align: center;
+            background: var(--whatsapp-green);
+            color: #fff;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s;
+        }
+        .whatsapp-btn:hover {
+            filter: brightness(1.1);
+        }
+        .whatsapp-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0px 0px 0px #000;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <!-- CAPA DE ENTRADA CRUDA Y INTERACTIVA -->
+    <div id="splashScreen">
+        <div class="splash-title">GelaBOX SYSTEM</div>
+        <div class="splash-sub">Despliegue Táctico Activo</div>
+    </div>
+
+    <div class="container" id="mainContainer">
         <header>
-            <h1>GELA FEST</h1>
-            <p>Textura híbrida entre malvavisco, gomita y la esencia pura de la gelatina.</p>
+            <h1>GelaBOX</h1>
+            <p>Frecuencia al Máximo ⚡ Gastronomía e Incoherencia</p>
         </header>
 
+        <!-- Globo motivacional del cartel -->
+        <div class="tactical-bubble" onclick="cambiarFrase(this)">
+            📢 "¡EL PUTO NEGOCIO VA A MEJORAR SI YO PASO DE LIMBIENTA!" <br>
+            <small style="color: #666; font-weight: bold;">(Haz clic para cambiar mantra táctico)</small>
+        </div>
+
         <div class="grid-layout">
-            <!-- COLUMNA IZQUIERDA: Fotos e Info de Paquetes -->
-            <div class="left-column">
-                <div class="card">
-                    <h2>Pedidos & Avances Recientes</h2>
-                    <p style="font-size: 0.85rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
-                        Echa un vistazo a nuestras últimas producciones artesanales:
-                    </p>
-                    
-                    <div class="gallery-container">
-                        <div class="gallery-item">
-                            <img src="4970061319881034803_119.jpg" alt="Avance de Gelatines Gela-Fest">
-                            <div class="gallery-tag">Laboratorio 🧪</div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="4970061319881034805_119.jpg" alt="Pedido Entregado">
-                            <div class="gallery-tag">¡Entregado! 📦</div>
-                        </div>
-                        <div class="gallery-item">
-    <img src="avance2.jpg" alt="Consistencia Perfecta">
-    <div class="gallery-tag">Textura 400% ⚡</div>
-</div>
-                    </div>
+            
+            <!-- SECCIÓN: Menú de Despliegue Todo en Uno -->
+            <div class="card">
+                <h2><span id="section-icon">💛</span> Sistema de Despliegue</h2>
+                
+                <div class="tactical-tabs">
+                    <div class="tab-btn tab-yellow active-tab" onclick="switchTab('gelatinas', this)">Amarillo<br>Gelatinas</div>
+                    <div class="tab-btn tab-red" onclick="switchTab('palomitas', this)">Red<br>Palomitas</div>
+                    <div class="tab-btn tab-purple" onclick="switchTab('muffizzas', this)">Morado<br>Muffizzas</div>
                 </div>
 
-                <div class="card">
-                    <h2>Selecciona tu Paquete</h2>
-                    
-                    <div class="package-option">
-                        <div class="package-info">
-                            <h3>Paquete 25 Pz.</h3>
-                            <small style="color: #a0aec0;">Diseño minimalista</small>
-                        </div>
-                        <div class="price">$343 MXN</div>
-                    </div>
-
-                    <div class="package-option">
-                        <div class="package-info">
-                            <h3>Paquete 50 Pz.</h3>
-                            <small style="color: #a0aec0;">Ideal para compartir</small>
-                        </div>
-                        <div class="price">$606 MXN</div>
-                    </div>
-
-                    <label for="event" style="font-size: 0.9rem; color: #a0aec0; margin-top: 10px; display: block;">Tipo de Evento:</label>
-                    <select id="event" class="event-select">
-                        <option value="privado">Evento Privado</option>
-                        <option value="publico">Evento Público / Masivo</option>
-                    </select>
+                <!-- Contenedores dinámicos de productos -->
+                <div id="menu-content">
+                    <!-- Cambia dinámicamente con JS -->
                 </div>
             </div>
 
-            <!-- COLUMNA DERECHA: Sabores y Vista del Producto -->
-            <div class="right-column">
-                <div class="card">
-                    <h2>Sabores Disponibles</h2>
-                    <p style="font-size: 0.85rem; color: #888; margin-top: -10px; margin-bottom: 15px;">
-                        Selecciona las opciones para armar tu combinación:
-                    </p>
-                    
-                    <div class="flavors-grid">
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🍇 Uva</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🫐 Moras</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🌱 Anís</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🍓🥛 Fresa Leche</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🍓💧 Fresa de Agua</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                        <div class="flavor-card" onclick="toggleSelect(this)">
-                            <span>🍫 Chocolate</span>
-                            <i class="check-icon">✓</i>
-                        </div>
-                    </div>
+            <!-- SECCIÓN: Vista del Producto (Referencia Verbatim a GelaBOX.jpg) -->
+            <div class="card">
+                <h2>📸 Despliegue Gráfico Oficial</h2>
+                <div class="photo-container">
+                    <img src="GelaBOX.jpg" alt="Ecosistema e Infografía Oficial GelaBOX Cinnamonroll">
+                </div>
+            </div>
 
-                    <div class="caramel-section">
-                        <h3 class="flavor-heading">🍬 Dulce de Caramelo sabor:</h3>
-                        <div class="flavors-grid">
-                            <div class="flavor-card" onclick="toggleSelect(this)">
-                                <span>🍓 Fresa</span>
-                                <i class="check-icon">✓</i>
-                            </div>
-                            <div class="flavor-card" onclick="toggleSelect(this)">
-                                <span>🥭 Mango</span>
-                                <i class="check-icon">✓</i>
-                            </div>
-                            <div class="flavor-card" onclick="toggleSelect(this)">
-                                <span>🍈 Guayaba</span>
-                                <i class="check-icon">✓</i>
-                            </div>
-                        </div>
+            <!-- SECCIÓN: Configuración de Lote -->
+            <div class="card">
+                <h2>📦 Cubicaje del Pedido</h2>
+                
+                <div class="package-option selected-pkg" onclick="selectPackage(this, 277)">
+                    <div>
+                        <strong>Paquete 25 Pz.</strong><br>
+                        <small style="color: #a0aec0;">Estructura Molecular Minimalista</small>
                     </div>
+                    <div class="price">$277 MXN<br><span style="font-size:0.7rem; color:var(--gela-yellow);">10% DESC</span></div>
                 </div>
 
-                <div class="card">
-                    <h2>Vista del Producto</h2>
-                    <div class="photo-container">
-                        <img src="GelaHappy.jpg" alt="Gelatinas exclusivas Gela Fest">
+                <div class="package-option" onclick="selectPackage(this, 505)">
+                    <div>
+                        <strong>Paquete 50 Pz.</strong><br>
+                        <small style="color: #a0aec0;">Frecuencia Compartida Completa</small>
                     </div>
+                    <div class="price">$505 MXN<br><span style="font-size:0.7rem; color:var(--gela-yellow);">15% DESC</span></div>
                 </div>
 
-                <div class="card">
-                    <h2>Información de Pedidos</h2>
-                    <p style="font-size: 0.95rem; color: #e2e8f0; margin-bottom: 15px;">
-                        Procesamos lotes personalizados bajo pedido técnico. Métodos aceptados:
-                    </p>
-                    <div class="payment-methods">
-                        <span class="badge">🏦 Transferencia</span>
-                        <span class="badge">💵 Efectivo</span>
-                        <span class="badge badge-special">🚗 Pedidos grandes: Tu carro a cuenta</span>
-                    </div>
+                <label for="event" style="font-size: 0.8rem; color: #a0aec0; display: block; margin: 10px 0 5px 0; font-weight: bold;">MODO DE OPERACIÓN:</label>
+                <select id="event" class="event-select">
+                    <option value="privado">Operación Privada</option>
+                    <option value="publico">Despliegue Público / Masivo</option>
+                </select>
+            </div>
+
+            <!-- SECCIÓN: Cierre Comercial Táctico -->
+            <div class="card">
+                <h2>🏦 Liquidación y Logística</h2>
+                <p style="font-size: 0.85rem; color: #e2e8f0; line-height: 1.4; font-weight: bold;">
+                    Procesamos lotes bajo estricto diseño técnico. Logística transaccional autorizada:
+                </p>
+                <div class="payment-methods">
+                    <span class="badge">🏦 Transferencia Bancaria Interconectada</span>
+                    <span class="badge">💵 Efectivo Líquido Inmediato</span>
+                    <span class="badge badge-special">🚗 PASAR VEHÍCULO A CUENTA (PEDIDOS INDUSTRIALES)</span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="mailto:marketingesmpresarial@gmail.com?subject=Despliegue%20Táctico%20GelaBOX" class="contact-btn">
+                        🚀 ENVIAR ORDEN TÁCTICA
+                    </a>
                     
-                    <a href="mailto:marketingesmpresarial@gmail.com" class="contact-btn">
-                        📧 marketingesmpresarial@gmail.com
+                    <!-- NUEVO BOTÓN EXCLUSIVO DE WHATSAPP -->
+                    <a href="https://wa.me/525523157395?text=¡Buenas!%20Quiero%20solicitar%20un%20despliegue%20táctico%20de%20GelaBOX%20⚡" target="_blank" class="whatsapp-btn">
+                        💬 WHATSAPP INMEDIATO
                     </a>
                 </div>
             </div>
+
         </div> <!-- Fin grid-layout -->
     </div> <!-- Fin container -->
 
     <script>
-    function toggleSelect(elemento) {
-        elemento.classList.toggle('selected');
-    }
-    </script>
+        // Data unificada del Sistema GelaBOX
+        const dbMenu = {
+            gelatinas: [
+                { name: "Uva Táctica", icon: "🍇" },
+                { name: "Moras Incoherentes", icon: "🫐" },
+                { name: "Anís Molecular", icon: "🌱" },
+                { name: "Fresa Leche Híbrida", icon: "🍓🥛" },
+                { name: "Fresa Agua Pura", icon: "🍓💧" },
+                { name: "Chocolate Denso", icon: "🍫" }
+            ],
+            palomitas: [
+                { name: "Mantequilla Crujiente", icon: "🍿" },
+                { name: "Caramelo Explosivo", icon: "🍯" },
+                { name: "Fuego Táctico (Chile)", icon: "🔥" }
+            ],
+            muffizzas: [
+                { name: "ChoKoArroz", icon: "🍫" },
+                { name: "CandyArroz Premium", icon: "🌾" },
+                { name: "Muffizza", icon: "🍕" }
+            ]
+        };
 
+        const frasesTacticas = [
+            '📢 "¡EL PUTO NEGOCIO VA A MEJORAR SI YO PASO DE LIMBIENTA!"',
+            '⚡ "FRECUENCIA AL MÁXIMO EN TODAS NUESTRAS CAPAS OPERATIVAS."',
+            '🧪 "TEXTURA HÍBRIDA JUGABLE CON GASTRONOMÍA MOLECULAR INCOHERENTE."',
+            '🔥 "DALE CON TODO! - POR LOS NUEVOS ELEMENTOS DEL MERCADO."'
+        ];
+
+        // Inicialización de Pantalla
+        setTimeout(() => {
+            document.getElementById('splashScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splashScreen').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                switchTab('gelatinas', document.querySelector('.tab-yellow'));
+            }, 600);
+        }, 2000);
+
+        // Control de los Botones de Pestaña Todo En Uno
+        function switchTab(categoria, elemento) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
+            elemento.classList.add('active-tab');
+            
+            const iconSpan = document.getElementById('section-icon');
+            if(categoria === 'gelatinas') iconSpan.innerText = "💛";
+            if(categoria === 'palomitas') iconSpan.innerText = "❤️";
+            if(categoria === 'muffizzas') iconSpan.innerText = "💜";
+
+            const container = document.getElementById('menu-content');
+            container.innerHTML = '<div class="flavors-grid"></div>';
+            const grid = container.querySelector('.flavors-grid');
+
+            dbMenu[categoria].forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = 'flavor-card';
+                itemCard.onclick = () => itemCard.classList.toggle('selected');
+                itemCard.innerHTML = `
+                    <span>${item.icon} ${item.name}</span>
+                    <i class="check-icon">✓</i>
+                `;
+                grid.appendChild(itemCard);
+            });
+        }
+
+        // Selección de Paquetes
+        function selectPackage(elemento, precio) {
+            document.querySelectorAll('.package-option').forEach(pkg => pkg.classList.remove('selected-pkg'));
+            elemento.classList.add('selected-pkg');
+        }
+
+        // Rotación de Frases del Megáfono
+        function cambiarFrase(elemento) {
+            const randomFrase = frasesTacticas[Math.floor(Math.random() * frasesTacticas.length)];
+            elemento.innerHTML = `${randomFrase} <br><small style="color: #666; font-weight: bold;">(Haz clic para cambiar mantra táctico)</small>`;
+        }
+    </script>
 </body>
 </html>
