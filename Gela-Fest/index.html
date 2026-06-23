@@ -100,6 +100,33 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* ESTILO INTERACTIVO DE LA NAVE ESPACIAL */
+        .tactical-ship-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .tactical-ship-link svg {
+            fill: var(--gela-yellow);
+            filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.5));
+            transition: filter 0.2s ease;
+        }
+        .tactical-ship-link:hover {
+            transform: translateY(-4px) scale(1.1);
+        }
+        .tactical-ship-link:hover svg {
+            filter: drop-shadow(0 0 12px var(--gela-yellow));
+        }
+        .tactical-ship-link:active {
+            transform: translateY(1px) scale(0.95);
         }
 
         header p {
@@ -382,7 +409,15 @@
 
     <div class="container" id="mainContainer">
         <header>
-            <h1>GelaBOX</h1>
+            <h1>
+                <!-- NAVE CONFIGURADA SEGÚN TRAZO AMARILLO EN edited-image_2.jpg -->
+                <a href="https://seraffessence-lab.github.io/Nexus_Core/Gelagame/" class="tactical-ship-link" title="GelaGame">
+                    <svg width="42" height="42" viewBox="0 0 24 24">
+                        <path d="M12 2L2 22h4l2-4h8l2 4h4L12 2zm0 3.67L17.17 14H6.83L12 5.67z"/>
+                    </svg>
+                </a>
+                GelaBOX
+            </h1>
             <p>Frecuencia al Máximo ⚡ Gastronomía e Incoherencia</p>
         </header>
 
@@ -414,7 +449,7 @@
             <div class="card">
                 <h2>📸 Despliegue Gráfico Oficial</h2>
                 <div class="photo-container">
-                    <img src="5hrtg.jpg" alt="Ecosistema e Infografía Oficial GelaBOX Cinnamonroll">
+                    <img src="GelaBOX.jpg" alt="Ecosistema e Infografía Oficial GelaBOX Cinnamonroll">
                 </div>
             </div>
 
