@@ -1,433 +1,339 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.E. HOLDING | MASTER CONTROL</title>
-<style>
-    :root {
-        --nexus-blue: #00d4ff;
-        --investor-gold: #d4af37;
-        --deep-black: #050505;
-        --matrix-green: #00ff41;
-        --shadow-purple: #6a0dad;
-        --neon-glow: 0 0 25px rgba(0, 212, 255, 0.4);
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>S.E. HOLDING | MASTER CONTROL</title> 
+<style> 
+    :root { 
+        --nexus-blue: #00d4ff; 
+        --investor-gold: #d4af37; 
+        --deep-black: #050508; 
+        --card-bg: rgba(13, 13, 18, 0.75);
+        --matrix-green: #00ff41; 
+        --shadow-purple: #4a0082; 
+        --neon-blue-glow: 0 0 30px rgba(0, 212, 255, 0.25); 
+        --neon-gold-glow: 0 0 30px rgba(212, 175, 55, 0.25); 
+    } 
+
+    body, html { 
+        height: 100%; margin: 0; padding: 0;
+        background-color: var(--deep-black); 
+        background-image:  
+            radial-gradient(circle at center, rgba(74, 0, 130, 0.08) 0%, transparent 75%), 
+            linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px), 
+            linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px); 
+        background-size: 100% 100%, 45px 45px, 45px 45px; 
+        color: #f0f0f5; font-family: 'Consolas', monospace; 
+        overflow-x: hidden;
+    } 
+
+    /* ── SISTEMA DE CAPAS DE CONTROL (PANTALLAS) ── */ 
+    .screen { 
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease, filter 0.6s ease; 
+        background: transparent; 
+        opacity: 0; z-index: 1; pointer-events: none; 
+    } 
+
+    /* FORZAR VISIBILIDAD DE LA PANTALLA ACTIVA */ 
+    .screen.active { 
+        opacity: 1 !important; 
+        z-index: 20 !important; 
+        pointer-events: auto !important; 
+        transform: scale(1) translate(0,0) !important; 
+        filter: blur(0px) !important; 
+    } 
+
+    /* EFECTO SEGUNDO PLANO SELECCIÓN */ 
+    .screen.ghost-back { 
+        opacity: 0.03 !important; 
+        z-index: 2 !important; 
+        pointer-events: none !important; 
+        transform: scale(0.85) !important; 
+        filter: blur(12px) !important; 
+    } 
+
+    /* ── PANTALLA PRINCIPAL: GATE ── */ 
+    .gate-logo {  
+        font-size: 4.5rem; letter-spacing: 20px; margin-bottom: 60px;  
+        text-shadow: 0 0 40px rgba(106, 13, 173, 0.6); font-weight: bold;  
+        text-align: center; color: #fff;
+    } 
+
+    .choice-container { display: flex; gap: 50px; z-index: 10; } 
+     
+    .gate-card { 
+        padding: 60px 45px; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; 
+        text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+        background: var(--card-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        min-width: 300px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    } 
+
+    .gate-card.blue:hover {  
+        border-color: var(--nexus-blue);  
+        box-shadow: var(--neon-blue-glow), inset 0 0 15px rgba(0, 212, 255, 0.05);
+        transform: translateY(-8px); 
+    } 
+    .gate-card.gold:hover {  
+        border-color: var(--investor-gold);  
+        box-shadow: var(--neon-gold-glow), inset 0 0 15px rgba(212, 175, 55, 0.05);
+        transform: translateY(-8px); 
+    } 
+
+    /* ── INVESTOR SECTION (PANEL) ── */ 
+    #screen-investor { 
+        transform: translateY(100%); 
+        background: radial-gradient(circle at top, rgba(212, 175, 55, 0.03) 0%, transparent 60%);
+    } 
+    .investor-viewport {  
+        width: 92%; overflow-x: auto; display: flex; padding: 40px 15px; gap: 30px; scroll-snap-type: x mandatory; z-index: 5; margin-top: 60px;
+    } 
+    .ticker-card-xl {  
+        flex: 0 0 310px; height: 510px; background: rgba(10, 10, 14, 0.85); border: 1px solid rgba(255,255,255,0.06); 
+        padding: 30px 25px; scroll-snap-align: center; display: flex; flex-direction: column; border-radius: 18px; 
+        backdrop-filter: blur(15px); transition: border-color 0.3s, box-shadow 0.3s;
+    } 
+    .ticker-card-xl:hover {
+        border-color: rgba(212, 175, 55, 0.3);
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.08);
     }
 
-    body, html {
-        height: 100%; margin: 0;
-        background-color: var(--deep-black);
-        background-image: 
-            radial-gradient(circle at center, rgba(106, 13, 173, 0.03) 0%, transparent 70%),
-            linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-        background-size: 100% 100%, 30px 30px, 30px 30px;
-        color: white; font-family: 'Consolas', monospace;
-        overflow: hidden;
-    }
+    .investor-preview { width: 100%; height: 160px; object-fit: contain; margin: 20px 0; background: rgba(255,255,255,0.01); border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); } 
+    .stats-box { font-size: 0.8rem; line-height: 1.8; margin-bottom: 15px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px; } 
+    .buy-btn { margin-top: auto; padding: 14px; background: var(--investor-gold); color: black; text-decoration: none; font-weight: bold; text-align: center; border-radius: 8px; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; }
+    .buy-btn:hover { background: white; box-shadow: 0 0 20px rgba(255,255,255,0.6); }
 
-    body::after {
-        content: "";
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(0, 212, 255, 0.04) 0%, transparent 40%);
-        pointer-events: none; z-index: 1;
-    }
+    /* ── NEXUS HUB: RED RADIAL ── */ 
+    #screen-nexus { 
+        transform: scale(0.9); 
+        background: radial-gradient(circle at center, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
+    } 
+    .hub-wrapper { position: relative; width: 720px; height: 720px; display: flex; align-items: center; justify-content: center; } 
 
-    /* ── SISTEMA DE CAPAS DE CONTROL (SCREENS) ── */
-    .screen {
-        position: absolute; width: 100%; height: 100%;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        /* Transición suavizada de escala, opacidad y blur */
-        transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1), 
-                    opacity 0.6s ease, 
-                    filter 0.6s ease;
-        background: transparent;
-        opacity: 0; z-index: 2; pointer-events: none;
-        filter: blur(0px);
-    }
+    .nexus-core-center { 
+        position: absolute; width: 160px; height: 160px; 
+        background: #020204; border: 2px solid var(--nexus-blue); border-radius: 50%; 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        box-shadow: 0 0 50px rgba(0, 212, 255, 0.35), inset 0 0 20px rgba(0, 212, 255, 0.2); z-index: 10; 
+    } 
+    .nexus-core-center h1 { font-size: 1.6rem; margin: 0; letter-spacing: 4px; font-weight: bold; } 
 
-    /* ESTADO ACTIVO PRIORITARIO */
-    .screen.active {
-        opacity: 1 !important;
-        z-index: 20 !important;
-        pointer-events: auto !important;
-        transform: scale(1) translate(0,0) !important;
-        filter: blur(0px) !important;
-    }
+    .orbital-ring { 
+        position: absolute; width: 590px; height: 590px; 
+        border: 2px dashed rgba(0, 212, 255, 0.12); border-radius: 50%; animation: spin 140s linear infinite; 
+    } 
 
-    /* ESTADO OCULTO DETRÁS (MINIMIZADO Y DIFUMINADO) */
-    .screen.ghost-back {
-        opacity: 0.08 !important;
-        z-index: 1 !important; /* Capa más baja del chasis */
-        pointer-events: none !important;
-        transform: scale(0.65) !important; /* Super pequeño */
-        filter: blur(12px) !important; /* Ultra difuminado */
-    }
-
-    /* ── PANTALLA PRINCIPAL: GATE ── */
-    .gate-logo { 
-        font-size: 3.8rem; letter-spacing: 18px; margin-bottom: 60px; 
-        text-shadow: 0 0 30px var(--shadow-purple); font-weight: bold; 
-        text-align: center; z-index: 5;
-        transition: all 0.5s;
-    }
-
-    .choice-container { display: flex; gap: 40px; z-index: 5; }
-    
-    .gate-card {
-        padding: 45px 40px; border: 1px solid rgba(255,255,255,0.04); border-radius: 20px;
-        text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px); min-width: 260px;
-        position: relative; overflow: hidden;
-    }
-
-    .gate-card::after {
-        content: ''; position: absolute; bottom: 0; left: -100%; width: 100%; height: 2px;
-        transition: all 0.4s;
-    }
-    .gate-card.blue::after { background: linear-gradient(90deg, transparent, var(--nexus-blue), transparent); }
-    .gate-card.gold::after { background: linear-gradient(90deg, transparent, var(--investor-gold), transparent); }
-    .gate-card:hover::after { left: 100%; transition: 0.8s; }
-
-    .gate-card.blue:hover { 
+    /* Nodos */ 
+    .portal-node { 
+        position: absolute; width: 135px; height: 135px; text-decoration: none; color: #d0d0d5; 
+        display: flex; align-items: center; justify-content: center; text-align: center; 
+        background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(255,255,255,0.08); border-radius: 50%; 
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 5; font-size: 0.72rem; font-weight: bold; 
+        text-transform: uppercase; padding: 8px; box-sizing: border-box; letter-spacing: 0.5px;
+    } 
+    .portal-node:hover { 
+        transform: scale(1.18); 
+        color: #fff;
         border-color: var(--nexus-blue); 
-        box-shadow: 0 0 40px rgba(0, 212, 255, 0.3), inset 0 0 15px rgba(0, 212, 255, 0.15);
-        transform: translateY(-8px);
-    }
-    .gate-card.gold:hover { 
-        border-color: var(--investor-gold); 
-        box-shadow: 0 0 40px rgba(212, 175, 55, 0.3), inset 0 0 15px rgba(212, 175, 55, 0.15);
-        transform: translateY(-8px);
-    }
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), inset 0 0 10px rgba(0, 212, 255, 0.1); 
+        z-index: 12; 
+    } 
 
-    /* ── INVESTOR SECTION ── */
-    #screen-investor { transform: translateY(100%) scale(0.9); }
-    .investor-viewport { 
-        width: 100%; overflow-x: auto; display: flex; padding: 120px 20px 40px; gap: 25px; scroll-snap-type: x mandatory; z-index: 5;
-    }
-    .ticker-card-xl { 
-        flex: 0 0 310px; height: 530px; background: rgba(10, 10, 10, 0.92); border: 1px solid rgba(255,255,255,0.06);
-        padding: 25px; scroll-snap-align: center; display: flex; flex-direction: column; border-radius: 18px; backdrop-filter: blur(10px);
-    }
-    .investor-preview { width: 100%; height: 160px; object-fit: contain; margin: 15px 0; filter: drop-shadow(0 0 8px rgba(255,255,255,0.15)); }
-    .stats-box { font-size: 0.8rem; line-height: 1.6; margin-bottom: 15px; border-top: 1px solid #222; padding-top: 10px; }
+    /* Distribución Geométrica Modificada */ 
+    .node-1 { top: 10px; left: calc(50% - 67.5px); } 
+    .node-2 { top: 85px; right: 65px; } 
+    .node-3 { top: 292px; right: 5px; } 
+    .node-4 { bottom: 120px; right: 65px; } 
+    .node-5 { bottom: 10px; left: calc(63% - 67.5px); } 
+    .node-6 { bottom: 10px; left: calc(37% - 67.5px); } 
+    .node-7 { bottom: 120px; left: 65px; } 
+    .node-8 { top: 292px; left: 5px; } 
+    .node-9 { top: 85px; left: 65px; } 
 
-    /* ── NEXUS HUB: ARQUITECTURA RADIAL AMPLIFICADA ── */
-    #screen-nexus { transform: scale(1.1); }
-    
-    .hub-wrapper {
-        position: relative; width: 750px; height: 750px; /* Incremento de escala general */
-        display: flex; align-items: center; justify-content: center; z-index: 5;
-    }
+    /* BOTÓN REGRESAR */ 
+    .back-btn { position: fixed; top: 30px; left: 30px; cursor: pointer; color: #8a8a93; z-index: 100; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.1); padding: 12px 24px; border-radius: 8px; background: rgba(5, 5, 8, 0.8); backdrop-filter: blur(10px); transition: 0.3s; letter-spacing: 1px; } 
+    .back-btn:hover { color: white; border-color: white; box-shadow: 0 0 15px rgba(255,255,255,0.1); } 
 
-    /* Núcleo de Energía OS */
-    .nexus-core-center {
-        position: absolute; width: 160px; height: 160px;
-        background: radial-gradient(circle, #020202 30%, #121212 100%);
-        border: 4px solid var(--nexus-blue); border-radius: 50%;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        box-shadow: 0 0 50px rgba(0, 212, 255, 0.5), inset 0 0 25px rgba(0, 212, 255, 0.25);
-        z-index: 8; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .nexus-core-center:hover { transform: scale(1.08); box-shadow: 0 0 60px var(--nexus-blue); }
-    .nexus-core-center h1 { font-size: 1.3rem; margin: 0; color: #fff; letter-spacing: 4px; text-shadow: 0 0 15px var(--nexus-blue); }
-    .nexus-core-center span { font-size: 0.6rem; color: var(--nexus-blue); opacity: 0.8; margin-top: 5px; letter-spacing: 1px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } } 
+</style> 
+</head> 
+<body> 
 
-    .orbital-ring {
-        position: absolute; width: 640px; height: 640px;
-        border: 1px dashed rgba(0, 212, 255, 0.2); border-radius: 50%;
-        pointer-events: none; animation: spin 140s linear infinite;
-    }
+    <div id="screen-gate" class="screen active"> 
+        <div class="gate-logo">S.E. HOLDING</div> 
+        <div class="choice-container"> 
+            <div class="gate-card blue" onclick="navTo('nexus')"> 
+                <h2 style="color: var(--nexus-blue); margin:0; font-size:1.7rem; letter-spacing:3px;">NEXUS HUB</h2> 
+                <p style="font-size: 0.65rem; margin-top: 10px; opacity: 0.5; letter-spacing: 1px;">SISTEMA OPERATIVO CENTRAL</p> 
+            </div> 
+            <div class="gate-card gold" onclick="navTo('investor')"> 
+                <h2 style="color: var(--investor-gold); margin:0; font-size:1.7rem; letter-spacing:3px;">CAPITAL</h2> 
+                <p style="font-size: 0.65rem; margin-top: 10px; opacity: 0.5; letter-spacing: 1px;">PANEL DE INVERSIONISTAS</p> 
+            </div> 
+        </div> 
+    </div> 
 
-    /* 🎛️ Nodos Rediseñados: Más Grandes, Más Coloridos y Más "Tocables" */
-    .portal-node {
-        position: absolute; width: 140px; height: 140px; /* Círculos agrandados */
-        text-decoration: none; color: white; display: flex; flex-direction: column;
-        align-items: center; justify-content: center; text-align: center;
-        background: rgba(8, 8, 8, 0.95); border: 2px solid rgba(255,255,255,0.05);
-        border-radius: 50%; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        pointer-events: auto; z-index: 6;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.7);
-    }
+    <div id="screen-investor" class="screen"> 
+        <div class="back-btn" onclick="navTo('gate')">← REGRESAR</div> 
+        <h2 style="color: var(--investor-gold); letter-spacing: 6px; position: absolute; top: 30px; font-size: 1.3rem; font-weight: bold;">ESTRATEGIA LOCAL</h2> 
+         
+        <div class="investor-viewport"> 
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$SERAFF</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Ingeniería olfativa y perfumería molecular.</p> 
+                <img src="Logo ginda SE.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>DOMINIO: <span style="color:var(--matrix-green); font-weight:bold;">ALTO</span></p> 
+                    <p>ROI: <span style="color:var(--matrix-green); font-weight:bold;">+22.4%</span></p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    /* Esfera de Brillo Neon Interno / Icono */
-    .portal-node::before {
-        content: ''; width: 45px; height: 45px; margin-bottom: 10px;
-        border-radius: 50%; background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
-    }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$SCENCE</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Nutrición dermal y cuidado avanzado.</p> 
+                <img src="scence nutricional.jpg" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>TIPO: BIO-RECOVERY</p> 
+                    <p>ESTADO: OPTIMIZADO</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    .portal-node span { 
-        font-size: 0.65rem; font-weight: bold; padding: 0 10px; 
-        letter-spacing: 0.8px; line-height: 1.3; text-transform: uppercase;
-        transition: color 0.3s;
-    }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$FirmaLegalJE</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Firma Legal JE Corporativo.</p> 
+                <img src="logo general JE.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>TIPO: LEGAL / ASESORÍA</p> 
+                    <p>ESTADO: ESTRUCTURADO</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    /* 🎨 ASIGNACIÓN DE IDENTIDAD CROMÁTICA ESPECÍFICA (Modo Iluminado) */
-    .node-se { border-color: rgba(106, 13, 173, 0.3); box-shadow: 0 4px 15px rgba(106, 13, 173, 0.15); }
-    .node-se::before { background: radial-gradient(circle, #6a0dad 10%, transparent 80%); border-color: var(--shadow-purple); }
-    .node-se:hover { border-color: var(--shadow-purple); box-shadow: 0 0 35px rgba(106, 13, 173, 0.6); }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$SOSPets</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">S.O.S PET Monitoreo Urbano.</p> 
+                <img src="hueso S.O.S PET logo.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>COBERTURA: INTEGRAL</p> 
+                    <p>ESTADO: ESTABLE</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    .node-sn { border-color: rgba(0, 255, 65, 0.3); box-shadow: 0 4px 15px rgba(0, 255, 65, 0.15); }
-    .node-sn::before { background: radial-gradient(circle, #00ff41 10%, transparent 80%); border-color: var(--matrix-green); }
-    .node-sn:hover { border-color: var(--matrix-green); box-shadow: 0 0 35px rgba(0, 255, 65, 0.6); }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$SindicatoDigital</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Sindicato Digital de Comercio.</p> 
+                <img src="Buho_bascula inicio.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>NÚCLEO: PROTECCIÓN</p> 
+                    <p>MÉTRICA: ESCALABLE</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    .node-gf { border-color: rgba(214, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(214, 175, 55, 0.15); }
-    .node-gf::before { background: radial-gradient(circle, #d4af37 10%, transparent 80%); border-color: var(--investor-gold); }
-    .node-gf:hover { border-color: var(--investor-gold); box-shadow: 0 0 35px rgba(214, 175, 55, 0.6); }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$NexusSport</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Deporte y consistencia de alto rendimiento.</p> 
+                <img src="PANTERA AZUL NEXUS SPORT.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>ENFOQUE: RENDIMIENTO</p> 
+                    <p>RITMO: EXPONENCIAL</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    .node-ns { border-color: rgba(0, 212, 255, 0.3); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.15); }
-    .node-ns::before { background: radial-gradient(circle, #00d4ff 10%, transparent 80%); border-color: var(--nexus-blue); }
-    .node-ns:hover { border-color: var(--nexus-blue); box-shadow: 0 0 35px rgba(0, 212, 255, 0.6); }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$NatuLuxury</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Mueblería NatuLuxury de autor.</p> 
+                <img src="muebleria logo.png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>DISEÑO: ABSTRACTO</p> 
+                    <p>PREMIUM: ACTIVADO</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    /* Nodos Estándar con Configuración Base Limpia */
-    .node-std::before { background: radial-gradient(circle, #333 10%, transparent 70%); }
-    .node-std:hover { border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.4); }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$GelaFest</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Gela-Fest Ingeniería Gastronómica.</p> 
+                <img src="GelaHappy.jpg" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>TEXTURA: GELATINA ALTA</p> 
+                    <p>ESTADO: DISPONIBLE</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
 
-    /* Comportamiento al Tocar / Hover */
-    .portal-node:hover {
-        transform: scale(1.18); z-index: 15;
-    }
-    .portal-node:hover::before {
-        transform: scale(1.2);
-        box-shadow: 0 0 15px currentColor;
-    }
+            <div class="ticker-card-xl"> 
+                <h3 style="color:var(--investor-gold); margin:0; font-size:1.4rem;">$DespachoJSL</h3> 
+                <p style="font-size: 0.65rem; color: #888; margin-top:5px;">Firma Legal y Defensa JSL.</p> 
+                <img src="balanza logo .png" class="investor-preview"> 
+                <div class="stats-box"> 
+                    <p>RAMA: CORPORATIVO</p> 
+                    <p>PROYECCIÓN: SÓLIDA</p> 
+                </div> 
+                <a href="#" target="_blank" class="buy-btn">ADQUIRIR ACCIONES</a> 
+            </div> 
+        </div> 
+    </div> 
 
-    /* RE-CALIBRACIÓN GEOMÉTRICA DE ÓRBITAS TRÍGONO-METRICAS (Círculo de 750px) */
-    .node-1 { top: 15px; left: calc(50% - 70px); }
-    .node-2 { top: 85px; right: 75px; }
-    .node-3 { top: 285px; right: 10px; }
-    .node-4 { bottom: 120px; right: 75px; }
-    .node-5 { bottom: 15px; left: calc(64% - 70px); }
-    .node-6 { bottom: 15px; left: calc(36% - 70px); }
-    .node-7 { bottom: 120px; left: 75px; }
-    .node-8 { top: 285px; left: 10px; }
-    .node-9 { top: 85px; left: 75px; }
+    <div id="screen-nexus" class="screen"> 
+        <div class="back-btn" onclick="navTo('gate')">← REGRESAR</div> 
+         
+        <div class="hub-wrapper"> 
+            <div class="orbital-ring"></div> 
 
-    /* CONTROLES GLOBALES DE INTERFAZ */
-    .back-btn { position: fixed; top: 25px; left: 25px; cursor: pointer; color: #888; z-index: 100; font-size: 0.8rem; font-weight: bold; border: 1px solid #333; padding: 10px 18px; border-radius: 6px; background: black; transition: 0.3s; }
-    .back-btn:hover { color: white; border-color: white; box-shadow: var(--neon-glow); }
+            <div class="nexus-core-center"> 
+                <h1 style="color: var(--nexus-blue);">NEXUS</h1> 
+                <span style="font-size: 0.6rem; color: #555; letter-spacing: 2px; font-weight: bold;">CORE OS</span> 
+            </div> 
 
-    .buy-btn { margin-top: auto; padding: 12px; background: var(--investor-gold); color: black; text-decoration: none; font-weight: bold; text-align: center; border-radius: 5px; font-size: 0.8rem; }
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/seraffEssence/" target="_blank" class="portal-node node-1">Seraff Essence</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Sindicato_Dijital/" target="_blank" class="portal-node node-2">Despacho Digital</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Scence%20Nutricional/" target="_blank" class="portal-node node-3">Scence Nutricional</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/" target="_blank" class="portal-node node-4">S.O.S PET</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Firma_Legal_JSL/" target="_blank" class="portal-node node-5">Firma Legal S</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Despacho_JE/" target="_blank" class="portal-node node-6">Firma Legal JE</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Muebleria%20Natuluxury/" target="_blank" class="portal-node node-7">NatuLuxury</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Chicoloapan-Sport/" target="_blank" class="portal-node node-8">Nexus Sporting</a> 
+            <a href="https://seraffessence-lab.github.io/Nexus_Core/Gela-Fest/" target="_blank" class="portal-node node-9">Gela-Fest</a> 
+        </div> 
+    </div> 
 
-    @keyframes spin { 100% { transform: rotate(360deg); } }
+    <script> 
+        function navTo(target) { 
+            const gate = document.getElementById('screen-gate'); 
+            const invest = document.getElementById('screen-investor'); 
+            const nexus = document.getElementById('screen-nexus'); 
 
-    @media (max-width: 768px) {
-        .gate-logo { font-size: 1.8rem; letter-spacing: 6px; }
-        .choice-container { flex-direction: column; gap: 15px; }
-        .hub-wrapper { transform: scale(0.48); }
-        .ticker-card-xl { flex: 0 0 82%; }
-        .investor-viewport { padding-top: 120px; }
-    }
-</style>
-</head>
-<body onmousemove="updateMouse(event)" ontouchmove="updateTouch(event)">
+            [gate, invest, nexus].forEach(s => s.classList.remove('active', 'ghost-back')); 
 
-    <div id="screen-gate" class="screen active">
-        <div class="gate-logo">S.E. HOLDING</div>
-        <div class="choice-container">
-            <div class="gate-card blue" onclick="navTo('nexus')">
-                <h2 style="color: var(--nexus-blue); margin:0; font-size:1.5rem; letter-spacing:2px;">NEXUS HUB</h2>
-                <p style="font-size: 0.6rem; margin-top: 8px; opacity: 0.6; letter-spacing: 1px;">SISTEMA OPERATIVO CENTRAL</p>
-            </div>
-            <div class="gate-card gold" onclick="navTo('investor')">
-                <h2 style="color: var(--investor-gold); margin:0; font-size:1.5rem; letter-spacing:2px;">CAPITAL</h2>
-                <p style="font-size: 0.6rem; margin-top: 8px; opacity: 0.6; letter-spacing: 1px;">PANEL DE INVERSIONISTAS</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="screen-investor" class="screen">
-        <div class="back-btn" onclick="navTo('gate')">← REGRESAR</div>
-        <h2 style="color: var(--investor-gold); letter-spacing: 5px; position: absolute; top: 70px; font-size: 1rem;">ESTRATEGIA LOCAL</h2>
-        
-        <div class="investor-viewport">
-            <div class="ticker-card-xl">
-                <h1>$SERAFF</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">INGENIERÍA OLFATIVA Y PERFUMERÍA MOLECULAR.</p>
-                <img src="Logo ginda SE.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>DOMINIO: <span style="color:var(--matrix-green)">ALTO</span></p>
-                    <p>ROI ESTIMADO: <span style="color:var(--matrix-green)">+22.4%</span></p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$SCENCE Natural</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">NUTRICIÓN DERMAL Y CUIDADO AVANZADO.</p>
-                <img src="scence nutricional.jpg" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: BIO-RECOVERY</p>
-                    <p>ESTADO: NATURAL-ALTA</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$FirmaLegalje$</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Firma Legal JE.</p>
-                <img src="logo general JE.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: legal</p>
-                    <p>seguridad: NATURAL-ALTA</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$sospetsl</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">S.O.S PET.</p>
-                <img src="hueso S.O.S PET logo.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: BIO-RECOVERY</p>
-                    <p>ESTADO: NATURAL-ALTA</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$Sindicato_Digital</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">SINDICATO DIGITAL.</p>
-                <img src="Buho_bascula inicio.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: BIO-RECOVERY</p>
-                    <p>ESTADO: NATURAL-ALTA</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$NexusSport</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">DEPORTE Y CONSISTENCIA DIGITAL.</p>
-                <img src="PANTERA AZUL NEXUS SPORT.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: BIO-TECH / SPORT</p>
-                    <p>ESTADO: ESCALANDO</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$MuebleriaLuxury</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Muebleria Natuluxury.</p>
-                <img src="muebleria logo.png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: BIO-RECOVERY</p>
-                    <p>ESTADO: NATURAL-ALTA</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$Gela_FEESST</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Gela-Fest.</p>
-                <img src="GelaHappy.jpg" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO:snack </p>
-                    <p>ESTADO: cuajada</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-
-            <div class="ticker-card-xl">
-                <h1>$DespachoJSl</h1>
-                <p style="font-size: 0.7rem; color: #888; margin-top: 5px;">Firma legal JSL.</p>
-                <img src="balanza logo .png" class="investor-preview">
-                <div class="stats-box">
-                    <p>TIPO: ESTILO DE VIDA</p>
-                    <p>ESTADO: ACTIVO 100%</p>
-                </div>
-                <a href="#" class="buy-btn">ADQUIRIR ACCIONES</a>
-            </div>
-        </div>
-    </div>
-
-    <div id="screen-nexus" class="screen">
-        <div class="back-btn" onclick="navTo('gate')">← REGRESAR</div>
-        
-        <div class="hub-wrapper">
-            <div class="orbital-ring"></div>
-
-            <div class="nexus-core-center">
-                <h1>NEXUS</h1>
-                <span>CORE OS</span>
-            </div>
-
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/seraffEssence/" target="_blank" class="portal-node node-1 node-se">
-                <span>Seraff Essence</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Sindicato_Dijital/" target="_blank" class="portal-node node-2 node-std">
-                <span>Despacho Digital</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Scence%20Nutricional/" target="_blank" class="portal-node node-3 node-sn">
-                <span>Scence Nutricional</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/" target="_blank" class="portal-node node-4 node-std">
-                <span>S.O.S PET</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Firma_Legal_JSL/" target="_blank" class="portal-node node-5 node-gf">
-                <span>Firma Legal S</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Despacho_JE/" target="_blank" class="portal-node node-6 node-std">
-                <span>Firma Legal JE</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Muebleria%20Natuluxury/" target="_blank" class="portal-node node-7 node-gf">
-                <span>Muebleria NatuLuxury</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Chicoloapan-Sport/" target="_blank" class="portal-node node-8 node-ns">
-                <span>Nexus Sporting</span>
-            </a>
-            <a href="https://seraffessence-lab.github.io/Nexus_Core/Gela-Fest/" target="_blank" class="portal-node node-9 node-gf">
-                <span>Gela-Fest</span>
-            </a>
-        </div>
-    </div>
-
-    <script>
-        function updateMouse(e) {
-            const x = (e.clientX / window.innerWidth) * 100;
-            const y = (e.clientY / window.innerHeight) * 100;
-            document.body.style.setProperty('--x', x + '%');
-            document.body.style.setProperty('--y', y + '%');
-        }
-
-        function updateTouch(e) {
-            const touch = e.touches[0];
-            const x = (touch.clientX / window.innerWidth) * 100;
-            const y = (touch.clientY / window.innerHeight) * 100;
-            document.body.style.setProperty('--x', x + '%');
-            document.body.style.setProperty('--y', y + '%');
-        }
-
-        // ── CONTROLADOR DE CONTROL DE CAPAS CRÍTICAS ──
-        function navTo(target) {
-            const gate = document.getElementById('screen-gate');
-            const invest = document.getElementById('screen-investor');
-            const nexus = document.getElementById('screen-nexus');
-
-            // Limpiamos todas las clases dinámicas de los contenedores
-            [gate, invest, nexus].forEach(s => {
-                s.classList.remove('active', 'ghost-back');
-            });
-
-            if (target === 'gate') {
-                gate.classList.add('active');
-                invest.style.transform = 'translateY(100%) scale(0.9)';
-                nexus.style.transform = 'scale(1.1)';
+            if (target === 'gate') { 
+                gate.classList.add('active'); 
+                invest.style.transform = 'translateY(100%)'; 
+                nexus.style.transform = 'scale(0.9)'; 
+            }  
+            else if (target === 'nexus') { 
+                nexus.classList.add('active'); 
+                gate.classList.add('ghost-back'); 
+            }  
+            else if (target === 'investor') { 
+                invest.classList.add('active'); 
+                gate.classList.add('ghost-back'); 
             } 
-            else if (target === 'nexus') {
-                nexus.classList.add('active');
-                // MANDAMOS GATE AL TRASFONDO (Encogido, difuminado y opaco)
-                gate.classList.add('ghost-back');
-            } 
-            else if (target === 'investor') {
-                invest.classList.add('active');
-                gate.classList.add('ghost-back');
-            }
-        }
-    </script>
-</body>
+        } 
+
+        // ── INYECTOR AUTOMÁTICO DE URL DE ACCIONES ──
+        // Cambia este link si modificas el archivo en tu repositorio de GitHub
+        const linkAcciones = "https://seraffessence-lab.github.io/Nexus_Core/InvercionesNexus/inde.html"; 
+
+        document.querySelectorAll('.buy-btn').forEach(boton => {
+            boton.href = linkAcciones;
+        });
+    </script> 
+</body> 
 </html>
