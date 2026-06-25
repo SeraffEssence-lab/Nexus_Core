@@ -4,45 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXUS Sport - Elite OS</title>
+
+<!-- LIBRERÍAS DE ACCESO COMPATIBLES (CDN V9 COMPAT) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
 <style>
 :root{--aura:#a3dce5;--accent:#b8895d;--glass:rgba(158,208,216,0.04);--blur:blur(25px);}
-body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#020406;font-family:'Inter',sans-serif;color:var(--aura);}
+body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-family:'Inter',sans-serif;color:var(--aura);-webkit-tap-highlight-color:transparent;}
 #canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;filter: brightness(0.8);}
 
 /* INTERFAZ BASE */
-.ui-layer{position:relative;z-index:10;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
-.glass-panel{background:var(--glass);backdrop-filter:var(--blur);border:1px solid rgba(163,220,229,0.1);border-radius:20px;pointer-events:auto;transition:0.4s;}
+.ui-layer{position:relative;z-index:10;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;box-sizing:border-box;}
+.glass-panel{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(163,220,229,0.1);border-radius:20px;pointer-events:auto;transition:0.4s;}
 
-/* BRANDING */
-.brand-container{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:12px;padding:8px 15px;cursor:pointer;}
+/* BRANDING (CUADRO MORADO CON IA) */
+.brand-container{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:12px;padding:8px 15px;cursor:pointer;pointer-events:auto;}
+.brand-container:hover{border-color:var(--accent);box-shadow:0 0 15px rgba(184,137,93,0.2);}
 .logo-box img{width:35px;height:auto;filter: drop-shadow(0 0 5px var(--aura));}
+
+/* TITULO PRINCIPAL */
+.main-title {font-size:2.8rem; letter-spacing:15px; margin-bottom:20px; font-weight:900; text-align:center; text-shadow: 0 0 20px rgba(163,220,229,0.2);}
 
 /* NIVELAJE */
 .level-indicator{position:absolute;bottom:30px;left:30px;pointer-events:auto;text-align:left;}
 .level-number{font-size:3.8rem;font-weight:900;color:#fff;text-shadow:0 0 25px rgba(163,220,229,0.4);letter-spacing:-2px;}
 
-/* BOTONES CENTRALES */
+/* BOTONES CENTRALES MANTENIENDO MÉTRICAS */
 .btn-group{display:flex;flex-direction:column;gap:25px;pointer-events:auto;}
-.glass-btn{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.01);backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:0.7rem;cursor:pointer;transition:0.5s cubic-bezier(0.2, 1, 0.3, 1);text-align:center;}
+.glass-btn{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.01);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:0.7rem;cursor:pointer;transition:0.5s cubic-bezier(0.2, 1, 0.3, 1);text-align:center;}
 .glass-btn:hover{transform:scale(1.1);border-color:var(--aura);box-shadow:0 0 40px rgba(163,220,229,0.15);color:#fff;}
 
-/* PANEL DE EXPEDICIONES */
-.expeditions-panel{position:absolute;right:30px;top:50%;transform:translateY(-50%);width:320px;padding:25px;}
+/* PANEL DE EXPEDICIONES (ZONA ROJA) */
+.expeditions-panel{position:absolute;right:30px;top:50%;transform:translateY(-50%);width:320px;padding:25px;box-sizing:border-box;}
 .expedition-item{font-size:0.65rem;margin-bottom:12px;padding:15px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid transparent;cursor:pointer;transition:0.3s;}
 .expedition-item:hover{border-left-color:var(--accent);background:rgba(163,220,229,0.05);transform:translateX(10px);}
 
-.live-video-container{width:100%;height:200px;background:#000;border-radius:12px;margin-top:20px;border:1px solid rgba(163,220,229,0.15);overflow:hidden;position:relative;}
+.live-video-container{width:100%;height:150px;background:#000;border-radius:12px;margin-top:20px;border:1px solid rgba(163,220,229,0.15);overflow:hidden;position:relative;}
 
 /* MODALES */
-.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:rgba(2,4,6,0.96);backdrop-filter:blur(40px);pointer-events:auto;}
-.modal-content{width:85%;max-width:900px;height:80%;margin:5% auto;padding:50px;overflow-y:auto;position:relative;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:rgba(2,4,6,0.96);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);pointer-events:auto;}
+.modal-content{width:85%;max-width:900px;height:80%;margin:5% auto;padding:30px;overflow-y:auto;position:relative;box-sizing:border-box;}
 .close-modal{position:absolute;top:25px;right:35px;font-size:2.5rem;cursor:pointer;color:var(--accent);}
 
-/* RESPONSIVE CELULAR */
+/* INPUTS ESTILIZADOS */
+.nexus-input {background:#020406; color:#fff; border:1px solid var(--aura); padding:10px; border-radius:5px; width:100%; box-sizing:border-box; margin-top:5px;}
+.nexus-btn {background:var(--accent); color:#fff; border:none; padding:12px 20px; border-radius:5px; cursor:pointer; font-weight:bold; margin-top:10px; width:100%; transition:0.3s;}
+.nexus-btn:hover {background:#fff; color:#000; box-shadow:0 0 15px var(--aura);}
+
 @media(max-width:768px){
-    .ui-layer{justify-content:flex-start;padding-top:100px;}
-    .expeditions-panel{position:fixed!important;bottom:0!important;top:auto!important;right:0!important;left:0!important;transform:none!important;width:100%!important;border-radius:30px 30px 0 0!important;padding-bottom:60px!important;background:rgba(2,4,6,0.98)!important;box-shadow:0 -10px 50px rgba(0,0,0,0.8)!important;}
-    .level-indicator{bottom:350px;left:0;width:100%;text-align:center;}
+    body, html { overflow-y: auto; overflow-x: hidden; height: auto; }
+    .ui-layer{justify-content: flex-start; padding: 110px 20px 20px 20px; height: auto; min-height: 100vh;}
+    .brand-container { position: fixed; background: rgba(2,4,6,0.8); width: calc(100% - 40px); box-sizing: border-box; z-index: 20; }
+    .main-title { font-size: 2.2rem; letter-spacing: 8px; margin-top: 10px; margin-bottom: 20px; }
+    .btn-group { flex-direction: row; justify-content: center; width: 100%; gap: 15px; margin-bottom: 30px; }
+    .glass-btn { width: 110px; height: 110px; font-size: 0.6rem; }
+    .level-indicator { position: relative; bottom: auto; left: auto; text-align: center; width: 100%; margin-bottom: 40px; order: 2; }
+    .level-number { font-size: 3rem; }
+    .expeditions-panel { position: relative!important; top: auto!important; right: auto!important; transform: none!important; width: 100%!important; box-sizing: border-box; margin-top: 20px; order: 3; }
+    .modal-content { width: 95%; height: 90%; margin: 10% auto; padding: 20px; }
 }
 </style>
 </head>
@@ -57,20 +78,22 @@ body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
 </div>
 
 <div class="ui-layer">
-    <div class="brand-container glass-panel" onclick="openModal('admin')">
+    <!-- SECCIÓN MORADA -->
+    <div class="brand-container glass-panel" onclick="openModal('ai-core')">
         <div class="logo-box"><img src="panteranexusport.png" alt="Logo"></div>
-        <div class="brand-text" style="font-size:0.6rem; letter-spacing:2px;">SERAFF_ANGEL1001</div>
+        <div class="brand-text" id="user-status-text" style="font-size:0.6rem; letter-spacing:2px;">SERAFF_ANGEL1001 👁️</div>
     </div>
 
-    <h1 style="font-size:2.8rem; letter-spacing:15px; margin-bottom:30px; font-weight:900; text-align:center;">NEXUS<br>SPORT</h1>
+    <h1 class="main-title">NEXUS<br>SPORT</h1>
 
     <div class="btn-group">
-        <div class="glass-btn" onclick="openModal('entrenar')"><span>ENTRENAR</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">SISTEMA</span></div>
-        <div class="glass-btn" onclick="openModal('admin')"><span>ADMIN</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">CORE</span></div>
+        <div class="glass-btn" onclick="openModal('entrenar')"><span>REGISTRO</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">ENTRENAMIENTO</span></div>
+        <div class="glass-btn" onclick="openModal('metricas')"><span>MÉTRICAS</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">RENDIMIENTO</span></div>
     </div>
 
+    <!-- SECCIÓN ROJA -->
     <div class="expeditions-panel glass-panel">
-        <div style="font-size:0.55rem; letter-spacing:4px; margin-bottom:20px; opacity:0.5;">[ CONTROL DE CAMPO ]</div>
+        <div style="font-size:0.55rem; letter-spacing:4px; margin-bottom:20px; opacity:0.5;">[ SISTEMA DE SEGUIMIENTO ]</div>
         <div class="expedition-item" onclick="openModal('objetivo')">>> OBJETIVO: SUBIR DE NIVEL</div>
         <div class="expedition-item" onclick="openModal('mapa')">>> AREA: CHICOLOAPAN [S]</div>
         
@@ -83,14 +106,50 @@ body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#
     </div>
 
     <div class="level-indicator">
-        <div style="font-size:0.65rem; color:var(--accent); letter-spacing:5px; margin-bottom:5px; font-weight:700;">STATUS: ANOMALÍA</div>
+        <div style="font-size:0.65rem; color:var(--accent); letter-spacing:5px; margin-bottom:5px; font-weight:700;">STATUS: ENFOQUE</div>
         <div class="level-number">LVL 102</div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// SHADER: Aura profunda y lenta
+// ==========================================================================
+// INITIALIZE FIREBASE WITH YOUR CREDENTIALS
+// ==========================================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyD2xy9Bejyz1FiCoDCL4kKEDY6qv72WEDw",
+    authDomain: "nexus-248a8.firebaseapp.com",
+    projectId: "nexus-248a8",
+    storageBucket: "nexus-248a8.firebasestorage.app",
+    messagingSenderId: "46337026262",
+    appId: "1:46337026262:web:8fdafea9486d62d7498177",
+    measurementId: "G-MKQHQZNPVD"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Monitoreo del estado de autenticación en la interfaz
+let usuarioActual = null;
+let sesionesGlobales = [];
+
+auth.onAuthStateChanged(user => {
+    const statusText = document.getElementById('user-status-text');
+    if (user) {
+        usuarioActual = user;
+        statusText.innerText = `${user.email.split('@')[0].toUpperCase()} 🟢`;
+        cargarDatosNube();
+    } else {
+        usuarioActual = null;
+        statusText.innerText = `CONECTAR CORE 👁️`;
+        sesionesGlobales = JSON.parse(localStorage.getItem('sesiones_nexus')) || [];
+    }
+});
+
+// ==========================================================================
+// SHADER LOGIC
+// ==========================================================================
 const fragmentShader=`
 precision highp float;
 uniform float u_time;
@@ -118,20 +177,169 @@ function init(){
 }
 function animate(t){material.uniforms.u_time.value=t*0.005;renderer.render(scene,camera);requestAnimationFrame(animate);}
 
-// LÓGICA DE MODALES
 const modal = document.getElementById('modalNexus');
 const content = document.getElementById('modalData');
 
+// ==========================================================================
+// CORE DATA LOGIC (HYBRID LOCAL/CLOUD)
+// ==========================================================================
+function cargarDatosNube() {
+    if(!usuarioActual) return;
+    db.collection("usuarios").doc(usuarioActual.uid).collection("entrenamientos").orderBy("timestamp", "asc")
+    .get().then((querySnapshot) => {
+        sesionesGlobales = [];
+        querySnapshot.forEach((doc) => {
+            sesionesGlobales.push(doc.data());
+        });
+    }).catch(err => console.log("Error de sincronización: ", err));
+}
+
+function ejecutarDiagnosticoIA() {
+    if(sesionesGlobales.length === 0) {
+        return `<p style="opacity:0.6;">[ NEXUS CORE ] Sin datos cargados. Registra una práctica para ejecutar inferencia analítica.</p>`;
+    }
+    
+    let ultima = sesionesGlobales[sesionesGlobales.length - 1];
+    let tiempoTotal = sesionesGlobales.reduce((acc, s) => acc + parseInt(s.tiempo || 0), 0);
+    let resumenNotas = ultima.notas.toLowerCase();
+    
+    let analisisPatada = "Sin variaciones detectadas en la torsión podal.";
+    let analisisTiro = "Estabilidad técnica en media cancha regular.";
+    
+    if(resumenNotas.includes("patada") || resumenNotas.includes("pie") || resumenNotas.includes("dominada") || resumenNotas.includes("tobillo")) {
+        analisisPatada = "🟢 CAMBIO DETECTADO EN CADENA CINÉTICA: Mayor balance en dominadas inversas y control de empeine detectado.";
+    }
+    if(resumenNotas.includes("enceste") || resumenNotas.includes("basket") || resumenNotas.includes("mano") || resumenNotas.includes("tiro")) {
+        analisisTiro = "🟢 OPTIMIZACIÓN DE FACILIDAD MOTRIZ: Incremento en parábola de lanzamiento de media distancia en suspensión.";
+    }
+
+    return `
+        <h2 style="color:var(--aura); letter-spacing:2px;">🧠 CORE LOG EN TIEMPO REAL</h2>
+        <p style="font-size:0.85rem; color:var(--accent);">ANÁLISIS AUTOMÁTICO DE ANOMALÍA</p>
+        <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(163,220,229,0.2); padding:15px; border-radius:10px; margin-top:15px;">
+            <p><b>Volumen de Carga Global:</b> ${tiempoTotal} min totales en el chasis.</p>
+            <p><b>Último registro (${ultima.fecha}):</b> "${ultima.notas}"</p>
+            <hr style="border:none; border-top:1px dashed rgba(163,220,229,0.1); margin:15px 0;">
+            <p style="font-size:0.85rem; line-height:1.4;"><b>Reporte Técnico de Patada:</b><br>${analisisPatada}</p>
+            <p style="font-size:0.85rem; line-height:1.4; margin-top:10px;"><b>Reporte Técnico de Tiro:</b><br>${analisisTiro}</p>
+        </div>
+        <p style="font-size:0.7rem; opacity:0.4; margin-top:15px;">Origen de datos: ${usuarioActual ? 'Nube Sincronizada' : 'LocalStorage OS'}</p>
+        ${usuarioActual ? `<button class="nexus-btn" style="background:#5d3b3b;" onclick="cerrarSesion()">Cerrar Sesión Global</button>` : ''}
+    `;
+}
+
 function openModal(type) {
     modal.style.display = "block";
-    if(type==='objetivo') content.innerHTML = `<h2>OBJETIVOS DE EXTRACCIÓN</h2><p>Misión: SUBIR DE NIVEL.</p><div style="width:100%; height:200px; background:rgba(184,137,93,0.1); border:1px solid var(--accent); border-radius:15px; padding:20px;">[ CARGANDO LISTA DE LOGROS ]</div>`;
-    if(type==='mapa') content.innerHTML = `<h2>COORDENADAS GLOBALES</h2><p>Localidad: Chicoloapan de Juárez.</p><div style="width:100%; height:300px; border:1px dashed var(--aura); border-radius:15px; display:flex; align-items:center; justify-content:center;">BUSCANDO PUNTOS DE INTERÉS EN EL MAPA...</div>`;
-    if(type==='admin') content.innerHTML = `<h2 style="color:#ff4444;">ACCESO RESTRINGIDO</h2><p>Se requiere Nivel 50 para gestionar el Core de Seraff Essence.</p><p style="opacity:0.6; font-size:0.8rem;">Tu nivel actual es insuficiente para esta terminal.</p>`;
-    if(type==='entrenar') content.innerHTML = `<h2>RUTINAS DE ANOMALÍA</h2><p>Selecciona tu nivel de entrenamiento actual.</p>`;
+    
+    if(type==='ai-core') {
+        if(!usuarioActual) {
+            cargarInterfazLogin();
+        } else {
+            content.innerHTML = ejecutarDiagnosticoIA();
+        }
+    }
+    if(type==='objetivo') {
+        let htmlHistorial = sesionesGlobales.map((s, idx) => `<p style="font-size:0.75rem; border-bottom:1px dashed rgba(163,220,229,0.2); padding-bottom:5px;"><b>#${idx+1}</b> - ${s.fecha} | ${s.tiempo} min: ${s.notas}</p>`).join('');
+        content.innerHTML = `<h2>CONTROL DE OBJETIVOS</h2><p>Enfoque: Consistencia técnica en la nube.</p><div style="width:100%; max-height:220px; overflow-y:auto; background:rgba(184,137,93,0.1); border:1px solid var(--accent); border-radius:15px; padding:20px;">${htmlHistorial || '[ NO HAY SESIONES REGISTRADAS DESDE ESTA CUENTA ]'}</div>`;
+    }
+    if(type==='mapa') content.innerHTML = `<h2>ZONA DE PRÁCTICA</h2><p>Localidad actual: Chicoloapan de Juárez.</p><div style="width:100%; height:150px; border:1px dashed var(--aura); border-radius:15px; display:flex; align-items:center; justify-content:center;">REGISTRO DE CONDICIONES DE CAMPO...</div>`;
+    if(type==='metricas') content.innerHTML = `<h2>MÉTRICAS DE RENDIMIENTO</h2><p>Monitoreo de habilidades motrices:</p><ul><li><b>Control de Balón:</b> Progreso técnico continuo.</li><li><b>Precisión de Tiro:</b> Evaluación de trayectoria.</li><li><b>Coordinación y Salto:</b> Ejecución dinámica.</li></ul>`;
+    
+    if(type==='entrenar') {
+        content.innerHTML = `<h2>REGISTRO DE SESIÓN</h2><p>Introduce los datos de la práctica de hoy:</p>
+        <form onsubmit="event.preventDefault(); guardarSesion();">
+            <label style="display:block; margin-bottom:10px;">Minutos de entrenamiento:<br>
+                <input type="number" id="train-time" class="nexus-input" required>
+            </label>
+            <label style="display:block; margin-bottom:10px;">Observaciones técnicas:<br>
+                <textarea id="train-notes" placeholder="Ej. Hice 7 encestadas saltando, noto diferencia en la fuerza de la patada..." class="nexus-input" style="height:60px;" required></textarea>
+            </label>
+            <button type="submit" class="nexus-btn">Guardar Datos</button>
+        </form>`;
+    }
+}
+
+function cargarInterfazLogin() {
+    content.innerHTML = `
+        <h2>VERIFICACIÓN DE CONEXIÓN</h2>
+        <p>Inicia sesión o regístrate para sincronizar tu chasis en la nube:</p>
+        <form onsubmit="event.preventDefault(); manejarAuth();">
+            <input type="email" id="auth-email" placeholder="Correo electrónico" class="nexus-input" required><br>
+            <input type="password" id="auth-password" placeholder="Contraseña" class="nexus-input" required><br>
+            <button type="submit" id="auth-submit-btn" class="nexus-btn">Iniciar Sesión</button>
+            <p style="font-size:0.75rem; text-align:center; margin-top:15px; cursor:pointer; color:var(--accent);" onclick="toggleAuthMode(this)">¿No tienes cuenta? Regístrate aquí</p>
+        </form>
+    `;
+    window.authMode = "login";
+}
+
+function toggleAuthMode(elem) {
+    const btn = document.getElementById('auth-submit-btn');
+    if(window.authMode === "login") {
+        window.authMode = "register";
+        btn.innerText = "Registrar Nueva Cuenta";
+        elem.innerText = "¿Ya tienes cuenta? Inicia sesión";
+    } else {
+        window.authMode = "login";
+        btn.innerText = "Iniciar Sesión";
+        elem.innerText = "¿No tienes cuenta? Regístrate aquí";
+    }
+}
+
+function manejarAuth() {
+    const email = document.getElementById('auth-email').value;
+    const pass = document.getElementById('auth-password').value;
+    
+    if(window.authMode === "register") {
+        auth.createUserWithEmailAndPassword(email, pass)
+            .then(() => { alert("Cuenta creada con éxito."); content.innerHTML = ejecutarDiagnosticoIA(); })
+            .catch(err => alert("Error: " + err.message));
+    } else {
+        auth.signInWithEmailAndPassword(email, pass)
+            .then(() => { alert("Núcleo sincronizado."); content.innerHTML = ejecutarDiagnosticoIA(); })
+            .catch(err => alert("Error: " + err.message));
+    }
+}
+
+function cerrarSesion() {
+    auth.signOut().then(() => {
+        alert("Sesión cerrada.");
+        closeModal();
+    });
+}
+
+function guardarSesion() {
+    const tiempo = document.getElementById('train-time').value;
+    const notes = document.getElementById('train-notes').value;
+    let nuevaSesion = { 
+        tiempo: tiempo, 
+        notas: notes, 
+        fecha: new Date().toLocaleDateString(),
+        timestamp: Date.now()
+    };
+    
+    if (usuarioActual) {
+        // Enviar a Firestore Cloud
+        db.collection("usuarios").doc(usuarioActual.uid).collection("entrenamientos")
+            .add(nuevaSesion)
+            .then(() => {
+                alert('Métricas inyectadas directamente en la nube global.');
+                cargarDatosNube();
+                closeModal();
+            })
+            .catch(err => alert("Error al subir datos: " + err.message));
+    } else {
+        // Almacenamiento Local de respaldo
+        let sesionesExistentes = JSON.parse(localStorage.getItem('sesiones_nexus')) || [];
+        sesionesExistentes.push(nuevaSesion);
+        localStorage.setItem('sesiones_nexus', JSON.stringify(sesionesExistentes));
+        sesionesGlobales = sesionesExistentes;
+        alert('Datos guardados localmente (Sin conexión a la nube).');
+        closeModal();
+    }
 }
 
 function closeModal() { modal.style.display = "none"; }
-
 window.onresize=()=>{renderer.setSize(window.innerWidth,window.innerHeight);material.uniforms.u_res.value.set(window.innerWidth,window.innerHeight);};
 init();animate();
 </script>
