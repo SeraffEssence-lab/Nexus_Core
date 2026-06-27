@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.O.S PET | Playful Edition</title>
 
-    <link rel="apple-touch-icon" href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/hueso%20S.O.S%20PET%20logo.png">
+    <!-- Iconos de la App Corregidos con el nuevo Logo -->
+    <link rel="apple-touch-icon" href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/logo%20app%20sos%20pet.png">
     
-    <link rel="icon" type="image/png" href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/hueso%20S.O.S%20PET%20logo.png">
+    <link rel="icon" type="image/png" href="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/logo%20app%20sos%20pet.png">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -39,10 +40,12 @@
 
         .header { margin-top: 30px; text-align: center; }
         .logo-box {
-            background: white; padding: 15px 40px; border-radius: 60px;
+            background: white; padding: 10px; border-radius: 30px;
             box-shadow: 0 10px 0 #ddd; display: inline-block; transform: rotate(-3deg);
+            overflow: hidden; line-height: 0;
         }
-        .logo-img { width: 180px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); }
+        /* Ajuste para que el nuevo icono cuadrado se vea perfecto dentro del contenedor */
+        .logo-img { width: 120px; height: 120px; border-radius: 20px; object-fit: cover; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); }
 
         .button-stack { margin-top: 40px; width: 100%; display: flex; flex-direction: column; gap: 20px; }
 
@@ -106,7 +109,8 @@
     <div class="app-shell">
         <div class="header">
             <div class="logo-box">
-                <img src="hueso S.O.S PET logo.png" class="logo-img" onerror="this.src='https://via.placeholder.com/200x100?text=S.O.S+PET'">
+                <!-- Imagen del header actualizada con la ruta de tu servidor de GitHub -->
+                <img src="https://seraffessence-lab.github.io/Nexus_Core/s.o.s_mascotas/logo%20app%20sos%20pet.png" class="logo-img" onerror="this.src='https://via.placeholder.com/120?text=S.O.S+PET'">
             </div>
         </div>
 
@@ -118,7 +122,7 @@
                 <div class="btn-icon">💉</div> CARTILLA & SOCIOS
             </button>
             <button class="candy-btn btn-vida" onclick="openCategory('vida')">
-                <div class="btn-icon">🥗</div> ESTILO DE VIDA
+                <div class="btn-icon">🥗</div> ESTILE DE VIDA
             </button>
             <button class="candy-btn btn-salud" onclick="openCategory('salud')">
                 <div class="btn-icon">🏥</div> SALUD DIGITAL
@@ -204,7 +208,6 @@
                     const item = document.createElement('div');
                     item.style.cssText = "background:white; color:black; padding:20px; border-radius:20px; margin-bottom:20px;";
                     
-                    // Lógica del botón PayPal
                     const paypalBtn = p.price > 0 ? `
                         <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${paypalUser}&item_name=${p.name}&amount=${p.price}&currency_code=MXN" class="btn-action btn-paypal">
                             PAGAR CON PAYPAL ($${p.price} MXN)
@@ -221,7 +224,7 @@
             }
         }
 
-        // FONDO (Manteniendo tu estilo)
+        // FONDO
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
         const scene = new THREE.Scene();
