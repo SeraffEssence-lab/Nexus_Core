@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCENCE NUTRICIONAL | Bio-Alquimia</title>
 
+    <!-- Iconos corregidos con la ruta exacta de tu GitHub (Espacio cambiado por %20 y 'Science') -->
     <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
-    
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
     <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
     
+    <!-- Configuración para Android / Chrome Web App -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Scence">
-    <meta name="theme-color" content="#3d4a3e"> <style>
+    <meta name="theme-color" content="#3d4a3e"> 
+    
+    <style>
         :root {
             --earth-black: #1a1a15;
             --cream: #f4f1ea;
@@ -23,23 +26,22 @@
         }
 
         body {
-            background-color: transparent; /* Permitimos ver el shader de fondo */
+            background-color: transparent; 
             color: var(--earth-black);
             font-family: 'Playfair Display', serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            position: relative; /* Para que el contenido flote sobre el canvas */
+            position: relative; 
         }
 
-        /* El canvas ocupará todo el fondo */
         #canvas-lienzo {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Se queda atrás de tus tarjetas de Serum */
+            z-index: -1; 
             pointer-events: none;
         }
 
@@ -165,32 +167,22 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-// Shader que crea la textura de lino/lienzo con movimiento sutil
 const fragmentShader = `
     precision highp float;
     uniform float u_time;
     uniform vec2 u_res;
 
-    // Ruido para la textura de la fibra
     float noise(vec2 p) {
         return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
     }
 
     void main() {
         vec2 uv = gl_FragCoord.xy / u_res.xy;
-        
-        // Color Crema Base de SCENCE
         vec3 colorBase = vec3(0.956, 0.945, 0.917); 
-        
-        // Creamos la trama del lienzo (fibras cruzadas)
         float trama = sin(uv.x * 800.0) * sin(uv.y * 800.0);
-        trama += sin(uv.x * 400.0 + u_time * 0.2) * 0.5; // Movimiento sutil 3D
-        
-        // Mezclamos el ruido para dar esa sensación orgánica de "Bio-Alquimia"
+        trama += sin(uv.x * 400.0 + u_time * 0.2) * 0.5; 
         float n = noise(uv * 100.0) * 0.05;
-        
         vec3 finalColor = colorBase - (trama * 0.02) + n;
-        
         gl_FragColor = vec4(finalColor, 1.0);
     }
 `;
@@ -231,33 +223,36 @@ animate(0);
     <div class="container">
         <div class="product-grid">
             
+            <!-- Producto 1: WhatsApp link integrado -->
             <div class="product-card">
                 <div class="product-info">
                     <div class="product-category">Cuidado Capilar</div>
                     <h2 class="product-title">Serum S-01: Hueso de Mamey</h2>
                     <p class="product-description">Extracción pura de hueso de mamey en aceite de girasol. Estimulación folicular profunda.</p>
                     <div class="ingredient-tag">Macerado 40 días</div>
-                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                    <a href="https://wa.me/5215625732313?text=Hola%20Scence%20Nutricional,%20me%20interesa%20adquirir%20el%20Serum%20S-01:%20Hueso%20de%20Mamey" target="_blank" class="cta-button">Adquirir Esencia</a>
                 </div>
             </div>
 
+            <!-- Producto 2: WhatsApp link integrado -->
             <div class="product-card">
                 <div class="product-info">
                     <div class="product-category">Exfoliación</div>
                     <h2 class="product-title">Corteza de Palo Dulce</h2>
                     <p class="product-description">Exfoliante antiinflamatorio artesanal. Limpieza de impurezas y regeneración dérmica.</p>
                     <div class="ingredient-tag">Antiséptico Natural</div>
-                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                    <a href="https://wa.me/5215625732313?text=Hola%20Scence%20Nutricional,%20me%20interesa%20adquirir%20la%20Corteza%20de%20Palo%20Dulce" target="_blank" class="cta-button">Adquirir Esencia</a>
                 </div>
             </div>
 
+            <!-- Producto 3: WhatsApp link integrado -->
             <div class="product-card">
                 <div class="product-info">
                     <div class="product-category">Hidratación</div>
                     <h2 class="product-title">Óleo de Girasol Viriditas</h2>
                     <p class="product-description">Aceite de semillas seleccionado por su alto contenido en Vitamina E. Protección antioxidante.</p>
                     <div class="ingredient-tag">Prensado en Frío</div>
-                    <a href="#" class="cta-button">Adquirir Esencia</a>
+                    <a href="https://wa.me/5215625732313?text=Hola%20Scence%20Nutricional,%20me%20interesa%20adquirir%20el%20Óleo%20de%20Girasol%20Viriditas" target="_blank" class="cta-button">Adquirir Esencia</a>
                 </div>
             </div>
 
