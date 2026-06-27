@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NatuLuxury | Arquitectura Imposible</title>
+    
+    <link rel="apple-touch-icon" href="https://seraffessence-lab.github.io/Nexus_Core/LOGO%20APP%20NEXUS.png">
+    <link rel="icon" type="image/png" href="https://seraffessence-lab.github.io/Nexus_Core/LOGO%20APP%20NEXUS.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NatuLuxury">
+
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Variables ajustadas para el tono Cristal/Hielo */
             --bg-glass: #f0f4f8;
-            --text-primary: #1a1a1a; /* Texto oscuro para que se lea en fondo claro */
+            --text-primary: #1a1a1a;
             --accent-gold: #c5a059;
             --glass-border: rgba(255, 255, 255, 0.4);
         }
@@ -20,7 +26,6 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            /* Gradiente de Hielo Fino */
             background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
             background-attachment: fixed;
             font-family: 'Montserrat', sans-serif;
@@ -29,7 +34,6 @@
             scroll-snap-type: y mandatory;
         }
 
-        /* LA CAPA DE CRISTAL ÁRTICO */
         body::before {
             content: "";
             position: fixed;
@@ -45,7 +49,7 @@
 
         section {
             height: 100vh;
-            width: 90%; /* Un poco más angosto para que se vea que flota */
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
@@ -56,8 +60,6 @@
             padding: 40px;
             text-align: center;
             scroll-snap-align: start;
-            
-            /* Efecto de Placa de Vidrio Flotando */
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
@@ -67,10 +69,12 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
         }
 
+        /* Contención para evitar deformaciones en las piezas */
         .producto-img {
+            width: 100%;
             max-width: 400px;
             height: auto;
-            /* IMPORTANTE: Multiply para fondos claros */
+            object-fit: contain;
             mix-blend-mode: multiply; 
             filter: contrast(110%);
             margin-bottom: 20px;
@@ -170,13 +174,13 @@
             40% {transform: translateY(-8px);}
             60% {transform: translateY(-4px);}
         }
-
     </style>
 </head>
 <body>
 
     <section>
         <span class="exclusive-tag">Mueblería Naturista</span>
+        <img src="https://seraffessence-lab.github.io/Nexus_Core/muebleria%20logo.png" alt="NATULUXURY LOGO" style="width: 80px; height: auto; margin-bottom: 20px; filter: invert(0.1);">
         <h1>NATULUXURY</h1>
         <p class="highlight-text">Arquitectura Imposible</p>
         <div class="scroll-indicator">DESCUBRE LA ANOMALÍA</div>
@@ -190,14 +194,13 @@
     </section>
 
     <section>
-        <img src="perchero Edicion1.png" class="producto-img" alt="img-feed">
+        <img src="https://seraffessence-lab.github.io/Nexus_Core/perchero%20Edicion1.png" class="producto-img" alt="Origin Series: Anomalía 01">
         <p class="highlight-text">Origin Series: Anomalía 01</p>
         <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20de%20la%20Anomalía%2001" target="_blank" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
     </section>
 
     <section>
         <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 10px; margin-bottom: 40px;">DETALLES TÉCNICOS</h2>
-        
         <div class="specs-container">
             <div class="spec-row">
                 <span class="spec-label">Especie</span>
@@ -219,20 +222,19 @@
     </section>
         
     <section>
-        <img src="mesa de Trabajo x1.png" class="producto-img" alt="img-feed">
+        <img src="https://seraffessence-lab.github.io/Nexus_Core/mesa%20de%20Trabajo%20x1.png" class="producto-img" alt="Mesa de Trabajo">
         <p class="highlight-text">Origin Series: Anomalía 01 - Mesa de Trabajo</p>
         <a href="mailto:marketingesmpresarial@fmail.com?subject=Reclamar%20Espacio%20-%20Mesa%20de%20Trabajo" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
     </section>
 
     <section>
-        <img src="Percherox1.png" class="producto-img" alt="img-feed">
+        <img src="https://seraffessence-lab.github.io/Nexus_Core/Percherox1.png" class="producto-img" alt="Perchero x1">
         <p class="highlight-text">Origin Series: Anomalía 01 - Perchero</p>
         <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20del%20Perchero%20Anomalía%2001" target="_blank" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
     </section>
 
     <section>
         <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 10px; margin-bottom: 40px;">DETALLES TÉCNICOS</h2>
-        
         <div class="specs-container">
             <div class="spec-row">
                 <span class="spec-label">Especie</span>
@@ -251,7 +253,6 @@
                 <span>Única e Irrepetible</span>
             </div>
         </div>
-
         <p style="margin-top: 40px; font-size: 0.6rem; opacity: 0.4; font-style: italic; max-width: 400px;">
             *La pieza que ves es la pieza que recibes. No existen planos, solo instinto natural.
         </p>
