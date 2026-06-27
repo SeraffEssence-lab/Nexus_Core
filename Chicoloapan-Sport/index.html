@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXUS Sport - Elite OS</title>
 
-<!-- LIBRERÍAS DE ACCESO COMPATIBLES (CDN V9 COMPAT) -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -19,7 +18,7 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
 .ui-layer{position:relative;z-index:10;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;box-sizing:border-box;}
 .glass-panel{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(163,220,229,0.1);border-radius:20px;pointer-events:auto;transition:0.4s;}
 
-/* BRANDING (CUADRO MORADO CON IA) */
+/* BRANDING (CONTENEDOR DE LOGO) */
 .brand-container{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:12px;padding:8px 15px;cursor:pointer;pointer-events:auto;}
 .brand-container:hover{border-color:var(--accent);box-shadow:0 0 15px rgba(184,137,93,0.2);}
 .logo-box img{width:35px;height:auto;filter: drop-shadow(0 0 5px var(--aura));}
@@ -36,7 +35,7 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
 .glass-btn{width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.01);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:0.7rem;cursor:pointer;transition:0.5s cubic-bezier(0.2, 1, 0.3, 1);text-align:center;}
 .glass-btn:hover{transform:scale(1.1);border-color:var(--aura);box-shadow:0 0 40px rgba(163,220,229,0.15);color:#fff;}
 
-/* PANEL DE EXPEDICIONES (ZONA ROJA) */
+/* PANEL DE EXPEDICIONES (SISTEMA DE SEGUIMIENTO) */
 .expeditions-panel{position:absolute;right:30px;top:50%;transform:translateY(-50%);width:320px;padding:25px;box-sizing:border-box;}
 .expedition-item{font-size:0.65rem;margin-bottom:12px;padding:15px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid transparent;cursor:pointer;transition:0.3s;}
 .expedition-item:hover{border-left-color:var(--accent);background:rgba(163,220,229,0.05);transform:translateX(10px);}
@@ -78,9 +77,8 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
 </div>
 
 <div class="ui-layer">
-    <!-- SECCIÓN MORADA -->
     <div class="brand-container glass-panel" onclick="openModal('ai-core')">
-        <div class="logo-box"><img src="panteranexusport.png" alt="Logo"></div>
+        <div class="logo-box"><img src="panteranexusport.png" alt="NEXUS SPORT LOGO"></div>
         <div class="brand-text" id="user-status-text" style="font-size:0.6rem; letter-spacing:2px;">SERAFF_ANGEL1001 👁️</div>
     </div>
 
@@ -91,7 +89,6 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
         <div class="glass-btn" onclick="openModal('metricas')"><span>MÉTRICAS</span><span style="font-size:0.5rem; opacity:0.4; margin-top:5px;">RENDIMIENTO</span></div>
     </div>
 
-    <!-- SECCIÓN ROJA -->
     <div class="expeditions-panel glass-panel">
         <div style="font-size:0.55rem; letter-spacing:4px; margin-bottom:20px; opacity:0.5;">[ SISTEMA DE SEGUIMIENTO ]</div>
         <div class="expedition-item" onclick="openModal('objetivo')">>> OBJETIVO: SUBIR DE NIVEL</div>
@@ -114,7 +111,7 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ==========================================================================
-// INITIALIZE FIREBASE WITH YOUR CREDENTIALS
+// CONFIGURACIÓN E INICIALIZACIÓN DE FIREBASE CORE
 // ==========================================================================
 const firebaseConfig = {
     apiKey: "AIzaSyD2xy9Bejyz1FiCoDCL4kKEDY6qv72WEDw",
@@ -130,7 +127,6 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Monitoreo del estado de autenticación en la interfaz
 let usuarioActual = null;
 let sesionesGlobales = [];
 
@@ -148,7 +144,7 @@ auth.onAuthStateChanged(user => {
 });
 
 // ==========================================================================
-// SHADER LOGIC
+// LÓGICA OPTIMIZADA DEL FRAGMENT SHADER (RENDIMIENTO GPU)
 // ==========================================================================
 const fragmentShader=`
 precision highp float;
@@ -158,7 +154,7 @@ void main(){
     vec2 uv=gl_FragCoord.xy/u_res.xy;
     float t=u_time*0.02;
     vec3 color=vec3(0.01, 0.02, 0.04);
-    for(float i=1.0;i<4.0;i++){
+    for(float i=1.0;i<3.0;i++){
         uv.x+=0.15/i*sin(i*uv.y+t);
         uv.y+=0.15/i*cos(i*uv.x+t);
     }
@@ -181,7 +177,7 @@ const modal = document.getElementById('modalNexus');
 const content = document.getElementById('modalData');
 
 // ==========================================================================
-// CORE DATA LOGIC (HYBRID LOCAL/CLOUD)
+// PROCESAMIENTO ANALÍTICO E INFERENCIA DE DATOS
 // ==========================================================================
 function cargarDatosNube() {
     if(!usuarioActual) return;
@@ -191,23 +187,23 @@ function cargarDatosNube() {
         querySnapshot.forEach((doc) => {
             sesionesGlobales.push(doc.data());
         });
-    }).catch(err => console.log("Error de sincronización: ", err));
+    }).catch(err => console.log("Error de sincronización de datos: ", err));
 }
 
 function ejecutarDiagnosticoIA() {
     if(sesionesGlobales.length === 0) {
-        return `<p style="opacity:0.6;">[ NEXUS CORE ] Sin datos cargados. Registra una práctica para ejecutar inferencia analítica.</p>`;
+        return `<p style="opacity:0.6;">[ NEXUS CORE ] Sin registros cargados en el chasis. Introduce una práctica para iniciar.</p>`;
     }
     
     let ultima = sesionesGlobales[sesionesGlobales.length - 1];
     let tiempoTotal = sesionesGlobales.reduce((acc, s) => acc + parseInt(s.tiempo || 0), 0);
     let resumenNotas = ultima.notas.toLowerCase();
     
-    let analisisPatada = "Sin variaciones detectadas en la torsión podal.";
-    let analisisTiro = "Estabilidad técnica en media cancha regular.";
+    let analisisPatada = "Sin variaciones críticas detectadas en la cadena de torsión.";
+    let analisisTiro = "Estabilidad balística y mecánica en rango regular.";
     
     if(resumenNotas.includes("patada") || resumenNotas.includes("pie") || resumenNotas.includes("dominada") || resumenNotas.includes("tobillo")) {
-        analisisPatada = "🟢 CAMBIO DETECTADO EN CADENA CINÉTICA: Mayor balance en dominadas inversas y control de empeine detectado.";
+        analisisPatada = "🟢 CAMBIO DETECTADO EN CADENA CINÉTICA: Mayor balance en dominadas inversas y control optimizado del empeine.";
     }
     if(resumenNotas.includes("enceste") || resumenNotas.includes("basket") || resumenNotas.includes("mano") || resumenNotas.includes("tiro")) {
         analisisTiro = "🟢 OPTIMIZACIÓN DE FACILIDAD MOTRIZ: Incremento en parábola de lanzamiento de media distancia en suspensión.";
@@ -217,11 +213,11 @@ function ejecutarDiagnosticoIA() {
         <h2 style="color:var(--aura); letter-spacing:2px;">🧠 CORE LOG EN TIEMPO REAL</h2>
         <p style="font-size:0.85rem; color:var(--accent);">ANÁLISIS AUTOMÁTICO DE ANOMALÍA</p>
         <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(163,220,229,0.2); padding:15px; border-radius:10px; margin-top:15px;">
-            <p><b>Volumen de Carga Global:</b> ${tiempoTotal} min totales en el chasis.</p>
+            <p><b>Volumen de Carga Global:</b> ${tiempoTotal} min totales acumulados.</p>
             <p><b>Último registro (${ultima.fecha}):</b> "${ultima.notas}"</p>
             <hr style="border:none; border-top:1px dashed rgba(163,220,229,0.1); margin:15px 0;">
-            <p style="font-size:0.85rem; line-height:1.4;"><b>Reporte Técnico de Patada:</b><br>${analisisPatada}</p>
-            <p style="font-size:0.85rem; line-height:1.4; margin-top:10px;"><b>Reporte Técnico de Tiro:</b><br>${analisisTiro}</p>
+            <p style="font-size:0.85rem; line-height:1.4;"><b>Reporte Técnico de Cadena Inferior:</b><br>${analisisPatada}</p>
+            <p style="font-size:0.85rem; line-height:1.4; margin-top:10px;"><b>Reporte Técnico de Trayectoria:</b><br>${analisisTiro}</p>
         </div>
         <p style="font-size:0.7rem; opacity:0.4; margin-top:15px;">Origen de datos: ${usuarioActual ? 'Nube Sincronizada' : 'LocalStorage OS'}</p>
         ${usuarioActual ? `<button class="nexus-btn" style="background:#5d3b3b;" onclick="cerrarSesion()">Cerrar Sesión Global</button>` : ''}
@@ -240,21 +236,21 @@ function openModal(type) {
     }
     if(type==='objetivo') {
         let htmlHistorial = sesionesGlobales.map((s, idx) => `<p style="font-size:0.75rem; border-bottom:1px dashed rgba(163,220,229,0.2); padding-bottom:5px;"><b>#${idx+1}</b> - ${s.fecha} | ${s.tiempo} min: ${s.notas}</p>`).join('');
-        content.innerHTML = `<h2>CONTROL DE OBJETIVOS</h2><p>Enfoque: Consistencia técnica en la nube.</p><div style="width:100%; max-height:220px; overflow-y:auto; background:rgba(184,137,93,0.1); border:1px solid var(--accent); border-radius:15px; padding:20px;">${htmlHistorial || '[ NO HAY SESIONES REGISTRADAS DESDE ESTA CUENTA ]'}</div>`;
+        content.innerHTML = `<h2>CONTROL DE OBJETIVOS</h2><p>Enfoque: Consistencia técnica y métricas en la nube.</p><div style="width:100%; max-height:220px; overflow-y:auto; background:rgba(184,137,93,0.1); border:1px solid var(--accent); border-radius:15px; padding:20px;">${htmlHistorial || '[ NO HAY SESIONES REGISTRADAS EN ESTA CUENTA ]'}</div>`;
     }
-    if(type==='mapa') content.innerHTML = `<h2>ZONA DE PRÁCTICA</h2><p>Localidad actual: Chicoloapan de Juárez.</p><div style="width:100%; height:150px; border:1px dashed var(--aura); border-radius:15px; display:flex; align-items:center; justify-content:center;">REGISTRO DE CONDICIONES DE CAMPO...</div>`;
-    if(type==='metricas') content.innerHTML = `<h2>MÉTRICAS DE RENDIMIENTO</h2><p>Monitoreo de habilidades motrices:</p><ul><li><b>Control de Balón:</b> Progreso técnico continuo.</li><li><b>Precisión de Tiro:</b> Evaluación de trayectoria.</li><li><b>Coordinación y Salto:</b> Ejecución dinámica.</li></ul>`;
+    if(type==='mapa') content.innerHTML = `<h2>ZONA DE PRÁCTICA</h2><p>Localidad activa: Chicoloapan de Juárez.</p><div style="width:100%; height:150px; border:1px dashed var(--aura); border-radius:15px; display:flex; align-items:center; justify-content:center;">REGISTRO DE CONDICIONES DE CAMPO...</div>`;
+    if(type==='metricas') content.innerHTML = `<h2>MÉTRICAS DE RENDIMIENTO</h2><p>Monitoreo adaptativo de habilidades motrices:</p><ul><li><b>Control de Balón:</b> Progreso técnico continuo en transiciones rápidos.</li><li><b>Precisión de Tiro:</b> Evaluación analítica de parábola.</li><li><b>Coordinación y Elasticidad:</b> Ejecución dinámica del chasis.</li></ul>`;
     
     if(type==='entrenar') {
-        content.innerHTML = `<h2>REGISTRO DE SESIÓN</h2><p>Introduce los datos de la práctica de hoy:</p>
+        content.innerHTML = `<h2>REGISTRO DE SESIÓN</h2><p>Introduce los datos cinéticos de la práctica actual:</p>
         <form onsubmit="event.preventDefault(); guardarSesion();">
             <label style="display:block; margin-bottom:10px;">Minutos de entrenamiento:<br>
                 <input type="number" id="train-time" class="nexus-input" required>
             </label>
             <label style="display:block; margin-bottom:10px;">Observaciones técnicas:<br>
-                <textarea id="train-notes" placeholder="Ej. Hice 7 encestadas saltando, noto diferencia en la fuerza de la patada..." class="nexus-input" style="height:60px;" required></textarea>
+                <textarea id="train-notes" placeholder="Ej. Ajuste en fuerza de patada, optimización en el tiro..." class="nexus-input" style="height:60px;" required></textarea>
             </label>
-            <button type="submit" class="nexus-btn">Guardar Datos</button>
+            <button type="submit" class="nexus-btn">Inyectar Datos</button>
         </form>`;
     }
 }
@@ -262,12 +258,12 @@ function openModal(type) {
 function cargarInterfazLogin() {
     content.innerHTML = `
         <h2>VERIFICACIÓN DE CONEXIÓN</h2>
-        <p>Inicia sesión o regístrate para sincronizar tu chasis en la nube:</p>
+        <p>Inicia sesión o registra el perfil para sincronizar el chasis en la nube global:</p>
         <form onsubmit="event.preventDefault(); manejarAuth();">
             <input type="email" id="auth-email" placeholder="Correo electrónico" class="nexus-input" required><br>
             <input type="password" id="auth-password" placeholder="Contraseña" class="nexus-input" required><br>
             <button type="submit" id="auth-submit-btn" class="nexus-btn">Iniciar Sesión</button>
-            <p style="font-size:0.75rem; text-align:center; margin-top:15px; cursor:pointer; color:var(--accent);" onclick="toggleAuthMode(this)">¿No tienes cuenta? Regístrate aquí</p>
+            <p style="font-size:0.75rem; text-align:center; margin-top:15px; cursor:pointer; color:var(--accent);" onclick="toggleAuthMode(this)">¿No tienes cuenta registrada? Crea una aquí</p>
         </form>
     `;
     window.authMode = "login";
@@ -282,7 +278,7 @@ function toggleAuthMode(elem) {
     } else {
         window.authMode = "login";
         btn.innerText = "Iniciar Sesión";
-        elem.innerText = "¿No tienes cuenta? Regístrate aquí";
+        elem.innerText = "¿No tienes cuenta registrada? Crea una aquí";
     }
 }
 
@@ -292,18 +288,18 @@ function manejarAuth() {
     
     if(window.authMode === "register") {
         auth.createUserWithEmailAndPassword(email, pass)
-            .then(() => { alert("Cuenta creada con éxito."); content.innerHTML = ejecutarDiagnosticoIA(); })
-            .catch(err => alert("Error: " + err.message));
+            .then(() => { alert("Perfil creado con éxito."); content.innerHTML = ejecutarDiagnosticoIA(); })
+            .catch(err => alert("Falla en registro: " + err.message));
     } else {
         auth.signInWithEmailAndPassword(email, pass)
-            .then(() => { alert("Núcleo sincronizado."); content.innerHTML = ejecutarDiagnosticoIA(); })
-            .catch(err => alert("Error: " + err.message));
+            .then(() => { alert("Núcleo e interfaz sincronizados."); content.innerHTML = ejecutarDiagnosticoIA(); })
+            .catch(err => alert("Falla de acceso: " + err.message));
     }
 }
 
 function cerrarSesion() {
     auth.signOut().then(() => {
-        alert("Sesión cerrada.");
+        alert("Sesión del núcleo finalizada.");
         closeModal();
     });
 }
@@ -319,22 +315,20 @@ function guardarSesion() {
     };
     
     if (usuarioActual) {
-        // Enviar a Firestore Cloud
         db.collection("usuarios").doc(usuarioActual.uid).collection("entrenamientos")
             .add(nuevaSesion)
             .then(() => {
-                alert('Métricas inyectadas directamente en la nube global.');
+                alert('Métricas inyectadas correctamente en la nube global.');
                 cargarDatosNube();
                 closeModal();
             })
             .catch(err => alert("Error al subir datos: " + err.message));
     } else {
-        // Almacenamiento Local de respaldo
         let sesionesExistentes = JSON.parse(localStorage.getItem('sesiones_nexus')) || [];
         sesionesExistentes.push(nuevaSesion);
         localStorage.setItem('sesiones_nexus', JSON.stringify(sesionesExistentes));
         sesionesGlobales = sesionesExistentes;
-        alert('Datos guardados localmente (Sin conexión a la nube).');
+        alert('Datos almacenados en LocalStorage (Sin sincronización central).');
         closeModal();
     }
 }
