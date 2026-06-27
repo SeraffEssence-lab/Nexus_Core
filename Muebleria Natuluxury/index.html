@@ -4,20 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NatuLuxury | Arquitectura Imposible</title>
-    
-    <link rel="apple-touch-icon" href="https://seraffessence-lab.github.io/Nexus_Core/LOGO%20APP%20NEXUS.png">
-    <link rel="icon" type="image/png" href="https://seraffessence-lab.github.io/Nexus_Core/LOGO%20APP%20NEXUS.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NatuLuxury">
-
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-glass: #f0f4f8;
-            --text-primary: #1a1a1a;
+            --bg-glass: #f5f7fa;
+            --text-primary: #111111;
             --accent-gold: #c5a059;
-            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow-subtle: rgba(0, 0, 0, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +20,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            background: linear-gradient(135deg, #f1f4f8 0%, #e2e8f0 100%);
             background-attachment: fixed;
             font-family: 'Montserrat', sans-serif;
             color: var(--text-primary);
@@ -34,23 +28,21 @@
             scroll-snap-type: y mandatory;
         }
 
+        /* Capa esmerilada de fondo general */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            z-index: -1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            z-index: -2;
         }
 
         section {
             height: 100vh;
-            width: 90%;
-            max-width: 1200px;
+            width: 92%;
+            max-width: 1100px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -60,112 +52,143 @@
             padding: 40px;
             text-align: center;
             scroll-snap-align: start;
-            background: rgba(255, 255, 255, 0.15);
+            
+            /* Contenedores flotantes limpios */
+            background: rgba(255, 255, 255, 0.45);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            margin-top: 5vh;
-            margin-bottom: 5vh;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            margin-top: 4vh;
+            margin-bottom: 4vh;
+            box-shadow: 0 15px 35px var(--shadow-subtle);
         }
 
-        /* Contención para evitar deformaciones en las piezas */
-        .producto-img {
+        /* CORRECCIÓN CRUCIAL: Contenedor e imágenes sólidas y visibles */
+        .producto-container {
             width: 100%;
-            max-width: 400px;
-            height: auto;
+            max-width: 500px;
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .producto-img {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            mix-blend-mode: multiply; 
-            filter: contrast(110%);
+            /* Eliminado el blend-mode que las desaparecía */
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.08));
+        }
+
+        .logo-marca {
+            max-width: 180px;
+            height: auto;
             margin-bottom: 20px;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.05));
         }
 
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.5rem, 8vw, 4rem);
-            letter-spacing: 15px;
+            font-size: clamp(2rem, 7vw, 3.8rem);
+            letter-spacing: 14px;
             font-weight: 400;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
 
         .highlight-text {
             color: var(--accent-gold);
-            font-size: 0.75rem;
-            letter-spacing: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            margin-top: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
         .manifesto-box {
-            max-width: 650px;
-            padding: 40px;
-            border-left: 2px solid var(--accent-gold);
-            background: rgba(255, 255, 255, 0.05);
+            max-width: 700px;
+            padding: 35px 40px;
+            border-left: 3px solid var(--accent-gold);
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0 20px 20px 0;
         }
 
         .manifesto-box p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 300;
-            line-height: 2.2;
+            line-height: 2.1;
             letter-spacing: 1px;
-            color: #444;
+            color: #2d3748;
         }
 
         .exclusive-tag {
-            font-family: 'Cinzel';
-            font-size: 0.65rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
             border: 1px solid var(--accent-gold);
-            padding: 6px 20px;
-            margin-bottom: 30px;
+            padding: 6px 22px;
+            margin-bottom: 25px;
             display: inline-block;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
+            color: var(--accent-gold);
+            font-weight: 700;
         }
 
         .buy-button {
-            margin-top: 40px;
-            padding: 15px 45px;
-            background: transparent;
+            margin-top: 25px;
+            padding: 14px 40px;
+            background: var(--text-primary);
             border: 1px solid var(--text-primary);
-            color: var(--text-primary);
+            color: #ffffff;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             font-size: 0.7rem;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.5s ease;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .buy-button:hover {
-            background: var(--text-primary);
-            color: #fff;
-            letter-spacing: 6px;
+            background: transparent;
+            color: var(--text-primary);
+            transform: scale(1.03);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.05);
         }
 
         .specs-container {
             width: 100%;
-            max-width: 500px;
-            margin-top: 30px;
-            font-size: 0.7rem;
+            max-width: 550px;
+            margin-top: 20px;
+            font-size: 0.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 20px;
         }
 
         .spec-row {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
         }
 
-        .spec-label { opacity: 0.5; }
+        .spec-row:last-child { border-bottom: none; }
+        .spec-label { opacity: 0.6; font-weight: 600; }
 
         .scroll-indicator {
             position: absolute;
-            bottom: 30px;
-            font-size: 0.55rem;
-            letter-spacing: 4px;
-            opacity: 0.4;
+            bottom: 35px;
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            opacity: 0.5;
+            font-weight: 600;
             animation: bounce 2.5s infinite;
         }
 
@@ -174,13 +197,13 @@
             40% {transform: translateY(-8px);}
             60% {transform: translateY(-4px);}
         }
+
     </style>
 </head>
 <body>
 
     <section>
-        <span class="exclusive-tag">Mueblería Naturista</span>
-        <img src="https://seraffessence-lab.github.io/Nexus_Core/muebleria%20logo.png" alt="NATULUXURY LOGO" style="width: 80px; height: auto; margin-bottom: 20px; filter: invert(0.1);">
+        <img src="muebleria logo.png" class="logo-marca" alt="NatuLuxury Logo">
         <h1>NATULUXURY</h1>
         <p class="highlight-text">Arquitectura Imposible</p>
         <div class="scroll-indicator">DESCUBRE LA ANOMALÍA</div>
@@ -194,13 +217,16 @@
     </section>
 
     <section>
-        <img src="https://seraffessence-lab.github.io/Nexus_Core/perchero%20Edicion1.png" class="producto-img" alt="Origin Series: Anomalía 01">
-        <p class="highlight-text">Origin Series: Anomalía 01</p>
-        <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20de%20la%20Anomalía%2001" target="_blank" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
+        <span class="exclusive-tag">Pieza Única</span>
+        <div class="producto-container">
+            <img src="perchero Edicion1.png" class="producto-img" alt="Perchero Edición 1">
+        </div>
+        <p class="highlight-text">Origin Series: Anomalía 01 - Perchero Principal</p>
+        <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20de%20la%20Anomalía%2001" target="_blank" class="buy-button">Reclamar Espacio</a>
     </section>
 
     <section>
-        <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 10px; margin-bottom: 40px;">DETALLES TÉCNICOS</h2>
+        <h2 style="font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 10px; margin-bottom: 30px;">DETALLES TÉCNICOS</h2>
         <div class="specs-container">
             <div class="spec-row">
                 <span class="spec-label">Especie</span>
@@ -222,19 +248,25 @@
     </section>
         
     <section>
-        <img src="https://seraffessence-lab.github.io/Nexus_Core/mesa%20de%20Trabajo%20x1.png" class="producto-img" alt="Mesa de Trabajo">
+        <span class="exclusive-tag">Colección de Autor</span>
+        <div class="producto-container">
+            <img src="mesa de Trabajo x1.png" class="producto-img" alt="Mesa de Trabajo x1">
+        </div>
         <p class="highlight-text">Origin Series: Anomalía 01 - Mesa de Trabajo</p>
-        <a href="mailto:marketingesmpresarial@fmail.com?subject=Reclamar%20Espacio%20-%20Mesa%20de%20Trabajo" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
+        <a href="mailto:marketingesmpresarial@fmail.com?subject=Reclamar%20Espacio%20-%20Mesa%20de%20Trabajo" class="buy-button">Reclamar Espacio</a>
     </section>
 
     <section>
-        <img src="https://seraffessence-lab.github.io/Nexus_Core/Percherox1.png" class="producto-img" alt="Perchero x1">
-        <p class="highlight-text">Origin Series: Anomalía 01 - Perchero</p>
-        <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20del%20Perchero%20Anomalía%2001" target="_blank" class="buy-button" style="padding: 12px 30px; font-size: 0.6rem;">Reclamar Espacio</a>
+        <span class="exclusive-tag">Escultura Funcional</span>
+        <div class="producto-container">
+            <img src="Percherox1.png" class="producto-img" alt="Perchero x1">
+        </div>
+        <p class="highlight-text">Origin Series: Anomalía 01 - Perchero Vertical</p>
+        <a href="https://wa.me/525523157495?text=Quiero%20reclamar%20el%20espacio%20del%20Perchero%20Anomalía%2001" target="_blank" class="buy-button">Reclamar Espacio</a>
     </section>
 
     <section>
-        <h2 style="font-family: 'Cinzel'; font-size: 1.2rem; letter-spacing: 10px; margin-bottom: 40px;">DETALLES TÉCNICOS</h2>
+        <h2 style="font-family: 'Cinzel'; font-size: 1.4rem; letter-spacing: 10px; margin-bottom: 30px;">FILOSOFÍA DE DISEÑO</h2>
         <div class="specs-container">
             <div class="spec-row">
                 <span class="spec-label">Especie</span>
@@ -242,7 +274,7 @@
             </div>
             <div class="spec-row">
                 <span class="spec-label">Tratamiento</span>
-                <span>Curación con lijamiento de imperfecciones</span>
+                <span>Curación con lijado de imperfecciones</span>
             </div>
             <div class="spec-row">
                 <span class="spec-label">Arquitectura</span>
@@ -253,16 +285,16 @@
                 <span>Única e Irrepetible</span>
             </div>
         </div>
-        <p style="margin-top: 40px; font-size: 0.6rem; opacity: 0.4; font-style: italic; max-width: 400px;">
-            *La pieza que ves es la pieza que recibes. No existen planos, solo instinto natural.
+        <p style="margin-top: 40px; font-size: 0.7rem; opacity: 0.6; font-style: italic; max-width: 450px; line-height: 1.8;">
+            *La pieza que ves es exactamente la pieza que recibes. No existen planos, solo instinto natural.
         </p>
     </section>
 
     <section>
         <h1>NATULUXURY</h1>
-        <div style="width: 30px; height: 1px; background: var(--accent-gold); margin: 20px 0;"></div>
-        <p style="font-size: 0.65rem; letter-spacing: 4px; opacity: 0.5;">CHICOLOAPAN | LONDRES | MILÁN</p>
-        <footer style="margin-top: 50px; font-size: 0.5rem; opacity: 0.4;">NATULUXURY © 2026 - TODOS LOS DERECHOS RESERVADOS</footer>
+        <div style="width: 40px; height: 1px; background: var(--accent-gold); margin: 25px 0;"></div>
+        <p style="font-size: 0.7rem; letter-spacing: 5px; opacity: 0.7; font-weight: 600;">CHICOLOAPAN | LONDRES | MILÁN</p>
+        <footer style="margin-top: 60px; font-size: 0.55rem; opacity: 0.5;">NATULUXURY © 2026 - TODOS LOS DERECHOS RESERVADOS</footer>
     </section>
 
 </body>
