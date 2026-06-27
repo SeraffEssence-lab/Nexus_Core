@@ -6,13 +6,25 @@
     <title>SERAFF | SUISSE</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
-    <link rel="apple-touch-icon" href="https://seraffessence-lab.github.io/Nexus_Core/Logo%20ginda%20SE.png">
+    <!-- ========================================== -->
+    <!-- ICONOS PARA PANTALLA DE INICIO (IPHONE Y ANDROID) -->
+    <!-- ========================================== -->
+    <!-- Para iOS (Safari "Añadir a pantalla de inicio") -->
+    <link rel="apple-touch-icon" href="selogo.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="selogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="selogo.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="selogo.png">
     
-    <link rel="icon" type="image/png" href="https://seraffessence-lab.github.io/Nexus_Core/Logo%20ginda%20SE.png">
-
+    <!-- Configuración para Android / Chrome Web App -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SERAFF">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Seraff">
+    
+    <!-- Favicon estándar para navegadores -->
+    <link rel="icon" type="image/png" sizes="32x32" href="selogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="selogo.png">
+    <!-- ========================================== -->
 
     <style>
         /* PALETA DE COLOR: GRIS GRANITO CEMENTO CLARO CON TEXTURA + NEON PURPLE */
@@ -178,31 +190,31 @@
 
         /* CONFIGURACIÓN DE BORDES CON GLOW POR COLECCIÓN */
         .border-caos {
-            border: 2px solid #ff4141 !important; /* Rojo caos */
+            border: 2px solid #ff4141 !important; 
             box-shadow: 0 0 12px rgba(255, 65, 65, 0.5);
         }
         .border-caos .mo-title { color: #ff4141; border-color: #ff4141; }
 
         .border-origen {
-            border: 2px solid #00e676 !important; /* Verde origen */
+            border: 2px solid #00e676 !important; 
             box-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
         }
         .border-origen .mo-title { color: #00e676; border-color: #00e676; }
 
         .border-legado {
-            border: 2px solid #ffc107 !important; /* Amarillo/Oro legado */
+            border: 2px solid #ffc107 !important; 
             box-shadow: 0 0 12px rgba(255, 193, 7, 0.5);
         }
         .border-legado .mo-title { color: #ffc107; border-color: #ffc107; }
 
         .border-dominio {
-            border: 2px solid #00e5ff !important; /* Azul/Cian dominio */
+            border: 2px solid #00e5ff !important; 
             box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
         }
         .border-dominio .mo-title { color: #00e5ff; border-color: #00e5ff; }
 
         .border-musa {
-            border: 2px solid #ff8da1 !important; /* Rosa elegante para Musa */
+            border: 2px solid #ff8da1 !important; 
             box-shadow: 0 0 12px rgba(255, 141, 161, 0.5);
         }
         .border-musa .mo-title { color: #ff8da1; border-color: #ff8da1; }
@@ -211,7 +223,6 @@
         .products-grid { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 400px; padding-top: 100px; padding-bottom: 100px; }
         .prod-card { width: 100%; padding: 20px; border: 1px solid rgba(0, 0, 0, 0.1); background: rgba(28, 29, 31, 0.95); text-align: center; box-sizing: border-box; color: #fff; }
         
-        /* Ajuste para que la foto maestra luzca impecable en la tarjeta */
         .prod-img { width: 100%; max-height: 380px; object-fit: contain; margin-bottom: 15px; border-bottom: 1px solid #333; background: #fff; padding: 10px; box-sizing: border-box; }
         
         .prod-name { font-family: 'Cinzel', serif; color: #fff; font-size: 1.4rem; margin-bottom: 8px; }
@@ -409,7 +420,6 @@
                 db[cat].forEach(p => {
                     const card = document.createElement('div');
                     card.className = 'prod-card';
-                    // HACKEO DE LA IMAGEN MAESTRA: Se fuerza 'master.jpg' para todos los productos
                     card.innerHTML = `
                         <img src="master.jpg" class="prod-img" onerror="this.src='https://via.placeholder.com/400x400?text=SERAFF+PROD'">
                         <div class="prod-name">${p.name}</div>
