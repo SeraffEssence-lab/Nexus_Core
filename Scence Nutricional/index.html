@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCENCE NUTRICIONAL | Bio-Alquimia</title>
-    <style>
+
+    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
+    
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/Science%20Nutricional/logotipo.jpg">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Scence">
+    <meta name="theme-color" content="#3d4a3e"> <style>
         :root {
             --earth-black: #1a1a15;
             --cream: #f4f1ea;
@@ -14,25 +23,25 @@
         }
 
         body {
-    background-color: transparent; /* Permitimos ver el shader de fondo */
-    color: var(--earth-black);
-    font-family: 'Playfair Display', serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    position: relative; /* Para que el contenido flote sobre el canvas */
-}
+            background-color: transparent; /* Permitimos ver el shader de fondo */
+            color: var(--earth-black);
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            position: relative; /* Para que el contenido flote sobre el canvas */
+        }
 
-/* El canvas ocupará todo el fondo */
-#canvas-lienzo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Se queda atrás de tus tarjetas de Serum */
-    pointer-events: none;
-}
+        /* El canvas ocupará todo el fondo */
+        #canvas-lienzo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Se queda atrás de tus tarjetas de Serum */
+            pointer-events: none;
+        }
 
         header {
             padding: 60px 20px;
@@ -146,6 +155,7 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 </head>
+
 <canvas id="canvas-lienzo"></canvas>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -210,6 +220,7 @@ window.onresize = () => {
 renderer.setSize(window.innerWidth, window.innerHeight);
 animate(0);
 </script>
+
 <body>
 
     <header>
