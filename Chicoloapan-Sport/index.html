@@ -5,14 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NEXUS Sport - Elite OS</title>
 
-<!-- Soporte PWA y Web App Icon -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NEXUS Sport">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/panteraNexus%202.png">
 <link rel="icon" href="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/panteraNexus%202.png">
 
-<!-- LIBRERÍAS DE ACCESO COMPATIBLES -->
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -43,7 +41,8 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
 .expedition-item{font-size:0.65rem;margin-bottom:12px;padding:15px;background:rgba(255,255,255,0.02);border-radius:8px;border-left:3px solid transparent;cursor:pointer;transition:0.3s;}
 .expedition-item:hover{border-left-color:var(--accent);background:rgba(163,220,229,0.05);transform:translateX(10px);}
 
-.live-video-container{width:100%;height:150px;background:#000;border-radius:12px;margin-top:20px;border:1px solid rgba(163,220,229,0.15);overflow:hidden;position:relative;}
+.media-container{width:100%;height:150px;background:#000;border-radius:12px;margin-top:20px;border:1px solid rgba(163,220,229,0.15);overflow:hidden;position:relative;}
+.media-container img{width:100%;height:100%;object-fit:cover;}
 
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;background:rgba(2,4,6,0.96);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);pointer-events:auto;}
 .modal-content{width:85%;max-width:900px;height:80%;margin:5% auto;padding:30px;overflow-y:auto;position:relative;box-sizing:border-box;}
@@ -94,10 +93,9 @@ body,html{margin:0;padding:0;width:100%;height:100%;background:#020406;font-fami
         <div style="font-size:0.55rem; letter-spacing:4px; margin-bottom:20px; opacity:0.5;">[ SISTEMA DE SEGUIMIENTO ]</div>
         <div class="expedition-item" onclick="openModal('objetivo')">>> OBJETIVO: SUBIR DE NIVEL</div>
         <div class="expedition-item" onclick="openModal('mapa')">>> AREA: CHICOLOAPAN [S]</div>
-        <div class="live-video-container">
-            <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover;">
-                <source src="transicion.MOV" type="video/mp4">
-            </video>
+        
+        <div class="media-container">
+            <img src="https://raw.githubusercontent.com/SeraffEssence-lab/Nexus_Core/main/boseto%20de%20marketing%20de%20nexus%20sport.jpg" alt="Boceto Marketing">
         </div>
     </div>
 
